@@ -3,1288 +3,855 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ARTEM DENISOV — СИСТЕМА РОСТА 2026</title>
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=IBM+Plex+Mono:wght@300;400;500&family=IBM+Plex+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+<title>ДЕНИСОВ · COMMAND CENTER 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=JetBrains+Mono:wght@300;400;500;700&family=Manrope:wght@300;400;600;800&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --black: #0a0a0a;
-    --white: #f0ede6;
-    --accent: #e8d44d;
-    --red: #e84d4d;
-    --blue: #4d8fe8;
-    --green: #4de87a;
-    --gray: #2a2a2a;
-    --gray2: #1a1a1a;
-    --muted: #666;
-  }
-
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-
-  body {
-    background: var(--black);
-    color: var(--white);
-    font-family: 'IBM Plex Sans', sans-serif;
-    min-height: 100vh;
-    overflow-x: hidden;
-  }
-
-  /* HEADER */
-  .header {
-    padding: 40px 40px 0;
-    display: grid;
-    grid-template-columns: 1fr auto;
-    align-items: end;
-    border-bottom: 1px solid #222;
-    padding-bottom: 24px;
-  }
-
-  .header-name {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: clamp(48px, 8vw, 96px);
-    letter-spacing: 4px;
-    line-height: 1;
-    color: var(--white);
-  }
-
-  .header-name span { color: var(--accent); }
-
-  .header-meta {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 11px;
-    color: var(--muted);
-    text-align: right;
-    line-height: 1.8;
-  }
-
-  .header-tag {
-    display: inline-block;
-    background: var(--accent);
-    color: var(--black);
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 10px;
-    font-weight: 500;
-    padding: 3px 8px;
-    margin-top: 8px;
-  }
-
-  /* COUNTDOWN */
-  .countdown-bar {
-    background: var(--gray2);
-    padding: 16px 40px;
-    display: flex;
-    align-items: center;
-    gap: 40px;
-    border-bottom: 1px solid #222;
-    flex-wrap: wrap;
-  }
-
-  .countdown-item {
-    display: flex;
-    align-items: baseline;
-    gap: 8px;
-  }
-
-  .countdown-num {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 36px;
-    color: var(--accent);
-    line-height: 1;
-  }
-
-  .countdown-label {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 10px;
-    color: var(--muted);
-    text-transform: uppercase;
-  }
-
-  .countdown-divider { color: #333; font-size: 24px; }
-
-  /* PROGRESS BAR */
-  .progress-bar-wrap {
-    flex: 1;
-    min-width: 200px;
-  }
-
-  .progress-label {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 10px;
-    color: var(--muted);
-    margin-bottom: 6px;
-    display: flex;
-    justify-content: space-between;
-  }
-
-  .progress-track {
-    height: 4px;
-    background: #333;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .progress-fill {
-    height: 100%;
-    background: var(--accent);
-    transition: width 1s ease;
-  }
-
-  /* MAIN GRID */
-  .main {
-    padding: 32px 40px;
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 2px;
-  }
-
-  @media (max-width: 900px) {
-    .main { grid-template-columns: 1fr; padding: 16px; }
-    .header { padding: 24px 16px 16px; }
-    .countdown-bar { padding: 12px 16px; gap: 20px; }
-  }
-
-  /* BLOCK */
-  .block {
-    background: var(--gray2);
-    padding: 28px;
-    border: 1px solid #1e1e1e;
-    position: relative;
-    transition: border-color 0.2s;
-  }
-
-  .block:hover { border-color: #333; }
-
-  .block-wide {
-    grid-column: span 2;
-  }
-
-  .block-full {
-    grid-column: span 3;
-  }
-
-  .block-num {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 72px;
-    color: #1a1a1a;
-    position: absolute;
-    top: 12px;
-    right: 20px;
-    line-height: 1;
-    pointer-events: none;
-  }
-
-  .block-tag {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 9px;
-    color: var(--muted);
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    margin-bottom: 12px;
-  }
-
-  .block-title {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 28px;
-    letter-spacing: 2px;
-    margin-bottom: 20px;
-    line-height: 1;
-  }
-
-  /* STATUS PILLS */
-  .status {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 10px;
-    padding: 4px 10px;
-    border-radius: 2px;
-    margin-bottom: 16px;
-  }
-
-  .status-dot { width: 6px; height: 6px; border-radius: 50%; }
-  .status.active { background: rgba(78,232,122,0.1); color: var(--green); }
-  .status.active .status-dot { background: var(--green); animation: pulse 2s infinite; }
-  .status.pending { background: rgba(232,212,77,0.1); color: var(--accent); }
-  .status.pending .status-dot { background: var(--accent); }
-  .status.critical { background: rgba(232,77,77,0.1); color: var(--red); }
-  .status.critical .status-dot { background: var(--red); }
-
-  @keyframes pulse {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.3; }
-  }
-
-  /* CHECKLIST */
-  .checklist { list-style: none; }
-
-  .checklist li {
-    display: flex;
-    align-items: flex-start;
-    gap: 12px;
-    padding: 10px 0;
-    border-bottom: 1px solid #1e1e1e;
-    cursor: pointer;
-    transition: all 0.2s;
-  }
-
-  .checklist li:last-child { border-bottom: none; }
-  .checklist li:hover { padding-left: 4px; }
-
-  .check-box {
-    width: 16px;
-    height: 16px;
-    border: 1px solid #444;
-    flex-shrink: 0;
-    margin-top: 2px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.2s;
-  }
-
-  .check-box.done {
-    background: var(--accent);
-    border-color: var(--accent);
-  }
-
-  .check-box.done::after {
-    content: '✓';
-    font-size: 10px;
-    color: var(--black);
-    font-weight: bold;
-  }
-
-  .check-text {
-    font-size: 13px;
-    line-height: 1.5;
-    color: #ccc;
-    transition: all 0.2s;
-  }
-
-  .check-text.done {
-    color: #555;
-    text-decoration: line-through;
-  }
-
-  .check-meta {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 9px;
-    color: var(--muted);
-    margin-top: 2px;
-  }
-
-  /* METRICS */
-  .metrics {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
-    margin-top: 4px;
-  }
-
-  .metric {
-    background: #111;
-    padding: 14px;
-    border: 1px solid #222;
-  }
-
-  .metric-label {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 9px;
-    color: var(--muted);
-    text-transform: uppercase;
-    margin-bottom: 6px;
-  }
-
-  .metric-now {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 24px;
-    line-height: 1;
-    color: var(--white);
-  }
-
-  .metric-target {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 10px;
-    color: var(--accent);
-    margin-top: 4px;
-  }
-
-  .metric-bar {
-    height: 2px;
-    background: #333;
-    margin-top: 8px;
-  }
-
-  .metric-bar-fill {
-    height: 100%;
-    background: linear-gradient(90deg, var(--accent), var(--green));
-  }
-
-  /* ROADMAP */
-  .roadmap { margin-top: 4px; }
-
-  .roadmap-item {
-    display: grid;
-    grid-template-columns: 80px 1fr;
-    gap: 16px;
-    margin-bottom: 2px;
-  }
-
-  .roadmap-month {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 10px;
-    color: var(--muted);
-    padding-top: 12px;
-    text-align: right;
-    line-height: 1.4;
-  }
-
-  .roadmap-content {
-    background: #111;
-    padding: 12px 16px;
-    border-left: 2px solid #333;
-    transition: border-color 0.2s;
-  }
-
-  .roadmap-content.now { border-color: var(--accent); }
-  .roadmap-content.soon { border-color: #333; }
-  .roadmap-content.later { border-color: #1e1e1e; opacity: 0.7; }
-
-  .roadmap-focus {
-    font-size: 12px;
-    font-weight: 600;
-    margin-bottom: 4px;
-    color: var(--white);
-  }
-
-  .roadmap-detail {
-    font-size: 11px;
-    color: var(--muted);
-    line-height: 1.5;
-  }
-
-  /* RESOURCES */
-  .resources { margin-top: 4px; }
-
-  .resource-item {
-    display: flex;
-    align-items: flex-start;
-    gap: 12px;
-    padding: 10px 0;
-    border-bottom: 1px solid #1e1e1e;
-  }
-
-  .resource-item:last-child { border-bottom: none; }
-
-  .resource-icon {
-    font-size: 16px;
-    flex-shrink: 0;
-    width: 24px;
-    text-align: center;
-  }
-
-  .resource-text {
-    font-size: 12px;
-    line-height: 1.5;
-    color: #ccc;
-  }
-
-  .resource-text strong {
-    color: var(--white);
-    font-weight: 600;
-  }
-
-  .resource-cat {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 9px;
-    color: var(--muted);
-    text-transform: uppercase;
-  }
-
-  /* WEEKLY RHYTHM */
-  .week-grid {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    gap: 4px;
-    margin-top: 4px;
-  }
-
-  .day-col { }
-
-  .day-label {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 9px;
-    color: var(--muted);
-    text-align: center;
-    margin-bottom: 6px;
-    text-transform: uppercase;
-  }
-
-  .day-item {
-    background: #111;
-    padding: 6px 4px;
-    font-size: 9px;
-    color: #777;
-    text-align: center;
-    margin-bottom: 3px;
-    border: 1px solid #1a1a1a;
-    line-height: 1.3;
-  }
-
-  .day-item.sport { border-color: var(--blue); color: #7ab3e8; }
-  .day-item.mental { border-color: var(--green); color: #7ae89a; }
-  .day-item.work { border-color: var(--accent); color: #e8d07a; }
-  .day-item.off { opacity: 0.3; }
-
-  /* FOOTER */
-  .footer {
-    padding: 24px 40px;
-    border-top: 1px solid #1e1e1e;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: gap;
-  }
-
-  .footer-text {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 10px;
-    color: #333;
-  }
-
-  .footer-motto {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 20px;
-    color: #222;
-    letter-spacing: 3px;
-  }
-
-  /* SCORE */
-  .score-grid {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    gap: 8px;
-    margin-top: 4px;
-  }
-
-  .score-item {
-    text-align: center;
-    padding: 16px 8px;
-    background: #111;
-    border: 1px solid #222;
-    cursor: pointer;
-    transition: all 0.2s;
-  }
-
-  .score-item:hover { border-color: var(--accent); }
-
-  .score-num {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 40px;
-    line-height: 1;
-    color: var(--white);
-    display: block;
-  }
-
-  .score-area {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 9px;
-    color: var(--muted);
-    text-transform: uppercase;
-    margin-top: 4px;
-    display: block;
-  }
-
-  .score-edit {
-    display: flex;
-    gap: 4px;
-    justify-content: center;
-    margin-top: 8px;
-  }
-
-  .score-btn {
-    width: 20px;
-    height: 20px;
-    background: #222;
-    border: none;
-    color: var(--white);
-    cursor: pointer;
-    font-size: 14px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: background 0.2s;
-  }
-
-  .score-btn:hover { background: var(--accent); color: var(--black); }
-
-  /* JOURNAL */
-  .journal-entry {
-    background: #111;
-    padding: 16px;
-    margin-bottom: 8px;
-    border-left: 2px solid #333;
-  }
-
-  .journal-date {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 9px;
-    color: var(--muted);
-    margin-bottom: 8px;
-  }
-
-  .journal-input {
-    background: none;
-    border: none;
-    color: var(--white);
-    font-family: 'IBM Plex Sans', sans-serif;
-    font-size: 13px;
-    width: 100%;
-    resize: none;
-    outline: none;
-    line-height: 1.6;
-  }
-
-  .journal-input::placeholder { color: #444; }
-
-  .add-entry-btn {
-    background: none;
-    border: 1px solid #333;
-    color: var(--muted);
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 11px;
-    padding: 10px 20px;
-    cursor: pointer;
-    width: 100%;
-    transition: all 0.2s;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    margin-top: 8px;
-  }
-
-  .add-entry-btn:hover { border-color: var(--accent); color: var(--accent); }
-
-  /* TABS */
-  .tabs {
-    display: flex;
-    gap: 0;
-    margin-bottom: 20px;
-    border-bottom: 1px solid #222;
-  }
-
-  .tab {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 10px;
-    padding: 10px 16px;
-    cursor: pointer;
-    color: var(--muted);
-    border-bottom: 2px solid transparent;
-    transition: all 0.2s;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-  }
-
-  .tab.active {
-    color: var(--accent);
-    border-bottom-color: var(--accent);
-  }
-
-  .tab-content { display: none; }
-  .tab-content.active { display: block; }
-
-  /* SECTION DIVIDER */
-  .section-label {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 9px;
-    color: var(--muted);
-    text-transform: uppercase;
-    letter-spacing: 3px;
-    padding: 24px 40px 8px;
-    border-top: 1px solid #111;
-  }
-
-  @media (max-width: 900px) {
-    .block-wide, .block-full { grid-column: span 1; }
-    .score-grid { grid-template-columns: repeat(3, 1fr); }
-    .week-grid { grid-template-columns: repeat(4, 1fr); }
-    .metrics { grid-template-columns: 1fr; }
-    .section-label { padding: 16px 16px 8px; }
-    .footer { padding: 16px; flex-direction: column; gap: 8px; }
-  }
+:root {
+  --bg: #080808;
+  --bg2: #0f0f0f;
+  --bg3: #161616;
+  --bg4: #1e1e1e;
+  --white: #f4f1ea;
+  --muted: #555;
+  --muted2: #333;
+  --accent: #d4f000;
+  --blue: #00b4ff;
+  --red: #ff4444;
+  --orange: #ff8c00;
+  --green: #00e87a;
+  --purple: #b44dff;
+  --swim: #00b4ff;
+  --bike: #ff8c00;
+  --run: #00e87a;
+  --brick: #b44dff;
+  --rest: #333;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior: smooth; }
+body { background: var(--bg); color: var(--white); font-family: 'Manrope', sans-serif; min-height: 100vh; overflow-x: hidden; }
+.nav {
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(8,8,8,0.97); backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--bg4);
+  display: flex; align-items: center; padding: 0 24px; overflow-x: auto;
+}
+.nav-logo { font-family: 'Bebas Neue', sans-serif; font-size: 20px; letter-spacing: 3px; color: var(--accent); padding: 14px 0; margin-right: 32px; white-space: nowrap; }
+.nav-item { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--muted); padding: 16px 14px; cursor: pointer; transition: color 0.2s; text-transform: uppercase; letter-spacing: 1px; border-bottom: 2px solid transparent; white-space: nowrap; }
+.nav-item:hover { color: var(--white); }
+.nav-item.active { color: var(--accent); border-bottom-color: var(--accent); }
+.nav-right { margin-left: auto; font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--muted); display: flex; align-items: center; gap: 16px; }
+.race-badge { background: var(--accent); color: var(--bg); padding: 4px 10px; font-weight: 700; font-size: 10px; animation: pulse-badge 2s infinite; }
+@keyframes pulse-badge { 0%,100%{opacity:1}50%{opacity:0.7} }
+.page { display: none; padding: 28px 24px; max-width: 1400px; margin: 0 auto; }
+.page.active { display: block; }
+/* HERO /
+.hero { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 2px; margin-bottom: 2px; }
+.hero-card { background: var(--bg2); padding: 24px; border: 1px solid var(--bg4); position: relative; overflow: hidden; }
+.hero-card::before { content:''; position:absolute; top:0;left:0;right:0; height:2px; }
+.hero-card.c-sport::before{background:var(--blue)}.hero-card.c-career::before{background:var(--accent)}.hero-card.c-mental::before{background:var(--green)}.hero-card.c-family::before{background:var(--red)}
+.hero-label { font-family:'JetBrains Mono',monospace; font-size:9px; color:var(--muted); text-transform:uppercase; letter-spacing:2px; margin-bottom:12px; }
+.hero-value { font-family:'Bebas Neue',sans-serif; font-size:56px; line-height:1; margin-bottom:4px; }
+.c-sport .hero-value{color:var(--blue)}.c-career .hero-value{color:var(--accent)}.c-mental .hero-value{color:var(--green)}.c-family .hero-value{color:var(--red)}
+.hero-sub { font-size:11px; color:var(--muted); line-height:1.5; }
+.hero-bar { height:3px; background:var(--bg4); margin-top:16px; }
+.hero-bar-fill { height:100%; transition:width 0.8s ease; }
+.c-sport .hero-bar-fill{background:var(--blue)}.c-career .hero-bar-fill{background:var(--accent)}.c-mental .hero-bar-fill{background:var(--green)}.c-family .hero-bar-fill{background:var(--red)}
+/ COUNTDOWN /
+.countdown-strip { background:var(--bg3); border:1px solid var(--bg4); padding:20px 24px; display:flex; align-items:center; gap:40px; margin-bottom:2px; flex-wrap:wrap; }
+.cd-item{text-align:center}
+.cd-num { font-family:'Bebas Neue',sans-serif; font-size:48px; color:var(--accent); line-height:1; display:block; }
+.cd-label { font-family:'JetBrains Mono',monospace; font-size:9px; color:var(--muted); text-transform:uppercase; }
+.progress-section{flex:1;min-width:200px}
+.prog-row{display:flex;align-items:center;gap:12px;margin-bottom:8px}
+12:01
+.prog-label{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);width:80px;flex-shrink:0}
+.prog-track{flex:1;height:4px;background:var(--bg4)}
+.prog-fill{height:100%;transition:width 1s ease}
+.prog-pct{font-family:'JetBrains Mono',monospace;font-size:9px;width:32px;text-align:right}
+/ HEATMAP /
+.heatmap-section{background:var(--bg2);border:1px solid var(--bg4);padding:24px;margin-bottom:2px}
+.section-title{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:2px;margin-bottom:6px;display:flex;align-items:center;gap:12px}
+.section-sub{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);margin-bottom:20px;text-transform:uppercase;letter-spacing:1px}
+.heatmap-grid{display:flex;gap:3px;flex-wrap:wrap}
+.hm-week{display:flex;flex-direction:column;gap:3px}
+.hm-cell{width:14px;height:14px;border-radius:2px;cursor:pointer;transition:transform 0.1s;position:relative}
+.hm-cell:hover{transform:scale(1.4);z-index:10}
+.hm-cell.score-0{background:var(--bg4)}.hm-cell.score-1{background:#1a2e1a}.hm-cell.score-2{background:#1e4020}.hm-cell.score-3{background:#235226}.hm-cell.score-4{background:#2a6830}.hm-cell.score-5{background:#357d3c}.hm-cell.score-6{background:#4a9450}.hm-cell.score-7{background:#62ac68}.hm-cell.score-8{background:#82c488}.hm-cell.score-9{background:#a8d9ac}.hm-cell.score-10{background:var(--accent)}
+.hm-cell.future{background:#111;border:1px solid#1e1e1e;opacity:0.5}
+.hm-cell.today{border:2px solid var(--accent)!important}
+.dot-legend{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:12px}
+.dl-item{display:flex;align-items:center;gap:5px;font-family:'JetBrains Mono',monospace;font-size:8px;color:var(--muted)}
+.dl-dot{width:10px;height:10px;border-radius:1px}
+/ TRAINING /
+.phase-header{display:flex;align-items:center;gap:16px;padding:16px 20px;background:var(--bg3);border:1px solid var(--bg4);margin-bottom:2px;cursor:pointer;transition:background 0.2s}
+.phase-header:hover{background:var(--bg4)}
+.phase-num{font-family:'Bebas Neue',sans-serif;font-size:32px;color:var(--accent);width:40px;flex-shrink:0}
+.phase-info{flex:1}
+.phase-name{font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:2px}
+.phase-dates{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);margin-top:2px}
+.phase-focus{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);max-width:340px;text-align:right;line-height:1.5}
+.phase-toggle{font-family:'JetBrains Mono',monospace;font-size:14px;color:var(--muted);transition:transform 0.3s}
+.phase-toggle.open{transform:rotate(180deg)}
+.phase-body{display:none;background:var(--bg2);border:1px solid var(--bg4);border-top:none;margin-bottom:2px}
+.phase-body.open{display:block}
+.week-block{border-bottom:1px solid var(--bg3)}
+.week-block:last-child{border-bottom:none}
+.week-header{display:flex;align-items:center;gap:16px;padding:12px 20px;background:var(--bg3)}
+.week-num-badge{font-family:'JetBrains Mono',monospace;font-size:9px;background:var(--bg4);color:var(--muted);padding:3px 8px;flex-shrink:0}
+.week-title{font-family:'Manrope',sans-serif;font-size:12px;font-weight:600;flex:1}
+.week-volume{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);text-align:right;line-height:1.5}
+.week-days{display:grid;grid-template-columns:repeat(7,1fr);gap:1px;background:var(--bg3)}
+.day-cell{background:var(--bg2);padding:10px 8px;min-height:90px;cursor:default;transition:background 0.15s;position:relative}
+.day-cell.completed{background:#0a1a0a}
+.day-cell.today-cell{border:1px solid var(--accent)}
+.day-name{font-family:'JetBrains Mono',monospace;font-size:8px;color:var(--muted);text-transform:uppercase;margin-bottom:4px}
+.day-date{font-family:'JetBrains Mono',monospace;font-size:8px;color:var(--muted2);margin-bottom:6px}
+.workout-pill{display:flex;align-items:flex-start;gap:4px;font-size:9px;font-family:'JetBrains Mono',monospace;padding:3px 5px;margin-bottom:3px;width:100%;line-height:1.35;border-radius:1px}
+.wp-swim{background:rgba(0,180,255,0.1);color:var(--swim);border-left:2px solid var(--swim)}
+12:01
+.wp-bike{background:rgba(255,140,0,0.1);color:var(--bike);border-left:2px solid var(--bike)}
+.wp-run{background:rgba(0,232,122,0.1);color:var(--run);border-left:2px solid var(--run)}
+.wp-brick{background:rgba(180,77,255,0.1);color:var(--brick);border-left:2px solid var(--brick)}
+.wp-rest{background:rgba(51,51,51,0.2);color:var(--muted);border-left:2px solid var(--muted2)}
+.wp-race{background:rgba(212,240,0,0.12);color:var(--accent);border-left:2px solid var(--accent)}
+.wp-mob{background:rgba(255,68,68,0.1);color:var(--red);border-left:2px solid var(--red)}
+.day-check{position:absolute;top:6px;right:6px;width:14px;height:14px;border:1px solid var(--bg4);display:flex;align-items:center;justify-content:center;font-size:9px;cursor:pointer;transition:all 0.2s}
+.day-check.done{background:var(--accent);border-color:var(--accent);color:var(--bg)}
+/ HRZ BOX /
+.hrz-box{background:var(--bg3);border:1px solid var(--bg4);padding:16px 20px;margin-bottom:2px}
+.hrz-title{font-family:'Bebas Neue',sans-serif;font-size:16px;letter-spacing:2px;margin-bottom:12px;color:var(--accent)}
+.hrz-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}
+.hrz-zone{padding:10px 8px;text-align:center;border:1px solid var(--bg4)}
+.hrz-num{font-family:'Bebas Neue',sans-serif;font-size:22px;line-height:1}
+.hrz-label{font-family:'JetBrains Mono',monospace;font-size:8px;color:var(--muted);margin-top:2px}
+.hrz-range{font-family:'JetBrains Mono',monospace;font-size:9px;margin-top:4px}
+/ PULSE /
+.journal-form{background:var(--bg2);border:1px solid var(--bg4);padding:24px}
+.journal-week-title{font-family:'Bebas Neue',sans-serif;font-size:24px;letter-spacing:2px;margin-bottom:20px;color:var(--accent)}
+.journal-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:20px}
+.jf-label{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px}
+.jf-input{width:100%;background:var(--bg3);border:1px solid var(--bg4);color:var(--white);font-family:'Manrope',sans-serif;font-size:12px;padding:10px 12px;resize:vertical;min-height:80px;outline:none;transition:border-color 0.2s;line-height:1.5}
+.jf-input:focus{border-color:var(--accent)}
+.jf-input::placeholder{color:var(--muted2)}
+.scores-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px}
+.sf-label{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);margin-bottom:6px;text-transform:uppercase}
+.sf-controls{display:flex;align-items:center;gap:8px}
+.sf-val{font-family:'Bebas Neue',sans-serif;font-size:32px;line-height:1;width:32px;text-align:center}
+.sf-btn{width:28px;height:28px;background:var(--bg4);border:none;color:var(--white);cursor:pointer;font-size:16px;transition:background 0.2s}
+.sf-btn:hover{background:var(--accent);color:var(--bg)}
+.save-btn{background:var(--accent);color:var(--bg);border:none;font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:2px;padding:12px 32px;cursor:pointer;transition:opacity 0.2s}
+.save-btn:hover{opacity:0.85}
+.week-selector{display:flex;gap:2px;flex-wrap:wrap;margin-bottom:16px}
+.ws-item{font-family:'JetBrains Mono',monospace;font-size:9px;padding:6px 10px;background:var(--bg3);border:1px solid var(--bg4);cursor:pointer;color:var(--muted);transition:all 0.2s}
+.ws-item:hover{color:var(--white);border-color:var(--muted)}
+.ws-item.active{background:var(--accent);color:var(--bg);border-color:var(--accent)}
+.ws-item.has-entry{border-color:var(--green);color:var(--green)}
+/ GOALS /
+.goals-grid{display:grid;grid-template-columns:1fr 1fr;gap:2px}
+.goal-card{background:var(--bg2);border:1px solid var(--bg4);padding:24px}
+.goal-area{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:2px;margin-bottom:12px}
+.goal-title{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:1px;margin-bottom:16px}
+.goal-list{list-style:none}
+12:01
+.goal-item{display:flex;align-items:flex-start;gap:10px;padding:8px 0;border-bottom:1px solid var(--bg3);cursor:pointer;font-size:12px;line-height:1.5}
+.goal-item:last-child{border-bottom:none}
+.gi-box{width:14px;height:14px;border:1px solid var(--bg4);flex-shrink:0;margin-top:2px;display:flex;align-items:center;justify-content:center;transition:all 0.2s}
+.gi-box.done{background:var(--accent);border-color:var(--accent)}
+.gi-box.done::after{content:'✓';font-size:9px;color:var(--bg);font-weight:bold}
+.gi-text{color:#bbb}
+.gi-text.done{color:var(--muted);text-decoration:line-through}
+.gi-when{font-family:'JetBrains Mono',monospace;font-size:8px;color:var(--muted);margin-top:2px}
+/ RESOURCES - TABBED /
+.res-tabs{display:flex;gap:0;margin-bottom:0;border-bottom:1px solid var(--bg4);overflow-x:auto}
+.res-tab{font-family:'JetBrains Mono',monospace;font-size:9px;padding:10px 16px;cursor:pointer;color:var(--muted);border-bottom:2px solid transparent;transition:all 0.2s;text-transform:uppercase;letter-spacing:1px;white-space:nowrap}
+.res-tab.active{color:var(--accent);border-bottom-color:var(--accent)}
+.res-tab-content{display:none;background:var(--bg2);border:1px solid var(--bg4);border-top:none;padding:24px}
+.res-tab-content.active{display:block}
+.res-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:24px}
+.res-item{display:flex;gap:10px;padding:10px 0;border-bottom:1px solid var(--bg3);align-items:flex-start}
+.res-item:last-child{border-bottom:none}
+.res-icon{font-size:14px;flex-shrink:0;margin-top:1px}
+.res-name{font-size:12px;font-weight:600;color:var(--white);margin-bottom:2px}
+.res-desc{font-size:10px;color:var(--muted);line-height:1.4}
+.res-tag{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:8px;padding:1px 5px;margin-top:3px;border-radius:1px}
+.legend{display:flex;gap:16px;flex-wrap:wrap;margin-bottom:16px}
+.legend-item{display:flex;align-items:center;gap:6px;font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted)}
+.legend-dot{width:10px;height:10px;border-radius:1px}
+.tooltip{position:fixed;background:var(--bg3);border:1px solid var(--bg4);padding:6px 10px;font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--white);z-index:999;pointer-events:none;display:none}
+@media(max-width:900px){
+  .hero{grid-template-columns:1fr 1fr}
+  .goals-grid{grid-template-columns:1fr}
+  .week-days{grid-template-columns:repeat(4,1fr)}
+  .journal-grid{grid-template-columns:1fr}
+  .scores-row{grid-template-columns:1fr 1fr}
+  .hrz-grid{grid-template-columns:repeat(3,1fr)}
+  .res-grid{grid-template-columns:1fr}
+  .page{padding:16px 12px}
+}
+@media(max-width:600px){
+  .hero{grid-template-columns:1fr}
+  .week-days{grid-template-columns:repeat(3,1fr)}
+}
 </style>
 </head>
 <body>
-
-<div class="header">
-  <div>
-    <div class="header-name">АРТЁМ <span>ДЕНИСОВ</span></div>
-    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px">
-      <span class="header-tag">СИСТЕМА РОСТА 2026–2027</span>
-      <span class="header-tag" style="background:#1a1a1a;color:#666">VP READY</span>
-      <span class="header-tag" style="background:#1a1a1a;color:#666">ТРИАТЛОН · ОЛИМПИК</span>
+<div class="tooltip" id="tooltip"></div>
+<nav class="nav">
+  <div class="nav-logo">АД · 2026</div>
+  <div class="nav-item active" onclick="showPage('dashboard',this)">Dashboard</div>
+  <div class="nav-item" onclick="showPage('training',this)">Тренировки</div>
+  <div class="nav-item" onclick="showPage('pulse',this)">Пульс недели</div>
+  <div class="nav-item" onclick="showPage('goals',this)">Цели</div>
+  <div class="nav-item" onclick="showPage('resources',this)">Ресурсы</div>
+  <div class="nav-right">
+    <span id="nav-date"></span>
+    <span class="race-badge">ГОНКА: <span id="nav-countdown"></span> дн</span>
+  </div>
+</nav>
+<!--══════════════*DASHBOARD*══════════════*-->*
+12:01
+*-->
+<div class="page active" id="page-dashboard">
+  <div class="countdown-strip">
+    <div class="cd-item"><span class="cd-num" id="cd-days">—</span><span class="cd-label">дней до гонки</span></div>
+    <div class="cd-item"><span class="cd-num" id="cd-weeks">—</span><span class="cd-label">недель</span></div>
+    <div class="cd-item"><span class="cd-num" id="cd-year">—</span><span class="cd-label">дней в карте</span></div>
+    <div class="progress-section">
+      <div class="prog-row"><div class="prog-label">К ГОНКЕ</div><div class="prog-track"><div class="prog-fill" id="pf-race" style="background:var(--blue);width:0%"></div></div><div class="prog-pct" id="pp-race" style="color:var(--blue)">0%</div></div>
+      <div class="prog-row"><div class="prog-label">ГОД</div><div class="prog-track"><div class="prog-fill" id="pf-year" style="background:var(--accent);width:0%"></div></div><div class="prog-pct" id="pp-year" style="color:var(--accent)">0%</div></div>
+      <div class="prog-row"><div class="prog-label">FTP ЦЕЛЬ</div><div class="prog-track"><div class="prog-fill" style="background:var(--orange);width:87%"></div></div><div class="prog-pct" style="color:var(--orange)">260W</div></div>
     </div>
   </div>
-  <div class="header-meta">
-    38 лет · 186 см · 82 кг<br>
-    Директор B2C · 1500+ команда<br>
-    <span id="today-date"></span>
+  <div class="hero">
+    <div class="hero-card c-sport">
+      <div class="hero-label">// спорт</div>
+      <div class="hero-value" id="h-sport">8</div>
+      <div class="hero-sub">FTP 260Вт · ЧСС макс ~187<br>Бег 4:15 → цель 4:00/км</div>
+      <div class="hero-bar"><div class="hero-bar-fill" id="hb-sport" style="width:80%"></div></div>
+    </div>
+    <div class="hero-card c-career">
+      <div class="hero-label">// карьера</div>
+      <div class="hero-value" id="h-career">7</div>
+      <div class="hero-sub">Фаза подготовки · Упаковка<br>Цель: VP Sales/Product</div>
+      <div class="hero-bar"><div class="hero-bar-fill" id="hb-career" style="width:70%"></div></div>
+    </div>
+    <div class="hero-card c-mental">
+      <div class="hero-label">// ментальное</div>
+      <div class="hero-value" id="h-mental">6</div>
+      <div class="hero-sub">F41.2 · Цепралекс 10мг<br>Нужен регулярный терапевт</div>
+      <div class="hero-bar"><div class="hero-bar-fill" id="hb-mental" style="width:60%"></div></div>
+    </div>
+    <div class="hero-card c-family">
+      <div class="hero-label">// семья</div>
+      <div class="hero-value" id="h-family">5</div>
+      <div class="hero-sub">Ким 6 лет · Честный разговор<br>с женой → июль</div>
+      <div class="hero-bar"><div class="hero-bar-fill" id="hb-family" style="width:50%"></div></div>
+    </div>
+  </div>
+  <!-- HRZ -->
+  <div class="hrz-box" style="margin-top:2px">
+    <div class="hrz-title">ЧСС ЗОНЫ · МАКС ~187 · FTP 260 ВТ</div>
+    <div class="hrz-grid">
+      <div class="hrz-zone" style="border-color:#1a3a3a"><div class="hrz-num" style="color:#4ac9e8">З1</div><div class="hrz-label">Восстановление</div><div class="hrz-range" style="color:#4ac9e8"><131</div></div>
+      <div class="hrz-zone" style="border-color:#1a3a2a"><div class="hrz-num" style="color:var(--green)">З2</div><div class="hrz-label">Аэробная база</div><div class="hrz-range" style="color:var(--green)">131-149</div></div>
+      <div class="hrz-zone" style="border-color:#3a3a1a"><div class="hrz-num" style="color:var(--accent)">З3</div><div class="hrz-label">Темповая</div><div class="hrz-range" style="color:var(--accent)">150-161</div></div>
+      <div class="hrz-zone" style="border-color:#3a2a1a"><div class="hrz-num" style="color:var(--orange)">З4</div><div class="hrz-label">Пороговая</div><div class="hrz-range" style="color:var(--orange)">162-172</div></div>
+      <div class="hrz-zone" style="border-color:#3a1a1a"><div class="hrz-num" style="color:var(--red)">З5</div><div class="hrz-label">Максимум</div><div class="hrz-range" style="color:var(--red)">173-187</div></div>
+    </div>
+  </div>
+  <!-- HEATMAP -->
+  <div class="heatmap-section" style="margin-top:2px">
+    <div class="section-title">ИСТОРИЯ НЕДЕЛЬ <span style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);**
+12:01
+**;font-weight:300">// каждая ячейка = воскресный пульс</span></div>
+    <div class="section-sub">апрель 2026 — март 2027 · нажми для просмотра</div>
+    <div class="dot-legend">
+      <div class="dl-item"><div class="dl-dot" style="background:var(--bg4)"></div>нет данных</div>
+      <div class="dl-item"><div class="dl-dot" style="background:#235226"></div>3-4</div>
+      <div class="dl-item"><div class="dl-dot" style="background:#4a9450"></div>5-6</div>
+      <div class="dl-item"><div class="dl-dot" style="background:#82c488"></div>7-8</div>
+      <div class="dl-item"><div class="dl-dot" style="background:var(--accent)"></div>9-10</div>
+    </div>
+    <div class="heatmap-grid" id="heatmap"></div>
+  </div>
+  <!-- WEEKLY RHYTHM -->
+  <div class="heatmap-section" style="margin-top:2px">
+    <div class="section-title">НЕДЕЛЬНЫЙ РИТМ</div>
+    <div class="section-sub">блок 1 (нед 1-3) · базовая структура</div>
+    <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:2px">
+      <div style="background:var(--bg3);padding:12px 8px"><div style="font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);margin-bottom:10px">ПН</div><div class="workout-pill wp-swim">*
+12:01
+<div style="background:var(--bg3);padding:12px 8px"><div style="font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);margin-bottom:10px">ПН</div><div class="workout-pill wp-swim">*Плавание</div><div style="font-size:9px;color:var(--muted);margin-top:4px">10×100м по 1:32</div></div>
+      <div style="background:var(--bg3);padding:12px 8px"><div style="font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);margin-bottom:10px">ВТ</div><div class="workout-pill wp-bike">**Велосипед</div><div style="font-size:9px;color:var(--muted);margin-top:4px">5×8мин 106% FTP</div></div>
+      <div style="background:var(--bg3);padding:12px 8px"><div style="font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);margin-bottom:10px">СР</div><div class="workout-pill wp-run">**Бег</div><div style="font-size:9px;color:var(--muted);margin-top:4px">4×1км на 3:58-4:00</div></div>
+      <div style="background:var(--bg3);padding:12px 8px"><div style="font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);margin-bottom:10px">ЧТ</div><div class="workout-pill wp-swim">**Плавание</div><div style="font-size:9px;color:var(--muted);margin-top:4px">4×400м по 6:08</div></div>
+      <div style="background:var(--bg3);padding:12px 8px"><div style="font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);margin-bottom:10px">ПТ</div><div class="workout-pill wp-mob">**Мобильность</div><div style="font-size:9px;color:var(--muted);margin-top:4px">20 мин · восстановление</div></div>
+      <div style="background:var(--bg3);padding:12px 8px"><div style="font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);margin-bottom:10px">СБ</div><div class="workout-pill wp-bike">**Велосипед</div><div style="font-size:9px;color:var(--muted);margin-top:4px">2×20мин 98% FTP</div></div>
+      <div style="background:var(--bg3);padding:12px 8px"><div style="font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);margin-bottom:10px">ВС</div><div class="workout-pill wp-brick">**Кирпич</div><div style="font-size:9px;color:var(--accent);margin-top:4px">↑ Обновить пульс</div></div>
+    </div>
   </div>
 </div>
-
-<!-- COUNTDOWN -->
-<div class="countdown-bar">
-  <div class="countdown-item">
-    <div class="countdown-num" id="days-to-race">—</div>
-    <div class="countdown-label">дней до<br>триатлона</div>
-  </div>
-  <div class="countdown-divider">/</div>
-  <div class="countdown-item">
-    <div class="countdown-num" id="days-year">—</div>
-    <div class="countdown-label">дней<br>в карте</div>
-  </div>
-  <div class="countdown-divider">/</div>
-  <div class="progress-bar-wrap">
-    <div class="progress-label">
-      <span>ПРОГРЕСС ГОДА</span>
-      <span id="year-pct">—%</span>
+<!--*══════════════*TRAINING*══════════════*-->
+<div class="page" id="page-training">
+  <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:12px">
+    <div>
+      <div style="font-family:'Bebas Neue',sans-serif;font-size:32px;letter-spacing:3px">ПЛАН ПОДГОТОВКИ · 77 ДНЕЙ</div>
+      <div style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted)">5 АПРЕЛЯ → 21 ИЮНЯ 2026 · ОЛИМПИЙСКИЙ ТРИАТЛОН</div>
     </div>
-    <div class="progress-track">
-      <div class="progress-fill" id="year-fill" style="width:0%"></div>
+    <div style="background:var(--bg2);border:1px solid var(--bg4);padding:14px 18px;font-family:'JetBrains Mono',monospace;font-size:10px;line-height:2">
+      <div style="color:var(--muted);margin-bottom:4px">СТРАТЕГИЯ ГОНКИ</div>
+      <div>**Плавание: <span style="color:var(--swim)">1:31-1:33/100м</span> · не в первой волне</div>
+      <div>**Велосипед: <span style="color:var(--bike)">10км→265Вт, 10-35км→270-275Вт, финиш→всё</span></div>
+      <div>**Бег: <span style="color:var(--run)">1й км 4:10 принудительно, 2й+ → 4:00, посл 2км → рви</span></div>
     </div>
+  </div>
+  <div class="legend">
+    <div class="legend-item"><div class="legend-dot" style="background:rgba(0,180,255,0.5)"></div>Плавание</div>
+    <div class="legend-item"><div class="legend-dot" style="background:rgba(255,140,0,0.5)"></div>Велосипед</div>
+    <div class="legend-item"><div class="legend-dot" style="background:rgba(0,232,122,0.5)"></div>Бег</div>
+    <div class="legend-item"><div class="legend-dot" style="background:rgba(180,77,255,0.5)"></div>Кирпич вело→бег</div>
+    <div class="legend-item"><div class="legend-dot" style="background:rgba(255,68,68,0.3)"></div>Мобильность</div>
+    <div class="legend-item"><div class="legend-dot" style="background:rgba(212,240,0,0.5)"></div>ГОНКА</div>
+  </div>
+  <div id="training-plan"></div>
+</div>
+<!--*══════════════*PULSE*══════════════*-->*
+12:01
+<div class="page" id="page-pulse">
+  <div style="font-family:'Bebas Neue',sans-serif;font-size:32px;letter-spacing:3px;margin-bottom:4px">ЕЖЕНЕДЕЛЬНЫЙ ПУЛЬС</div>
+  <div style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);margin-bottom:24px">ОБНОВЛЯЙ КАЖДОЕ ВОСКРЕСЕНЬЕ · ШКАЛА 1-10</div>
+  <div style="font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);margin-bottom:8px;text-transform:uppercase">Выбери неделю:</div>
+  <div class="week-selector" id="week-selector"></div>
+  <div class="journal-form">
+    <div class="journal-week-title" id="journal-week-title">НЕДЕЛЯ 1 · 5–11 АПРЕЛЯ 2026</div>
+    <div class="scores-row">
+      <div><div class="sf-label" style="color:var(--blue)">// Спорт</div><div class="sf-controls"><button class="sf-btn" onclick="adjScore('sport',-1)">−</button><div class="sf-val" id="sf-sport" style="color:var(--blue)">7</div><button class="sf-btn" onclick="adjScore('sport',1)">+</button></div></div>
+      <div><div class="sf-label" style="color:var(--accent)">// Карьера</div><div class="sf-controls"><button class="sf-btn" onclick="adjScore('career',-1)">−</button><div class="sf-val" id="sf-career" style="color:var(--accent)">7</div><button class="sf-btn" onclick="adjScore('career',1)">+</button></div></div>
+      <div><div class="sf-label" style="color:var(--green)">// Ментал</div><div class="sf-controls"><button class="sf-btn" onclick="adjScore('mental',-1)">−</button><div class="sf-val" id="sf-mental" style="color:var(--green)">6</div><button class="sf-btn" onclick="adjScore('mental',1)">+</button></div></div>
+      <div><div class="sf-label" style="color:var(--red)">// Семья</div><div class="sf-controls"><button class="sf-btn" onclick="adjScore('family',-1)">−</button><div class="sf-val" id="sf-family" style="color:var(--red)">5</div><button class="sf-btn" onclick="adjScore('family',1)">+</button></div></div>
+    </div>
+    <div class="journal-grid">
+      <div><div class="jf-label">*Что тревожит</div><textarea class="jf-input" id="jf-worry" placeholder="Честно, без фильтра..."></textarea></div>
+      <div><div class="jf-label">**Что в моих руках</div><textarea class="jf-input" id="jf-control" placeholder="Что реально зависит от меня..."></textarea></div>
+      <div><div class="jf-label">**1 главное действие</div><textarea class="jf-input" id="jf-action" placeholder="Одно конкретное..."></textarea></div>
+    </div>
+    <div style="margin-bottom:20px"><div class="jf-label">**Инсайты недели</div><textarea class="jf-input" id="jf-notes" placeholder="Что понял о себе..." style="min-height:60px"></textarea></div>
+    <button class="save-btn" onclick="saveWeekEntry()">СОХРАНИТЬ</button>
+    <span id="save-status" style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--green);margin-left:16px;opacity:0;transition:opacity 0.3s"></span>
+  </div>
+  <div style="margin-top:16px;background:var(--bg2);border:1px solid var(--bg4);padding:24px">
+    <div style="font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:2px;margin-bottom:16px">ИСТОРИЯ</div>
+    <div id="pulse-history-list"></div>
   </div>
 </div>
-
-<!-- SCORE SECTION -->
-<div class="section-label">// ЕЖЕНЕДЕЛЬНЫЙ ПУЛЬС — обновляй каждое воскресенье</div>
-<div style="padding: 0 40px 0; background: var(--gray2); border-bottom: 1px solid #111;">
-  <div style="padding: 20px 0;">
-    <div class="score-grid">
-      <div class="score-item" id="score-career">
-        <span class="score-num" id="v-career">7</span>
-        <span class="score-area">Карьера</span>
-        <div class="score-edit">
-          <button class="score-btn" onclick="changeScore('career',-1)">−</button>
-          <button class="score-btn" onclick="changeScore('career',1)">+</button>
-        </div>
-      </div>
-      <div class="score-item" id="score-sport">
-        <span class="score-num" id="v-sport">8</span>
-        <span class="score-area">Спорт</span>
-        <div class="score-edit">
-          <button class="score-btn" onclick="changeScore('sport',-1)">−</button>
-          <button class="score-btn" onclick="changeScore('sport',1)">+</button>
-        </div>
-      </div>
-      <div class="score-item" id="score-mental">
-        <span class="score-num" id="v-mental">6</span>
-        <span class="score-area">Ментал</span>
-        <div class="score-edit">
-          <button class="score-btn" onclick="changeScore('mental',-1)">−</button>
-          <button class="score-btn" onclick="changeScore('mental',1)">+</button>
-        </div>
-      </div>
-      <div class="score-item" id="score-family">
-        <span class="score-num" id="v-family">5</span>
-        <span class="score-area">Семья</span>
-        <div class="score-edit">
-          <button class="score-btn" onclick="changeScore('family',-1)">−</button>
-          <button class="score-btn" onclick="changeScore('family',1)">+</button>
-        </div>
-      </div>
-      <div class="score-item" style="border-color: var(--accent);">
-        <span class="score-num" id="v-total" style="color:var(--accent)">—</span>
-        <span class="score-area" style="color:var(--accent)">Итого/40</span>
-        <div style="height:28px"></div>
-      </div>
+<!--*══════════════*GOALS*══════════════*-->
+<div class="page" id="page-goals">
+  <div style="font-family:'Bebas Neue',sans-serif;font-size:32px;letter-spacing:3px;margin-bottom:4px">ЦЕЛИ ГОДА</div>
+  <div style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);margin-bottom:24px">АПРЕЛЬ 2026 — МАРТ 2027</div>
+  <div class="goals-grid">
+    <div class="goal-card">
+      <div class="goal-area" style="color:var(--blue)">//**спорт</div>
+      <div class="goal-title">ТРИАТЛОН</div>
+      <ul class="goal-list">
+        <li class="goal-item" onclick="toggleGoal(this)"><div class="gi-box"></div><div><div class="gi-text">FTP-тест: 20мин макс ×0.95 = точка отсчёта</div><div class="gi-when">АПРЕЛЬ · СРОЧНО · ВСЁ ОТ ЭТОГО ЧИСЛА</div></div></li>*
+12:01
+<li class="goal-item" onclick="toggleGoal(this)"><div class="gi-box"></div><div><div class="gi-text">Финишировать олимпийский триатлон 21 июня</div><div class="gi-when">21 ИЮНЯ 2026 · ГЛАВНАЯ ЦЕЛЬ</div></div></li>
+        <li class="goal-item" onclick="toggleGoal(this)"><div class="gi-box"></div><div><div class="gi-text">Бег: выйти на 4:00/км после велосипеда</div><div class="gi-when">СЕЙЧАС 4:15 · ЛАКТАТНЫЙ ПОРОГ УЖЕ ВЫШЕ 4:00</div></div></li>
+        <li class="goal-item" onclick="toggleGoal(this)"><div class="gi-box"></div><div><div class="gi-text">Велосипед: 40км за 59-62мин (аэропозиция!)</div><div class="gi-when">АЭРОДИНАМИКА = ГЛАВНЫЙ РЫЧАГ +1.5-2 КМ/Ч</div></div></li>
+        <li class="goal-item" onclick="toggleGoal(this)"><div class="gi-box"></div><div><div class="gi-text">Плавание: 1500м в темпе 1:31-1:33</div><div class="gi-when">СЕЙЧАС 1:35 · БЛИЗКО</div></div></li>
+        <li class="goal-item" onclick="toggleGoal(this)"><div class="gi-box"></div><div><div class="gi-text">Аэрошлем + триsuit — +0.8-1.3 км/ч без ватт</div><div class="gi-when">ДО ГОНКИ</div></div></li>
+        <li class="goal-item" onclick="toggleGoal(this)"><div class="gi-box"></div><div><div class="gi-text">Зарегистрироваться на следующий старт осень 2026</div><div class="gi-when">ПОСЛЕ 21 ИЮНЯ</div></div></li>
+        <li class="goal-item" onclick="toggleGoal(this)"><div class="gi-box"></div><div><div class="gi-text">Ironman 70.3 — поставить в план на 2027</div><div class="gi-when">ГОРИЗОНТ 2027</div></div></li>
+      </ul>
     </div>
-  </div>
-</div>
-
-<!-- MAIN BLOCKS -->
-<div class="section-label">// АКТИВНЫЕ ТРЕКИ</div>
-<div class="main">
-
-  <!-- SPORT -->
-  <div class="block">
-    <div class="block-num">01</div>
-    <div class="block-tag">// спорт</div>
-    <div class="block-title" style="color:var(--blue)">ТРИАТЛОН<br>ОЛИМПИК</div>
-    <div class="status active"><div class="status-dot"></div>АКТИВНО · 21 ИЮНЯ</div>
-
-    <div class="metrics">
-      <div class="metric">
-        <div class="metric-label">Плавание/100м</div>
-        <div class="metric-now">1:36</div>
-        <div class="metric-target">→ цель 1:20</div>
-        <div class="metric-bar"><div class="metric-bar-fill" style="width:65%"></div></div>
-      </div>
-      <div class="metric">
-        <div class="metric-label">Велосипед 40км</div>
-        <div class="metric-now">1:02</div>
-        <div class="metric-target">→ цель 1:00</div>
-        <div class="metric-bar"><div class="metric-bar-fill" style="width:85%"></div></div>
-      </div>
-      <div class="metric">
-        <div class="metric-label">Бег темп/км</div>
-        <div class="metric-now">4:15</div>
-        <div class="metric-target">→ цель 4:00 ⚠️</div>
-        <div class="metric-bar"><div class="metric-bar-fill" style="width:55%"></div></div>
-      </div>
-      <div class="metric">
-        <div class="metric-label">Тренировок/нед</div>
-        <div class="metric-now">5-6</div>
-        <div class="metric-target">→ держать</div>
-        <div class="metric-bar"><div class="metric-bar-fill" style="width:90%"></div></div>
-      </div>
+    <div class="goal-card">
+      <div class="goal-area" style="color:var(--accent)">//*карьера</div>
+      <div class="goal-title">VP ПЕРЕХОД</div>
+      <ul class="goal-list">
+        <li class="goal-item" onclick="toggleGoal(this)"><div class="gi-box"></div><div><div class="gi-text">Переписать резюме как продающий документ</div><div class="gi-when">МАЙ 2026</div></div></li>
+        <li class="goal-item" onclick="toggleGoal(this)"><div class="gi-box"></div><div><div class="gi-text">LinkedIn 100% + английская версия</div><div class="gi-when">МАЙ 2026</div></div></li>
+        <li class="goal-item" onclick="toggleGoal(this)"><div class="gi-box"></div><div><div class="gi-text">Питч за 90 секунд — отточить</div><div class="gi-when">МАЙ 2026</div></div></li>
+        <li class="goal-item" onclick="toggleGoal(this)"><div class="gi-box"></div><div><div class="gi-text">Список 5 целевых компаний с именами</div><div class="gi-when">ИЮНЬ 2026</div></div></li>
+        <li class="goal-item" onclick="toggleGoal(this)"><div class="gi-box"></div><div><div class="gi-text">Выйти на Ward Howell, Kontakt, Cornerstone, Transearch</div><div class="gi-when">ИЮЛЬ 2026</div></div></li>
+        <li class="goal-item" onclick="toggleGoal(this)"><div class="gi-box"></div><div><div class="gi-text">2 кофе-нетворк в неделю стабильно</div><div class="gi-when">АВГ-СЕН 2026</div></div></li>
+        <li class="goal-item" onclick="toggleGoal(this)"><div class="gi-box"></div><div><div class="gi-text">Получить оффер VP уровня</div><div class="gi-when">ОКТ-ДЕК 2026</div></div></li>
+      </ul>
     </div>
-
-    <div style="margin-top:16px">
-      <div class="block-tag" style="margin-bottom:8px">// фокус до старта</div>
-      <ul class="checklist" id="sport-list">
-        <li onclick="toggle(this)">
-          <div class="check-box"></div>
-          <div><div class="check-text">Интервалы бег: 6×1км на 3:55 — 2×/неделю</div><div class="check-meta">ГЛАВНЫЙ ПРИОРИТЕТ</div></div>
-        </li>
-        <li onclick="toggle(this)">
-          <div class="check-box"></div>
-          <div><div class="check-text">Кирпичная тренировка вело→бег — 1×/неделю</div><div class="check-meta">ПЕРЕХОДНАЯ ЗОНА</div></div>
-        </li>
-        <li onclick="toggle(this)">
-          <div class="check-box"></div>
-          <div><div class="check-text">Отработать T1/T2 зоны — 3-4 раза физически</div><div class="check-meta">СЭКОНОМИШЬ 2-3 МИНУТЫ</div></div>
-        </li>
-        <li onclick="toggle(this)">
-          <div class="check-box"></div>
-          <div><div class="check-text">Tapering: -30% объём за 2 недели до старта</div><div class="check-meta">С 7 ИЮНЯ</div></div>
-        </li>
-        <li onclick="toggle(this)">
-          <div class="check-box"></div>
-          <div><div class="check-text">Выбрать следующий старт — сентябрь/октябрь</div><div class="check-meta">ПОСЛЕ 21 ИЮНЯ</div></div>
-        </li>
+    <div class="goal-card">
+      <div class="goal-area" style="color:var(--green)">//**ментальное</div>
+      <div class="goal-title">СИСТЕМА, НЕ ПОЖАР</div>
+      <ul class="goal-list">
+        <li class="goal-item" onclick="toggleGoal(this)"><div class="gi-box"></div><div><div class="gi-text">Визит к психиатру — ревизия цепралекса</div><div class="gi-when">АПРЕЛЬ · СРОЧНО</div></div></li>
+        <li class="goal-item" onclick="toggleGoal(this)"><div class="gi-box"></div><div><div class="gi-text">Найти КПТ-терапевта, 1×/2нед регулярно</div><div class="gi-when">АПРЕЛЬ-МАЙ</div></div></li>
+        <li class="goal-item" onclick="toggleGoal(this)"><div class="gi-box"></div><div><div class="gi-text">Купить Oura Ring — мониторинг HRV/сна</div><div class="gi-when">АПРЕЛЬ</div></div></li>*
+12:01
+<li class="goal-item" onclick="toggleGoal(this)"><div class="gi-box"></div><div><div class="gi-text">Утренний журнал 10 мин — ежедневно</div><div class="gi-when">ПОСТОЯННО</div></div></li>
+        <li class="goal-item" onclick="toggleGoal(this)"><div class="gi-box"></div><div><div class="gi-text">Сон минимум 7.5ч при текущих нагрузках</div><div class="gi-when">ПОСТОЯННО</div></div></li>
+      </ul>
+    </div>
+    <div class="goal-card">
+      <div class="goal-area" style="color:var(--red)">//*семья</div>
+      <div class="goal-title">ЧЕСТНОСТЬ</div>
+      <ul class="goal-list">
+        <li class="goal-item" onclick="toggleGoal(this)"><div class="gi-box"></div><div><div class="gi-text">Ким: 1 ритуал в неделю только вдвоём</div><div class="gi-when">СЕЙЧАС · КАЖДУЮ НЕДЕЛЮ</div></div></li>
+        <li class="goal-item" onclick="toggleGoal(this)"><div class="gi-box"></div><div><div class="gi-text">Прочитать Готтман — до разговора с женой</div><div class="gi-when">МАЙ-ИЮНЬ</div></div></li>
+        <li class="goal-item" onclick="toggleGoal(this)"><div class="gi-box"></div><div><div class="gi-text">Честный разговор о следующих 5 годах</div><div class="gi-when">ИЮЛЬ · ПОСЛЕ ГОНКИ</div></div></li>
+        <li class="goal-item" onclick="toggleGoal(this)"><div class="gi-box"></div><div><div class="gi-text">Парный терапевт — минимум 1 попытка</div><div class="gi-when">ИЮЛЬ-АВГ</div></div></li>
       </ul>
     </div>
   </div>
-
-  <!-- CAREER -->
-  <div class="block">
-    <div class="block-num">02</div>
-    <div class="block-tag">// карьера</div>
-    <div class="block-title" style="color:var(--accent)">VP/C-LEVEL<br>ПЕРЕХОД</div>
-    <div class="status pending"><div class="status-dot"></div>СТАРТ — ИЮЛЬ 2026</div>
-
-    <ul class="checklist">
-      <li onclick="toggle(this)">
-        <div class="check-box"></div>
-        <div><div class="check-text">Переписать резюме: продажа → не отчёт</div><div class="check-meta">МАЙ · ФАЗА УПАКОВКИ</div></div>
-      </li>
-      <li onclick="toggle(this)">
-        <div class="check-box"></div>
-        <div><div class="check-text">Сделать LinkedIn на 100% + английская версия</div><div class="check-meta">МАЙ</div></div>
-      </li>
-      <li onclick="toggle(this)">
-        <div class="check-box"></div>
-        <div><div class="check-text">Сформулировать «питч за 90 секунд»</div><div class="check-meta">МАЙ</div></div>
-      </li>
-      <li onclick="toggle(this)">
-        <div class="check-box"></div>
-        <div><div class="check-text">Список 5 целевых компаний с именами</div><div class="check-meta">ИЮНЬ</div></div>
-      </li>
-      <li onclick="toggle(this)">
-        <div class="check-box"></div>
-        <div><div class="check-text">Выйти на хедхантеров: Ward Howell, Kontakt, Cornerstone</div><div class="check-meta">ИЮЛЬ</div></div>
-      </li>
-      <li onclick="toggle(this)">
-        <div class="check-box"></div>
-        <div><div class="check-text">2 кофе-встречи в неделю с рынком</div><div class="check-meta">АВГ-СЕН · АКТИВНЫЙ ПОИСК</div></div>
-      </li>
-      <li onclick="toggle(this)">
-        <div class="check-box"></div>
-        <div><div class="check-text">3 рекомендации на LinkedIn от партнёров</div><div class="check-meta">ИЮЛЬ</div></div>
-      </li>
-    </ul>
-  </div>
-
-  <!-- MENTAL -->
-  <div class="block">
-    <div class="block-num">03</div>
-    <div class="block-tag">// ментальное</div>
-    <div class="block-title" style="color:var(--green)">СИСТЕМА,<br>НЕ ПОЖАР</div>
-    <div class="status critical"><div class="status-dot"></div>ТРЕБУЕТ ВНИМАНИЯ СЕЙЧАС</div>
-
-    <ul class="checklist">
-      <li onclick="toggle(this)">
-        <div class="check-box"></div>
-        <div><div class="check-text">Визит к психиатру — ревизия дозы цепралекса</div><div class="check-meta">АПРЕЛЬ · СРОЧНО</div></div>
-      </li>
-      <li onclick="toggle(this)">
-        <div class="check-box"></div>
-        <div><div class="check-text">Найти психотерапевта КПТ — 1×/2 недели регулярно</div><div class="check-meta">АПРЕЛЬ-МАЙ</div></div>
-      </li>
-      <li onclick="toggle(this)">
-        <div class="check-box"></div>
-        <div><div class="check-text">Утренний журнал 10 мин: тревога / контроль / действие</div><div class="check-meta">ЕЖЕДНЕВНО</div></div>
-      </li>
-      <li onclick="toggle(this)">
-        <div class="check-box"></div>
-        <div><div class="check-text">Сон: минимум 7.5 часов при текущих нагрузках</div><div class="check-meta">ЕЖЕДНЕВНО</div></div>
-      </li>
-      <li onclick="toggle(this)">
-        <div class="check-box"></div>
-        <div><div class="check-text">Oura Ring — купить, настроить мониторинг HRV</div><div class="check-meta">АПРЕЛЬ</div></div>
-      </li>
-      <li onclick="toggle(this)">
-        <div class="check-box"></div>
-        <div><div class="check-text">Обсудить с врачом: магний L-треонат + ашваганда</div><div class="check-meta">МАЙ</div></div>
-      </li>
-    </ul>
-  </div>
-
-  <!-- FAMILY -->
-  <div class="block">
-    <div class="block-num">04</div>
-    <div class="block-tag">// семья</div>
-    <div class="block-title" style="color:var(--red)">ЧЕСТНЫЙ<br>РАЗГОВОР</div>
-    <div class="status critical"><div class="status-dot"></div>ПОСЛЕ ТРИАТЛОНА · ИЮЛЬ</div>
-
-    <ul class="checklist">
-      <li onclick="toggle(this)">
-        <div class="check-box"></div>
-        <div><div class="check-text">Разговор с женой: как видим следующие 5 лет</div><div class="check-meta">ИЮЛЬ · НЕ ОТКЛАДЫВАТЬ</div></div>
-      </li>
-      <li onclick="toggle(this)">
-        <div class="check-box"></div>
-        <div><div class="check-text">Парный терапевт — минимум 1 попытка</div><div class="check-meta">ИЮЛЬ-АВГ</div></div>
-      </li>
-      <li onclick="toggle(this)">
-        <div class="check-box"></div>
-        <div><div class="check-text">Ким: 1 ритуал в неделю только вдвоём без телефона</div><div class="check-meta">ЕЖЕНЕДЕЛЬНО · СЕЙЧАС</div></div>
-      </li>
-      <li onclick="toggle(this)">
-        <div class="check-box"></div>
-        <div><div class="check-text">Прочитать Готтман «7 принципов» — основа разговора</div><div class="check-meta">МАЙ-ИЮНЬ</div></div>
-      </li>
-    </ul>
-  </div>
-
-  <!-- LEARNING -->
-  <div class="block block-wide">
-    <div class="block-num">05</div>
-    <div class="block-tag">// обучение и мышление</div>
-    <div class="block-title">РАСШИРЕНИЕ<br>КАРТИНЫ МИРА</div>
-    <div class="status active"><div class="status-dot"></div>ФОРМАТ: ПОДКАСТЫ НА ТРЕНИРОВКАХ + САММАРИ</div>
-
-    <div class="tabs">
-      <div class="tab active" onclick="switchTab(this,'books')">📖 Книги</div>
-      <div class="tab" onclick="switchTab(this,'podcasts')">🎧 Подкасты</div>
-      <div class="tab" onclick="switchTab(this,'tools')">🛠️ Инструменты</div>
-      <div class="tab" onclick="switchTab(this,'stack')">💊 Стек</div>
-    </div>
-
-    <div class="tab-content active" id="tab-books">
-      <div class="resources">
-        <div class="resource-item">
-          <div class="resource-icon">📖</div>
-          <div class="resource-text">
-            <div class="resource-cat">карьера · управление</div>
-            <strong>The First 90 Days</strong> — Уоткинс · Читай ДО оффера, не после
-          </div>
-        </div>
-        <div class="resource-item">
-          <div class="resource-icon">📖</div>
-          <div class="resource-text">
-            <div class="resource-cat">карьера · переход</div>
-            <strong>Играй на повышение</strong> — Ибарра · Точно в твою ситуацию
-          </div>
-        </div>
-        <div class="resource-item">
-          <div class="resource-icon">📖</div>
-          <div class="resource-text">
-            <div class="resource-cat">продукт · VP Product</div>
-            <strong>Inspired</strong> — Марти Каган · Библия продакта. Нужна для новой роли
-          </div>
-        </div>
-        <div class="resource-item">
-          <div class="resource-icon">📖</div>
-          <div class="resource-text">
-            <div class="resource-cat">мышление · масштаб</div>
-            <strong>Антихрупкость</strong> — Талеб · Для человека в твоей точке неопределённости
-          </div>
-        </div>
-        <div class="resource-item">
-          <div class="resource-icon">📖</div>
-          <div class="resource-text">
-            <div class="resource-cat">мышление · смысл</div>
-            <strong>Экзистенциальная психотерапия</strong> — Ялом · После Франкла — следующий уровень
-          </div>
-        </div>
-        <div class="resource-item">
-          <div class="resource-icon">📖</div>
-          <div class="resource-text">
-            <div class="resource-cat">наука · картина мира</div>
-            <strong>Вы конечно шутите, мистер Фейнман</strong> · После Хокинга — твой следующий
-          </div>
-        </div>
-        <div class="resource-item">
-          <div class="resource-icon">📖</div>
-          <div class="resource-text">
-            <div class="resource-cat">семья</div>
-            <strong>7 принципов счастливого брака</strong> — Готтман · Основа для разговора с женой
-          </div>
-        </div>
-        <div class="resource-item">
-          <div class="resource-icon">📖</div>
-          <div class="resource-text">
-            <div class="resource-cat">спорт · мотивация</div>
-            <strong>Не сдавайся</strong> — Крис Маккормак · Чемпион Ironman. Читается за вечер
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="tab-content" id="tab-podcasts">
-      <div class="resources">
-        <div class="resource-item">
-          <div class="resource-icon">🎧</div>
-          <div class="resource-text">
-            <div class="resource-cat">наука · смысл · длинные разговоры</div>
-            <strong>Lex Fridman Podcast</strong> · Физики, философы, CEO. На длинные велотренировки
-          </div>
-        </div>
-        <div class="resource-item">
-          <div class="resource-icon">🎧</div>
-          <div class="resource-text">
-            <div class="resource-cat">нейронаука · протоколы · без воды</div>
-            <strong>Huberman Lab</strong> · Сон, стресс, дофамин, физнагрузка и мозг. Обязательно
-          </div>
-        </div>
-        <div class="resource-item">
-          <div class="resource-icon">🎧</div>
-          <div class="resource-text">
-            <div class="resource-cat">продукт · VP-уровень</div>
-            <strong>Lenny's Podcast</strong> · Интервью с VP Product топ-компаний. Готовься к роли
-          </div>
-        </div>
-        <div class="resource-item">
-          <div class="resource-icon">🎧</div>
-          <div class="resource-text">
-            <div class="resource-cat">триатлон · конкретно</div>
-            <strong>Triathlon Taren</strong> · Без воды, по делу. На беговые тренировки
-          </div>
-        </div>
-        <div class="resource-item">
-          <div class="resource-icon">🎧</div>
-          <div class="resource-text">
-            <div class="resource-cat">лидерство · масштаб</div>
-            <strong>Masters of Scale</strong> — Рид Хоффман · Как думают основатели компаний
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="tab-content" id="tab-tools">
-      <div class="resources">
-        <div class="resource-item">
-          <div class="resource-icon">📱</div>
-          <div class="resource-text">
-            <div class="resource-cat">обучение · формат</div>
-            <strong>SmartReading / Blinkist</strong> · Саммари за 15 мин. Если зацепило — углубляешься
-          </div>
-        </div>
-        <div class="resource-item">
-          <div class="resource-icon">🏃</div>
-          <div class="resource-text">
-            <div class="resource-cat">тренировки · AI-план</div>
-            <strong>TrainerRoad / Trainasone</strong> · AI-адаптивные планы под твой уровень
-          </div>
-        </div>
-        <div class="resource-item">
-          <div class="resource-icon">⌚</div>
-          <div class="resource-text">
-            <div class="resource-cat">здоровье · сон · HRV</div>
-            <strong>Oura Ring Gen4</strong> · Трекинг HRV, сна, восстановления. Изменит понимание себя
-          </div>
-        </div>
-        <div class="resource-item">
-          <div class="resource-icon">⌚</div>
-          <div class="resource-text">
-            <div class="resource-cat">спорт · мультиспорт</div>
-            <strong>Garmin Forerunner 965</strong> · Если нет — купить до старта
-          </div>
-        </div>
-        <div class="resource-item">
-          <div class="resource-icon">🤖</div>
-          <div class="resource-text">
-            <div class="resource-cat">ИИ · практика</div>
-            <strong>Claude / ChatGPT</strong> · Строй инструменты каждую неделю. Это лучшее обучение ИИ
-          </div>
-        </div>
-        <div class="resource-item">
-          <div class="resource-icon">📊</div>
-          <div class="resource-text">
-            <div class="resource-cat">карьерный поиск</div>
-            <strong>Notion</strong> · Трекинг: компания / контакт / статус / следующий шаг
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="tab-content" id="tab-stack">
-      <div class="resources">
-        <div class="resource-item">
-          <div class="resource-icon">💊</div>
-          <div class="resource-text">
-            <div class="resource-cat">базовый стек · спорт + мозг</div>
-            <strong>Магний глицинат</strong> · Сон + мышцы. 400мг перед сном
-          </div>
-        </div>
-        <div class="resource-item">
-          <div class="resource-icon">💊</div>
-          <div class="resource-text">
-            <div class="resource-cat">когнитивная функция</div>
-            <strong>Магний L-треонат</strong> · Обсуди с врачом. Проходит через ГЭБ
-          </div>
-        </div>
-        <div class="resource-item">
-          <div class="resource-icon">💊</div>
-          <div class="resource-text">
-            <div class="resource-cat">кортизол · адаптоген</div>
-            <strong>Ашваганда KSM-66</strong> · Снижает кортизол при хроническом стрессе. С врачом
-          </div>
-        </div>
-        <div class="resource-item">
-          <div class="resource-icon">💊</div>
-          <div class="resource-text">
-            <div class="resource-cat">базовый · иммунитет</div>
-            <strong>Омега-3 + Витамин D3</strong> · 2-3г EPA/DHA, 4000 IU D3. Обязательный базис
-          </div>
-        </div>
-        <div class="resource-item">
-          <div class="resource-icon">⚠️</div>
-          <div class="resource-text">
-            <div class="resource-cat">важно</div>
-            <strong>Всё новое — согласовывать с психиатром</strong> · Цепралекс имеет взаимодействия
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
 </div>
-
-<!-- WEEKLY RHYTHM -->
-<div class="section-label">// НЕДЕЛЬНЫЙ РИТМ — твоя операционная система</div>
-<div style="padding: 0 40px 32px; background: var(--gray2); border-bottom: 1px solid #111;">
-  <div class="week-grid" style="margin-top:20px">
-    <div class="day-col">
-      <div class="day-label">ПН</div>
-      <div class="day-item sport">Плавание</div>
-      <div class="day-item work">Рабочий фокус</div>
-      <div class="day-item mental">Журнал 10мин</div>
-    </div>
-    <div class="day-col">
-      <div class="day-label">ВТ</div>
-      <div class="day-item sport">Интервалы бег</div>
-      <div class="day-item work">Обучение</div>
-      <div class="day-item mental">Журнал 10мин</div>
-    </div>
-    <div class="day-col">
-      <div class="day-label">СР</div>
-      <div class="day-item sport">Велосипед</div>
-      <div class="day-item work">Нетворк / встречи</div>
-      <div class="day-item mental">Журнал 10мин</div>
-    </div>
-    <div class="day-col">
-      <div class="day-label">ЧТ</div>
-      <div class="day-item sport">Плавание</div>
-      <div class="day-item work">Рабочий фокус</div>
-      <div class="day-item mental">Журнал 10мин</div>
-    </div>
-    <div class="day-col">
-      <div class="day-label">ПТ</div>
-      <div class="day-item sport">Кирпич вело→бег</div>
-      <div class="day-item work">Карьерный трек</div>
-      <div class="day-item mental">Журнал 10мин</div>
-    </div>
-    <div class="day-col">
-      <div class="day-label">СБ</div>
-      <div class="day-item sport">Длинная тренировка</div>
-      <div class="day-item" style="color:#555">Ким — ритуал</div>
-      <div class="day-item off">Цифровой детокс</div>
-    </div>
-    <div class="day-col">
-      <div class="day-label">ВС</div>
-      <div class="day-item sport">Восстановление / йога</div>
-      <div class="day-item" style="color:var(--accent);border-color:var(--accent)">Обновить пульс ↑</div>
-      <div class="day-item mental">Рефлексия недели</div>
+<!--*══════════════*RESOURCES*══════════════*-->
+<div class="page" id="page-resources">
+  <div style="font-family:'Bebas Neue',sans-serif;font-size:32px;letter-spacing:3px;margin-bottom:4px">РЕСУРСЫ</div>
+  <div style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);margin-bottom:16px">КНИГИ · ПОДКАСТЫ · ИНСТРУМЕНТЫ · СТЕК</div>
+  <div class="res-tabs">
+    <div class="res-tab active" onclick="switchResTab(this,'books')">**Книги (26)</div>
+    <div class="res-tab" onclick="switchResTab(this,'podcasts')">**Подкасты</div>
+    <div class="res-tab" onclick="switchResTab(this,'tools')">**Инструменты</div>
+    <div class="res-tab" onclick="switchResTab(this,'stack')">**Стек</div>
+  </div>
+  <div class="res-tab-content active" id="restab-books">
+    <div class="res-grid">
+      <div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--accent);margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--bg4)">КАРЬЕРА И ЛИДЕРСТВО</div>
+        <div class="res-item"><div class="res-icon">**</div><div><div class="res-name">The First 90 Days — Уоткинс</div><div class="res-desc">Читай ДО оффера. Карьерный переход на новый уровень.</div><span class="res-tag" style="background:rgba(212,240,0,0.1);color:var(--accent)">ПРИОРИТЕТ</span></div></div>
+        <div class="res-item"><div class="res-icon">**</div><div><div class="res-name">Играй на повышение — Ибарра</div><div class="res-desc">Working Identity. Как менять карьерную идентичность. Точно в твою ситуацию.</div><span class="res-tag" style="background:rgba(212,240,0,0.1);color:var(--accent)">ПРИОРИТЕТ</span></div></div>
+        <div class="res-item"><div class="res-icon">**</div><div><div class="res-name">Inspired — Марти Каган</div><div class="res-desc">Библия VP Product. Нужна для новой роли. Прочти до первого интервью.</div></div></div>
+        <div class="res-item"><div class="res-icon">**</div><div><div class="res-name">Trillion Dollar Coach — Кэмпбелл</div><div class="res-desc">Лидерство без воды. Как Билл Кэмпбелл строил команды Google, Apple.</div></div></div>
+        <div class="res-item"><div class="res-icon">**</div><div><div class="res-name">The Hard Thing About Hard Things — Хоровиц</div><div class="res-desc">Без прикрас о том, каково реально управлять компанией в кризис.</div></div></div>
+        <div class="res-item"><div class="res-icon">**</div><div><div class="res-name">Measure What Matters — Джон Дорр</div><div class="res-desc">OKR на практике. Google, Intel. Нужно для VP роли.</div></div></div>*
+12:02
+<div class="res-item"><div class="res-icon">*</div><div><div class="res-name">Good to Great — Коллинз</div><div class="res-desc">Уже читал — зацепило. Переосмысли сейчас с позиции перехода.</div><span class="res-tag" style="background:rgba(0,232,122,0.1);color:var(--green)">✓ ЧИТАЛ</span></div></div>
+        <div class="res-item"><div class="res-icon">**</div><div><div class="res-name">Пять пороков команды — Ленсиони</div><div class="res-desc">Уже читал. Перечитай перед разговором о новой команде.</div><span class="res-tag" style="background:rgba(0,232,122,0.1);color:var(--green)">✓ ЧИТАЛ</span></div></div>
+        <div class="res-item"><div class="res-icon">**</div><div><div class="res-name">Принципы — Рэй Далио</div><div class="res-desc">Системное мышление + принципы принятия решений. Для CEO-мышления.</div></div></div>
+        <div class="res-item"><div class="res-icon">**</div><div><div class="res-name">Never Split the Difference — Крис Восс</div><div class="res-desc">Переговоры от бывшего агента ФБР. Нужно для переговоров об оффере.</div></div></div>
+      </div>
+      <div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--blue);margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--bg4)">МЫШЛЕНИЕ И СМЫСЛ</div>
+        <div class="res-item"><div class="res-icon">**</div><div><div class="res-name">Антихрупкость — Талеб</div><div class="res-desc">Для человека в точке неопределённости. Как расти от стресса.</div><span class="res-tag" style="background:rgba(212,240,0,0.1);color:var(--accent)">ПРИОРИТЕТ</span></div></div>
+        <div class="res-item"><div class="res-icon">**</div><div><div class="res-name">Сказать жизни Да — Франкл</div><div class="res-desc">Уже читал — зацепило. Первоисточник смысловой психологии.</div><span class="res-tag" style="background:rgba(0,232,122,0.1);color:var(--green)">✓ ЧИТАЛ</span></div></div>
+        <div class="res-item"><div class="res-icon">**</div><div><div class="res-name">Экзистенциальная психотерапия — Ялом</div><div class="res-desc">После Франкла — следующий уровень. Смерть, свобода, смысл, одиночество.</div></div></div>
+        <div class="res-item"><div class="res-icon">**</div><div><div class="res-name">Sapiens — Юваль Харари</div><div class="res-desc">Масштаб мышления. История человечества за 500 страниц.</div></div></div>
+        <div class="res-item"><div class="res-icon">**</div><div><div class="res-name">Вы конечно шутите, мистер Фейнман</div><div class="res-desc">После Хокинга — твой следующий. Физика + характер + юмор.</div></div></div>
+        <div class="res-item"><div class="res-icon">**</div><div><div class="res-name">Шантарам — Робертс</div><div class="res-desc">Уже слушал — зацепило. Эпос о смысле и свободе.</div><span class="res-tag" style="background:rgba(0,232,122,0.1);color:var(--green)">✓ ЧИТАЛ</span></div></div>
+        <div class="res-item"><div class="res-icon">**</div><div><div class="res-name">Думай медленно, решай быстро — Канеман</div><div class="res-desc">Нобелевский лауреат о том как работает мышление. Обязательно.</div></div></div>
+        <div class="res-item"><div class="res-icon">**</div><div><div class="res-name">Краткая история времени — Хокинг</div><div class="res-desc">Уже читал — зацепило. Физика от механики до квантов.</div><span class="res-tag" style="background:rgba(0,232,122,0.1);color:var(--green)">✓ ЧИТАЛ</span></div></div>
+        <div class="res-item"><div class="res-icon">**</div><div><div class="res-name">Черный лебедь — Талеб</div><div class="res-desc">Непредсказуемые события и как с ними жить. Пара с Антихрупкостью.</div></div></div>
+        <div class="res-item"><div class="res-icon">**</div><div><div class="res-name">Эго — враг — Райан Холидей</div><div class="res-desc">Стоицизм в практике. Для человека с амбициями и давлением.</div></div></div>
+      </div>
+      <div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--green);margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--bg4)">МЕНТАЛЬНОЕ И СЕМЬЯ</div>*
+12:02
+<div class="res-item"><div class="res-icon">*</div><div><div class="res-name">7 принципов счастливого брака — Готтман</div><div class="res-desc">Исследователь №1 по теме. Основа для разговора с женой.</div><span class="res-tag" style="background:rgba(212,240,0,0.1);color:var(--accent)">ПРИОРИТЕТ</span></div></div>
+        <div class="res-item"><div class="res-icon">**</div><div><div class="res-name">Что знают пары — Готтман</div><div class="res-desc">Более практичная версия. Читать вместе с женой если пойдёт.</div></div></div>
+        <div class="res-item"><div class="res-icon">**</div><div><div class="res-name">Мозг освобождённый — Андерс Хансен</div><div class="res-desc">Физнагрузка и депрессия. Почему триатлон — твоё лекарство.</div></div></div>
+        <div class="res-item"><div class="res-icon">**</div><div><div class="res-name">Когда тело говорит нет — Габор Матэ</div><div class="res-desc">Хроническй стресс и болезни. Тяжёлая, но важная.</div></div></div>
+        <div class="res-item"><div class="res-icon">**</div><div><div class="res-name">Полное руководство по бегу — Джек Дэниелс</div><div class="res-desc">Библия бегового тренинга. Зоны, темпы, VDOT. Для понимания своего плана.</div></div></div>
+        <div class="res-item"><div class="res-icon">**</div><div><div class="res-name">Не сдавайся — Крис Маккормак</div><div class="res-desc">Чемпион Ironman. Читается за один вечер. Зарядит перед гонкой.</div><span class="res-tag" style="background:rgba(212,240,0,0.1);color:var(--accent)">ПЕРЕД ГОНКОЙ</span></div></div>
+        <div class="res-item"><div class="res-icon">**</div><div><div class="res-name">Born to Run — Кристофер Макдугалл</div><div class="res-desc">Про бег и людей. Меняет отношение к дистанциям.</div></div></div>
+        <div class="res-item"><div class="res-icon">**</div><div><div class="res-name">Играй на победу — Лафли и Мартин</div><div class="res-desc">Стратегическое мышление P&G. Для VP Sales роли.</div></div></div>
+      </div>
     </div>
   </div>
-</div>
-
-<!-- ROADMAP -->
-<div class="section-label">// ДОРОЖНАЯ КАРТА</div>
-<div style="padding: 20px 40px 32px;">
-  <div class="roadmap">
-    <div class="roadmap-item">
-      <div class="roadmap-month">АПР<br>МАЙ</div>
-      <div class="roadmap-content now">
-        <div class="roadmap-focus">🔥 ОСТРАЯ ФАЗА + ПОДГОТОВКА</div>
-        <div class="roadmap-detail">Разбор ДТП-ситуации · Психиатр (ревизия дозы) · Найти КПТ-терапевта · Oura Ring · Триатлон-фокус: интервалы бег · Кирпичные тренировки · Начало упаковки резюме</div>
+  <div class="res-tab-content" id="restab-podcasts">
+    <div class="res-grid">
+      <div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--accent);margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--bg4)">НА ТРЕНИРОВКАХ</div>
+        <div class="res-item"><div class="res-icon">**</div><div><div class="res-name">Lex Fridman Podcast</div><div class="res-desc">Физики, философы, CEO. Эпизоды 2-3ч — идеально на длинные велотренировки.</div><span class="res-tag" style="background:rgba(212,240,0,0.1);color:var(--accent)">ТОП</span></div></div>
+        <div class="res-item"><div class="res-icon">**</div><div><div class="res-name">Huberman Lab</div><div class="res-desc">Сон, стресс, дофамин, физнагрузка. Нейронаука без воды. ОБЯЗАТЕЛЬНО.</div><span class="res-tag" style="background:rgba(212,240,0,0.1);color:var(--accent)">ТОП</span></div></div>
+        <div class="res-item"><div class="res-icon">**</div><div><div class="res-name">Triathlon Taren</div><div class="res-desc">Конкретно и по делу. На беговые тренировки. Твой профиль.</div></div></div>
+        <div class="res-item"><div class="res-icon">**</div><div><div class="res-name">The Rich Roll Podcast</div><div class="res-desc">Бывший алкоголик → ультра-атлет. Смысл, спорт, трансформация.</div></div></div>
+      </div>
+      <div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--accent);margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--bg4)">ДЛЯ КАРЬЕРЫ</div>
+        <div class="res-item"><div class="res-icon">**</div><div><div class="res-name">Lenny's Podcast</div><div class="res-desc">VP Product из топ-компаний. Готовься к роли прямо сейчас.</div><span class="res-tag" style="background:rgba(212,240,0,0.1);color:var(--accent)">VP PREP</span></div></div>
+        <div class="res-item"><div class="res-icon">**</div><div><div class="res-name">Masters of Scale — Рид Хоффман</div><div class="res-desc">Как думают основатели компаний. Масштаб мышления.</div></div></div>*
+12:02
+<div class="res-item"><div class="res-icon">*</div><div><div class="res-name">How I Built This — Гай Раз</div><div class="res-desc">Истории создания компаний. Вдохновение + бизнес-логика.</div></div></div>
+        <div class="res-item"><div class="res-icon">**</div><div><div class="res-name">YouTube: Lenny Rachitsky</div><div class="res-desc">Видео с VP Product топ-компаний. Смотри во время мобильности/восстановления.</div></div></div>
+        <div class="res-item"><div class="res-icon">**</div><div><div class="res-name">YouTube: 3Blue1Brown</div><div class="res-desc">Нейросети визуально. Для лаборатории ВШЭ.</div></div></div>
+      </div>
+      <div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--accent);margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--bg4)">ОБУЧЕНИЕ</div>
+        <div class="res-item"><div class="res-icon">**</div><div><div class="res-name">SmartReading / Blinkist</div><div class="res-desc">Саммари за 15 мин. Если зацепило — углубляешься. Твой формат.</div><span class="res-tag" style="background:rgba(212,240,0,0.1);color:var(--accent)">ТВОЙ ФОРМАТ</span></div></div>
+        <div class="res-item"><div class="res-icon">**</div><div><div class="res-name">Audible / Storytel</div><div class="res-desc">Аудиокниги на тренировках. Шантарам ты именно так слушал.</div></div></div>
+        <div class="res-item"><div class="res-icon">**</div><div><div class="res-name">Claude / ChatGPT — ежедневная практика</div><div class="res-desc">Строй инструменты каждую неделю. Это лучшее обучение ИИ из возможных.</div></div></div>
       </div>
     </div>
-    <div class="roadmap-item">
-      <div class="roadmap-month">ИЮНЬ</div>
-      <div class="roadmap-content now">
-        <div class="roadmap-focus">🏁 СТАРТ 21 ИЮНЯ + ПАУЗА</div>
-        <div class="roadmap-detail">Tapering -30% · Олимпийский триатлон · Отдых 1 неделю после · Выбрать следующий старт осенью</div>
+  </div>
+  <div class="res-tab-content" id="restab-tools">
+    <div class="res-grid">
+      <div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--accent);margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--bg4)">ЗДОРОВЬЕ И СПОРТ</div>
+        <div class="res-item"><div class="res-icon">**</div><div><div class="res-name">Oura Ring Gen4</div><div class="res-desc">HRV, сон, восстановление, температура. Изменит понимание своего тела. Приоритет.</div><span class="res-tag" style="background:rgba(212,240,0,0.1);color:var(--accent)">КУПИ СЕЙЧАС</span></div></div>
+        <div class="res-item"><div class="res-icon">**</div><div><div class="res-name">Garmin Forerunner 965 / Fenix 8</div><div class="res-desc">Мультиспорт часы с мощностью бега. Если ещё нет — до старта.</div></div></div>
+        <div class="res-item"><div class="res-icon">**</div><div><div class="res-name">Wahoo KICKR / Tacx Neo — умный тренажёр</div><div class="res-desc">Для интервальных велотренировок дома. ERG-режим = точные ватты.</div></div></div>
+        <div class="res-item"><div class="res-icon">**</div><div><div class="res-name">TrainerRoad</div><div class="res-desc">AI-адаптивные планы велотренировок. Автоматически под твой FTP.</div></div></div>
+        <div class="res-item"><div class="res-icon">**</div><div><div class="res-name">Strava + Garmin Connect</div><div class="res-desc">Трекинг всех тренировок. Strava для мотивации, Garmin для анализа.</div></div></div>
+        <div class="res-item"><div class="res-icon">**</div><div><div class="res-name">Аэрошлем + обтягивающий триsuit</div><div class="res-desc">+0.8-1.3 км/ч без дополнительных ватт. Самая дешёвая скорость.</div><span class="res-tag" style="background:rgba(212,240,0,0.1);color:var(--accent)">ДО ГОНКИ</span></div></div>
+      </div>
+      <div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--accent);margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--bg4)">КАРЬЕРА И ПРОДУКТИВНОСТЬ</div>
+        <div class="res-item"><div class="res-icon">**</div><div><div class="res-name">Notion — трекинг поиска работы</div><div class="res-desc">Компания / контакт / дата / статус / следующий шаг. Простая таблица.</div></div></div>*
+12:02
+<div class="res-item"><div class="res-icon">*</div><div><div class="res-name">LinkedIn Premium Career</div><div class="res-desc">Видно кто смотрел профиль + InMail хедхантерам. На период поиска.</div></div></div>
+        <div class="res-item"><div class="res-icon">**</div><div><div class="res-name">Claude Projects (этот чат)</div><div class="res-desc">Коуч, который помнит контекст. Приходи с конкретными задачами.</div></div></div>
+      </div>
+      <div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--accent);margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--bg4)">МЕНТАЛЬНОЕ</div>
+        <div class="res-item"><div class="res-icon">**</div><div><div class="res-name">Бумажный дневник / Notes</div><div class="res-desc">3 вопроса утром: тревога / контроль / действие. 10 минут. Каждый день.</div><span class="res-tag" style="background:rgba(212,240,0,0.1);color:var(--accent)">ЕЖЕДНЕВНО</span></div></div>
+        <div class="res-item"><div class="res-icon">**</div><div><div class="res-name">Headspace / Wim Hof дыхание</div><div class="res-desc">Не классическая медитация — дыхательные практики для стресс-регуляции.</div></div></div>
       </div>
     </div>
-    <div class="roadmap-item">
-      <div class="roadmap-month">ИЮЛЬ</div>
-      <div class="roadmap-content soon">
-        <div class="roadmap-focus">💬 СЕМЬЯ + КАРЬЕРНЫЙ СТАРТ</div>
-        <div class="roadmap-detail">Честный разговор с женой · Парный терапевт · LinkedIn 100% · Список 5 компаний · Хедхантеры</div>
-      </div>
+  </div>
+  <div class="res-tab-content" id="restab-stack">
+    <div style="background:rgba(255,68,68,0.05);border:1px solid rgba(255,68,68,0.2);padding:12px 16px;margin-bottom:20px;font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--red)">
+*ВСЁ НОВОЕ — СОГЛАСОВЫВАТЬ С ПСИХИАТРОМ. ЦЕПРАЛЕКС ИМЕЕТ ВЗАИМОДЕЙСТВИЯ.
     </div>
-    <div class="roadmap-item">
-      <div class="roadmap-month">АВГ<br>СЕН</div>
-      <div class="roadmap-content soon">
-        <div class="roadmap-focus">🎯 АКТИВНЫЙ ПОИСК</div>
-        <div class="roadmap-detail">2 кофе-встречи в неделю · Интервью · Следующий триатлон-старт · Продолжение терапии</div>
+    <div class="res-grid">
+      <div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--green);margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--bg4)">БАЗОВЫЙ СТЕК · БЕЗОПАСНО</div>
+        <div class="res-item"><div class="res-icon">*</div><div><div class="res-name">Магний глицинат 400мг</div><div class="res-desc">Сон + мышцы + нервная система. Перед сном. Базовый №1.</div><span class="res-tag" style="background:rgba(0,232,122,0.1);color:var(--green)">НАЧНИ СЕЙЧАС</span></div></div>
+        <div class="res-item"><div class="res-icon">**</div><div><div class="res-name">Омега-3 EPA/DHA 2-3г/день</div><div class="res-desc">Сердце, мозг, воспаление. Утром с едой. Нужен при объёмных тренировках.</div><span class="res-tag" style="background:rgba(0,232,122,0.1);color:var(--green)">НАЧНИ СЕЙЧАС</span></div></div>
+        <div class="res-item"><div class="res-icon">**</div><div><div class="res-name">Витамин D3 + K2 ·4000-5000IU</div><div class="res-desc">Иммунитет, кости, тестостерон. Утром. Обязательный базис в России.</div><span class="res-tag" style="background:rgba(0,232,122,0.1);color:var(--green)">НАЧНИ СЕЙЧАС</span></div></div>
+        <div class="res-item"><div class="res-icon">**</div><div><div class="res-name">Витамин C 500мг</div><div class="res-desc">Антиоксидант при нагрузках. Иммунитет. После тренировки.</div></div></div>
+        <div class="res-item"><div class="res-icon">**</div><div><div class="res-name">Цинк 15-25мг</div><div class="res-desc">Тестостерон, иммунитет. Теряется при потоотделении. Вечером.</div></div></div>
       </div>
-    </div>
-    <div class="roadmap-item">
-      <div class="roadmap-month">ОКТ<br>ДЕК</div>
-      <div class="roadmap-content later">
-        <div class="roadmap-focus">📋 РЕШЕНИЯ И ФИНАЛ</div>
-        <div class="roadmap-detail">Офферы / переговоры · Решение по семье · План Ironman 70.3 на 2027 · Итоги года</div>
+      <div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--orange);margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--bg4)">СПОРТИВНОЕ ПИТАНИЕ</div>
+        <div class="res-item"><div class="res-icon">**</div><div><div class="res-name">Углеводные гели на гонке</div><div class="res-desc">1 гель каждые 30-35 мин на велосипеде. SiS, Maurten или аналог. Протестируй ДО гонки.</div><span class="res-tag" style="background:rgba(255,140,0,0.1);color:var(--orange)">ОБЯЗАТЕЛЬНО ТЕСТ</span></div></div>
+        <div class="res-item"><div class="res-icon">**</div><div><div class="res-name">Электролиты · натрий/калий</div><div class="res-desc">На вело и бег в жару. High5 Zero, SiS Go Electrolyte. Судороги = дефицит натрия.</div></div></div>*
+12:02
+<div class="res-item"><div class="res-icon">*</div><div><div class="res-name">Протеин 20-30г после тренировки</div><div class="res-desc">В течение 30 мин после нагрузки. Восстановление мышц при 5-6 тренировках/нед.</div></div></div>
+        <div class="res-item"><div class="res-icon">**</div><div><div class="res-name">Кофеин 3-6мг/кг за 60мин до гонки</div><div class="res-desc">Доказанный эргогеник. ~200-250мг для тебя. Только если привычен к кофе.</div></div></div>
       </div>
-    </div>
-    <div class="roadmap-item">
-      <div class="roadmap-month">ЯНВ<br>МАР 27</div>
-      <div class="roadmap-content later">
-        <div class="roadmap-focus">🚀 НОВЫЙ УРОВЕНЬ</div>
-        <div class="roadmap-detail">Выход на новую роль · Ironman 70.3 в горизонте · Стабильный ментальный фон · Ясность в семье</div>
+      <div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--red);margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--bg4)">ТОЛЬКО С ПСИХИАТРОМ</div>
+        <div class="res-item"><div class="res-icon">**</div><div><div class="res-name">Магний L-треонат</div><div class="res-desc">Проникает через ГЭБ, когнитивная функция, память. Обсуди с врачом.</div><span class="res-tag" style="background:rgba(255,68,68,0.1);color:var(--red)">С ВРАЧОМ</span></div></div>
+        <div class="res-item"><div class="res-icon">**</div><div><div class="res-name">Ашваганда KSM-66</div><div class="res-desc">Снижает кортизол, тревогу. Может взаимодействовать с антидепрессантами.</div><span class="res-tag" style="background:rgba(255,68,68,0.1);color:var(--red)">С ВРАЧОМ</span></div></div>
+        <div class="res-item"><div class="res-icon">**</div><div><div class="res-name">5-HTP</div><div class="res-desc">Предшественник серотонина. НЕЛЬЗЯ без врача с цепралексом — риск серотонинового синдрома.</div><span class="res-tag" style="background:rgba(255,68,68,0.2);color:var(--red)">**ТОЛЬКО ВРАЧ</span></div></div>
+        <div class="res-item"><div class="res-icon">**</div><div><div class="res-name">Мелатонин 0.5-1мг</div><div class="res-desc">Для регуляции сна при нарушениях. Минимальная доза. Обсуди с врачом.</div><span class="res-tag" style="background:rgba(255,68,68,0.1);color:var(--red)">С ВРАЧОМ</span></div></div>
       </div>
     </div>
   </div>
 </div>
-
-<!-- JOURNAL -->
-<div class="section-label">// ЖУРНАЛ — 3 вопроса каждое воскресенье</div>
-<div style="padding: 20px 40px 40px;">
-  <div id="journal-entries">
-    <div class="journal-entry">
-      <div class="journal-date">ВОСКРЕСЕНЬЕ · <span id="entry-date"></span> · НЕДЕЛЯ 1</div>
-      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px">
-        <div>
-          <div style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--muted);margin-bottom:6px">ЧТО ТРЕВОЖИТ</div>
-          <textarea class="journal-input" rows="3" placeholder="Напиши честно..."></textarea>
-        </div>
-        <div>
-          <div style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--muted);margin-bottom:6px">ЧТО КОНТРОЛИРУЮ</div>
-          <textarea class="journal-input" rows="3" placeholder="Что в моих руках..."></textarea>
-        </div>
-        <div>
-          <div style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--muted);margin-bottom:6px">1 ДЕЙСТВИЕ ЭТОЙ НЕДЕЛИ</div>
-          <textarea class="journal-input" rows="3" placeholder="Одно конкретное..."></textarea>
-        </div>
-      </div>
-    </div>
-  </div>
-  <button class="add-entry-btn" onclick="addJournalEntry()">+ Добавить запись следующей недели</button>
-</div>
-
-<div class="footer">
-  <div class="footer-text">ARTEM DENISOV GROWTH SYSTEM · v1.0 · 2026</div>
-  <div class="footer-motto">ОСМЫСЛЕННАЯ ЖИЗНЬ</div>
-  <div class="footer-text">Обновляй каждое воскресенье</div>
-</div>
-
 <script>
-  // DATES
-  const today = new Date();
-  const raceDate = new Date('2026-06-21');
-  const yearEnd = new Date('2027-03-31');
-  const yearStart = new Date('2026-04-05');
-
-  const daysToRace = Math.ceil((raceDate - today) / (1000*60*60*24));
-  const daysTotal = Math.ceil((yearEnd - yearStart) / (1000*60*60*24));
-  const daysPassed = Math.ceil((today - yearStart) / (1000*60*60*24));
-  const yearPct = Math.max(0, Math.min(100, Math.round(daysPassed / daysTotal * 100)));
-
-  document.getElementById('days-to-race').textContent = Math.max(0, daysToRace);
-  document.getElementById('days-year').textContent = daysTotal;
-  document.getElementById('year-pct').textContent = yearPct + '%';
-  document.getElementById('year-fill').style.width = yearPct + '%';
-
-  const opts = { day: 'numeric', month: 'long', year: 'numeric' };
-  document.getElementById('today-date').textContent = today.toLocaleDateString('ru-RU', opts);
-  document.getElementById('entry-date').textContent = today.toLocaleDateString('ru-RU', opts);
-
-  // SCORES
-  const scores = { career: 7, sport: 8, mental: 6, family: 5 };
-
-  function updateTotal() {
-    const t = Object.values(scores).reduce((a,b) => a+b, 0);
-    document.getElementById('v-total').textContent = t;
-    const pct = t / 40;
-    const el = document.getElementById('v-total');
-    el.style.color = pct > 0.75 ? 'var(--green)' : pct > 0.5 ? 'var(--accent)' : 'var(--red)';
+const RACE*DATE = new Date('2026-06-21');
+const START_DATE = new Date('2026-04-05');
+const YEAR_END = new Date('2027-03-31');
+const TODAY = new Date(); TODAY.setHours(0,0,0,0);
+const DAYS_TO_RACE = Math.max(0, Math.ceil((RACE_DATE - TODAY) / 86400000));
+const TOTAL_RACE_DAYS = Math.ceil((RACE_DATE - START_DATE) / 86400000);
+const TOTAL_YEAR_DAYS = Math.ceil((YEAR_END - START_DATE) / 86400000);
+const DAYS_PASSED_YEAR = Math.ceil((TODAY - START_DATE) / 86400000);
+function showPage(id, el) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById('page-' + id).classList.add('active');
+  el.classList.add('active');
+}
+function switchResTab(el, id) {
+  document.querySelectorAll('.res-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.res-tab-content').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('restab-' + id).classList.add('active');
+}
+document.getElementById('nav-date').textContent = TODAY.toLocaleDateString('ru-RU', {day:'numeric',month:'short'});
+document.getElementById('nav-countdown').textContent = DAYS_TO_RACE;
+document.getElementById('cd-days').textContent = DAYS_TO_RACE;
+document.getElementById('cd-weeks').textContent = Math.ceil(DAYS_TO_RACE/7);
+document.getElementById('cd-year').textContent = TOTAL_YEAR_DAYS;
+const racePct = Math.min(100, Math.round((TOTAL_RACE_DAYS - DAYS_TO_RACE) / TOTAL_RACE_DAYS * 100));
+const yearPct = Math.min(100, Math.max(0, Math.round(DAYS_PASSED_YEAR / TOTAL_YEAR_DAYS * 100)));
+document.getElementById('pf-race').style.width = racePct + '%';
+document.getElementById('pp-race').textContent = racePct + '%';
+document.getElementById('pf-year').style.width = yearPct + '%';
+document.getElementById('pp-year').textContent = yearPct + '%';
+function save(k,v){try{localStorage.setItem('ad26_'+k,JSON.stringify(v))}catch(e){}}
+12:02
+function load(k,d){try{const v=localStorage.getItem('ad26_'+k);return v?JSON.parse(v):d}catch(e){return d}}
+function formatDateKey(d){return d.toISOString().split('T')[0]}
+// ═══ HEATMAP ═══
+function buildHeatmap() {
+  const container = document.getElementById('heatmap');
+  container.innerHTML = '';
+  const data = load('weekly', {});
+  let cur = new Date(START_DATE);
+  while(cur.getDay()!==0) cur.setDate(cur.getDate()-1);
+  while(cur <= YEAR_END) {
+    const wk = document.createElement('div'); wk.className='hm-week';
+    const weekKey = formatDateKey(cur);
+    const entry = data[weekKey];
+    const score = entry ? Math.round((entry.sport+entry.career+entry.mental+entry.family)/4) : 0;
+    const isFuture = cur > TODAY;
+    const isToday = cur.toDateString()===TODAY.toDateString();
+    const cell = document.createElement('div');
+    cell.className = 'hm-cell'+(isFuture?' future':' score-'+score)+(isToday?' today':'');
+    cell.title = cur.toLocaleDateString('ru-RU')+(entry?· ${score}/10:' · нет данных');
+    cell.addEventListener('mouseenter',e=>{const tt=document.getElementById('tooltip');tt.style.display='block';tt.textContent=cell.title});
+    cell.addEventListener('mousemove',e=>{const tt=document.getElementById('tooltip');tt.style.left=(e.clientX+12)+'px';tt.style.top=(e.clientY+12)+'px'});
+    cell.addEventListener('mouseleave',()=>{document.getElementById('tooltip').style.display='none'});
+    wk.appendChild(cell);
+    container.appendChild(wk);
+    cur.setDate(cur.getDate()+7);
   }
-
-  function changeScore(key, delta) {
-    scores[key] = Math.max(1, Math.min(10, scores[key] + delta));
-    document.getElementById('v-' + key).textContent = scores[key];
-    updateTotal();
+}
+// ═══ TRAINING PLAN (from screenshots) ═══
+const plan = [
+  { phase:1, name:"БЛОК 1 — УДАР ПО FTP И ОБЪЁМ ПЛАВАНИЯ", dates:"5 апр – 25 апр", focus:"FTP-тест · Надпороговые интервалы · Объём плавания · Первый кирпич",
+    weeks:[
+      { num:1, title:"Вход в план · Детальная неделя", dates:"5–11 апр",
+        volume:"Плавание 2×2.2км · Велосипед: интервалы + длинная · Бег: 4×1км · Кирпич в воскресенье",
+        days:[
+          {name:"ВС",date:"5 апр",workouts:[{type:"rest",text:"СТАРТ ПРОГРАММЫ · Отдых · FTP-тест провести на этой неделе!"}]},
+          {name:"ПН",date:"6 апр",workouts:[{type:"swim",text:" Плавание — интервалы скорость\n400м разм (1:50)\n10×100м по 1:32 — отдых 20сек\n200м замин\nИтого: 2200м"}]},
+          {name:"ВТ",date:"7 апр",workouts:[{type:"bike",text:" Велосипед — надпороговые\n15мин разм 150Вт/ЧСС~140\n5×8мин на 275-280Вт (106% FTP)\nОтдых 4мин на 160Вт\n15мин замин 140Вт\nИтого: ~95мин · ЧСС на интервалах 170-174"}]},
+          {name:"СР",date:"8 апр",workouts:[{type:"run",text:" Бег — пороговые повторы\n10мин активация поясницы\n2км 5:00 разм\n4×1км по 3:58-4:00 — отдых 75сек\n2км 5:00 замин\nИтого: 8км · ЧСС 165-170"}]},
+          {name:"ЧТ",date:"9 апр",workouts:[{type:"swim",text:" Плавание — длинные отрезки\n300м разм\n4×400м по 6:08 (1:32/100м)\nОтдых 40сек\n200м замин\nИтого: 2100м · 400м без остановки"}]},
+          {name:"ПТ",date:"10 апр",workouts:[{type:"mob",text:" Восстановление\n20мин мобильность\n20мин лёгкая ходьба опционально"}]},
+          {name:"СБ",date:"11 апр",workouts:[{type:"bike",text:" Велосипед — длинная пороговая\n20мин разм 155Вт\n2×20мин на 255-260Вт (98% FTP) — ЧСС~162-165\nОтдых 8мин на 160Вт\n20мин замин\nИтого: ~90мин · Два по 20 = классика FTP"}]},
+        ]
+      },
+      { num:2, title:"Воскресенье — первый кирпич", dates:"12 апр (ВС)",
+        volume:"Кирпич #1 · вело→бег · отработка T2",
+        days:[
+          {name:"ВС",date:"12 апр",workouts:[{type:"brick",text:" КИРПИЧ #1\nВело: 35мин на 245Вт / ЧСС~158\nПЕРЕХОД T2: 90 секунд (тренируй раздевалку!)\nБег: 20мин по 4:10/км / ЧСС 168-172\nПервый кирпич — ноги будут чужими 4-5мин. Нормально."}]},
+          {name:"ПН",date:"13 апр",workouts:[{type:"swim",text:" Плавание 2200м · Повтор нед.1"}]},
+          {name:"ВТ",date:"14 апр",workouts:[{type:"bike",text:" Велосипед 5×8мин · 275-280Вт · 95мин"}]},
+          {name:"СР",date:"15 апр",workouts:[{type:"run",text:" Бег 4×1км на 3:58 · 8км"}]},
+          {name:"ЧТ",date:"16 апр",workouts:[{type:"swim",text:" Плавание 4×400м · 2100м"}]},
+12:02
+{name:"ПТ",date:"17 апр",workouts:[{type:"mob",text:" Мобильность 20мин"}]},
+          {name:"СБ",date:"18 апр",workouts:[{type:"bike",text:" Вело 2×20мин · 255-260Вт · 90мин"}]},
+        ]
+      },
+      { num:3, title:"Неделя 3 — завершение блока 1", dates:"19–25 апр",
+        volume:"Те же структуры · прогрессия интенсивности",
+        days:[
+          {name:"ВС",date:"19 апр",workouts:[{type:"brick",text:" КИРПИЧ #2\nВело: 35мин на 248Вт\nT2: 90 сек\nБег: 22мин по 4:08/км"}]},
+          {name:"ПН",date:"20 апр",workouts:[{type:"swim",text:" Плавание 2200м · 10×100м по 1:31"}]},
+          {name:"ВТ",date:"21 апр",workouts:[{type:"bike",text:" Велосипед 5×8мин · 278Вт · ЧСС 172-175"}]},
+          {name:"СР",date:"22 апр",workouts:[{type:"run",text:" Бег 4×1км на 3:57 · начинаем быстрее"}]},
+          {name:"ЧТ",date:"23 апр",workouts:[{type:"swim",text:" Плавание 4×400м · темп 1:31/100м"}]},
+          {name:"ПТ",date:"24 апр",workouts:[{type:"mob",text:" Мобильность + лёгкая ходьба"}]},
+          {name:"СБ",date:"25 апр",workouts:[{type:"bike",text:" Вело 2×20мин · 258-262Вт · рост FTP"}]},
+        ]
+      }
+    ]
+  },
+  { phase:2, name:"БЛОК 2 — НАРАЩИВАНИЕ", dates:"26 апр – 16 мая", focus:"Вело 3×20мин 95% FTP · Бег 2×3км по 4:03 · Плавание 3×500м · Кирпичи каждое ВС",
+    weeks:[
+      { num:4, title:"Переход: 3×20мин вело · 2×3км бег", dates:"26 апр – 2 мая",
+        volume:"Вело: 3×20мин 95% FTP · Бег объём 20-22км · Кирпич нед.4: 45мин+20мин",
+        days:[
+          {name:"ВС",date:"26 апр",workouts:[{type:"brick",text:" КИРПИЧ НЕД.4\nВело: 45мин / ЧСС~160\nT2: 90 сек\nБег: 20мин по 4:05/км"}]},
+          {name:"ПН",date:"27 апр",workouts:[{type:"swim",text:" Плавание 3×500м по 7:38\nИтого: ~2200м · контрольный объём"}]},
+          {name:"ВТ",date:"28 апр",workouts:[{type:"bike",text:" Вело — 3×20мин на 95% FTP (247Вт)\nFTP должен расти · ЧСС~162-165"}]},
+          {name:"СР",date:"29 апр",workouts:[{type:"run",text:" Бег: 2×3км по 4:03/км · объём 20-22км нед"}]},
+          {name:"ЧТ",date:"30 апр",workouts:[{type:"swim",text:" Плавание 1500м контрольный заплыв\n(раз в 2 недели — замеряй прогресс)"}]},
+          {name:"ПТ",date:"1 мая",workouts:[{type:"mob",text:" Восстановление · мобильность"}]},
+          {name:"СБ",date:"2 мая",workouts:[{type:"bike",text:" Вело 2×30мин на 92% FTP\nАэропозиция — каждую тренировку только в аэро!"}]},
+        ]
+      },
+      { num:5, title:"Наращивание объёма кирпичей", dates:"3–9 мая",
+        volume:"Кирпич нед.5: 50мин+25мин · Плавание → 3×500м",
+        days:[
+          {name:"ВС",date:"3 мая",workouts:[{type:"brick",text:" КИРПИЧ НЕД.5\nВело: 50мин / ЧСС~160\nT2: 90 сек\nБег: 25мин по 4:04/км"}]},
+          {name:"ПН",date:"4 мая",workouts:[{type:"swim",text:" Плавание 3×500м · темп 1:31/100м"}]},
+          {name:"ВТ",date:"5 мая",workouts:[{type:"bike",text:" Вело 3×20мин 95% FTP · аэропозиция строго"}]},
+          {name:"СР",date:"6 мая",workouts:[{type:"run",text:" Бег 2×3км по 4:02/км · лёгкий + 6-7км по 4:02 свежие ноги"}]},
+          {name:"ЧТ",date:"7 мая",workouts:[{type:"swim",text:" Плавание 3×500м · без остановок"}]},
+          {name:"ПТ",date:"8 мая",workouts:[{type:"mob",text:" Восстановление"}]},
+          {name:"СБ",date:"9 мая",workouts:[{type:"bike",text:" Вело 2×30мин 92% FTP · аэро · FTP должен вырасти до 272-275"}]},
+        ]
+      },
+      { num:6, title:"Завершение блока 2", dates:"10–16 мая",
+        volume:"Кирпич нед.6: 55мин+28мин · финал наращивания",
+        days:[
+          {name:"ВС",date:"10 мая",workouts:[{type:"brick",text:" КИРПИЧ НЕД.6\nВело: 55мин / ЧСС~162\nT2: 90 сек\nБег: 28мин по 4:02/км"}]},
+          {name:"ПН",date:"11 мая",workouts:[{type:"swim",text:" Плавание 3×500м · гонка-темп"}]},
+          {name:"ВТ",date:"12 мая",workouts:[{type:"bike",text:" Вело 3×20мин · если FTP вырос — пересчитай зоны"}]},
+          {name:"СР",date:"13 мая",workouts:[{type:"run",text:" Бег 6-7км по 4:02/км · на свежих ногах"}]},
+12:02
+{name:"ЧТ",date:"14 мая",workouts:[{type:"swim",text:" Плавание 1500м контрольный заплыв"}]},
+          {name:"ПТ",date:"15 мая",workouts:[{type:"mob",text:" Лёгкое восстановление"}]},
+          {name:"СБ",date:"16 мая",workouts:[{type:"bike",text:" Вело 2×30мин 92% FTP · аэро"}]},
+        ]
+      }
+    ]
+  },
+  { phase:3, name:"БЛОК 3 — ГОНОЧНАЯ СПЕЦИФИКА", dates:"17 мая – 7 июня", focus:"Плавание 1500м в гонка-темп 1:31-1:32 · T1+T2 · Вело 40км · Бег 5-7км по 4:00-4:05 · Делаем трижды",
+    weeks:[
+      { num:7, title:"Гоночная симуляция #1", dates:"17–23 мая",
+        volume:"Суббота — почти полная гонка: 1500м→T1→40км→T2→5-7км",
+        days:[
+          {name:"ВС",date:"17 мая",workouts:[{type:"brick",text:" ГОНКА-СИМУЛЯЦИЯ #1\n 1500м темп 1:31-1:32\nT1: 90 сек\n 40км на максимуме (цель 58-62мин)\nT2: 60 сек\n 5-7км по 4:00-4:05/км\nЭто почти полная гонка!"}]},
+          {name:"ПН",date:"18 мая",workouts:[{type:"swim",text:" Плавание · техника · лёгкое"}]},
+          {name:"ВТ",date:"19 мая",workouts:[{type:"bike",text:" Вело 2×30мин 92% FTP · аэро строго"}]},
+          {name:"СР",date:"20 мая",workouts:[{type:"run",text:" Бег 6-7км по 4:02 · свежие ноги"}]},
+          {name:"ЧТ",date:"21 мая",workouts:[{type:"swim",text:" Плавание 1500м контрольный · темп 1:31?"}]},
+          {name:"ПТ",date:"22 мая",workouts:[{type:"mob",text:" Восстановление"}]},
+          {name:"СБ",date:"23 мая",workouts:[{type:"bike",text:" Вело 2×30мин 92% FTP · аэро"}]},
+        ]
+      },
+      { num:8, title:"Гоночная симуляция #2", dates:"24–30 мая",
+        volume:"Симуляция #2 · прогрессия скорости",
+        days:[
+          {name:"ВС",date:"24 мая",workouts:[{type:"brick",text:" ГОНКА-СИМУЛЯЦИЯ #2\n 1500м · цель 1:31\nT1: 90 сек\n 40км · цель быстрее прошлого раза\nT2: 60 сек\n 6-7км по 4:00/км"}]},
+          {name:"ПН",date:"25 мая",workouts:[{type:"swim",text:" Плавание · восстановительное"}]},
+          {name:"ВТ",date:"26 мая",workouts:[{type:"bike",text:" Вело 2×30мин 92% FTP"}]},
+          {name:"СР",date:"27 мая",workouts:[{type:"run",text:" Бег 6км по 4:00/км"}]},
+          {name:"ЧТ",date:"28 мая",workouts:[{type:"swim",text:" Плавание 1500м"}]},
+          {name:"ПТ",date:"29 мая",workouts:[{type:"mob",text:" Восстановление"}]},
+          {name:"СБ",date:"30 мая",workouts:[{type:"bike",text:" Вело 2×30мин 92% FTP · последний длинный"}]},
+        ]
+      },
+      { num:9, title:"Гоночная симуляция #3 — финальная", dates:"31 мая – 6 июн",
+        volume:"Симуляция #3 · лучший результат · после → тейпер",
+        days:[
+          {name:"ВС",date:"31 мая",workouts:[{type:"brick",text:" ГОНКА-СИМУЛЯЦИЯ #3 — ФИНАЛЬНАЯ\n 1500м · цель 1:30-1:31\nT1: 90 сек\n 40км · твой личный рекорд\nT2: 60 сек\n 7км по 4:00/км · рви последние 2км"}]},
+          {name:"ПН",date:"1 июн",workouts:[{type:"swim",text:" Плавание лёгкое · техника"}]},
+          {name:"ВТ",date:"2 июн",workouts:[{type:"bike",text:" Вело 2×20мин 95% FTP · держим остроту"}]},
+          {name:"СР",date:"3 июн",workouts:[{type:"run",text:" Бег 5км по 4:00"}]},
+          {name:"ЧТ",date:"4 июн",workouts:[{type:"swim",text:" Плавание 1200м · темп 1:30"}]},
+          {name:"ПТ",date:"5 июн",workouts:[{type:"mob",text:" Восстановление"}]},
+          {name:"СБ",date:"6 июн",workouts:[{type:"brick",text:" Кирпич 30мин вел + 15мин бег 4:00"}]},
+        ]
+      }
+    ]
+  },
+  { phase:4, name:"БЛОК 4 — ПИК И ТЕЙПЕР", dates:"7–21 июня", focus:"Объём -45% · Интенсивность сохранить · Активация за 3 дня до гонки",
+    weeks:[
+      { num:10, title:"ТЕЙПЕР — неделя 11", dates:"7–13 июн",
+        volume:"Объём -45% · 3×8мин на 270Вт · Кирпич 30+15",
+        days:[
+          {name:"ВС",date:"7 июн",workouts:[{type:"rest",text:"Отдых · Пульс недели · Визуализация гонки"}]},
+          {name:"ПН",date:"8 июн",workouts:[{type:"swim",text:" Плавание 1200м · темп 1:30 · лёгко"}]},
+          {name:"ВТ",date:"9 июн",workouts:[{type:"bike",text:" Вело 3×8мин на 270Вт — держим остроту"}]},
+12:02
+{name:"СР",date:"10 июн",workouts:[{type:"run",text:" Бег 4км · лёгкий · наслаждаться"}]},
+          {name:"ЧТ",date:"11 июн",workouts:[{type:"swim",text:" Плавание 800м · очень лёгко"}]},
+          {name:"ПТ",date:"12 июн",workouts:[{type:"mob",text:" Отдых полный · отлично питаться"}]},
+          {name:"СБ",date:"13 июн",workouts:[{type:"brick",text:" Кирпич 30мин вел + 15мин бег 4:00\nПоследний кирпич перед гонкой"}]},
+        ]
+      },
+      { num:11, title:"ГОНОЧНАЯ НЕДЕЛЯ", dates:"14–21 июн",
+        volume:"ДЕНЬ -3 · ДЕНЬ -2 · ДЕНЬ -1 · ГОНКА",
+        days:[
+          {name:"ВС",date:"14 июн",workouts:[{type:"rest",text:"Отдых · Пульс недели · Визуализация"}]},
+          {name:"ПН",date:"15 июн",workouts:[{type:"swim",text:" 20мин плавание · всё легко"}]},
+          {name:"ВТ",date:"16 июн",workouts:[{type:"run",text:" 20мин вел + 15мин бег · всё легко · ДЕНЬ -5"}]},
+          {name:"СР",date:"17 июн",workouts:[{type:"mob",text:"ДЕНЬ -4 · Прогулка · Собрать транзитную зону"}]},
+          {name:"ЧТ",date:"18 июн",workouts:[{type:"swim",text:"ДЕНЬ -3 · 20мин плавание + 20мин вел + 15мин бег · всё легко"}]},
+          {name:"ПТ",date:"19 июн",workouts:[{type:"mob",text:"ДЕНЬ -2 · Прогулка · Проверить снаряжение · Карбозагрузка начало"}]},
+          {name:"СБ",date:"20 июн",workouts:[{type:"swim",text:"ДЕНЬ -1 · 10мин плавание + 10мин вел + 10мин бег · Просто активация · СПАТЬ РАНО"}]},
+        ]
+      },
+      { num:12, title:" ГОНКА 21 ИЮНЯ", dates:"21 июня",
+        volume:"ОЛИМПИЙСКИЙ ТРИАТЛОН · 1.5км → 40км → 10км",
+        days:[
+          {name:"ВС",date:"21 июн",workouts:[{type:"race",text:" ОЛИМПИЙСКИЙ ТРИАТЛОН\n 1500м · старт не в 1й волне · держи 1:31-1:33\n 40км · 10км→265Вт · 10-35км→270-275Вт · финиш→всё\n 10км · 1й км ПРИНУДИТЕЛЬНО 4:10 · 2й+ → 4:00 · посл 2км → РВИ\n\nТЫ ГОТОВ. ФИНИШИРУЙ."}]},
+          {name:"ПН",date:"22 июн",workouts:[{type:"rest",text:" ВОССТАНОВЛЕНИЕ · Ты это сделал"}]},
+          {name:"ВТ",date:"23 июн",workouts:[{type:"rest",text:"Восстановление · лёгкая ходьба"}]},
+          {name:"СР",date:"24 июн",workouts:[{type:"rest",text:"Восстановление · массаж если есть"}]},
+          {name:"ЧТ",date:"25 июн",workouts:[{type:"rest",text:"Восстановление · ЗАРЕГИСТРИРОВАТЬСЯ НА СЛЕДУЮЩИЙ СТАРТ"}]},
+          {name:"ПТ",date:"26 июн",workouts:[{type:"rest",text:"Восстановление"}]},
+          {name:"СБ",date:"27 июн",workouts:[{type:"rest",text:"Восстановление · первая лёгкая пробежка 15-20мин"}]},
+        ]
+      }
+    ]
   }
-
-  updateTotal();
-
-  // CHECKLIST
-  function toggle(li) {
-    const box = li.querySelector('.check-box');
-    const text = li.querySelector('.check-text');
-    box.classList.toggle('done');
-    text.classList.toggle('done');
+];
+function buildTrainingPlan() {
+  const container = document.getElementById('training-plan');
+  const completed = load('completed_days', {});
+  plan.forEach(phase => {
+    const phaseEl = document.createElement('div');
+    const header = document.createElement('div'); header.className='phase-header';
+    header.innerHTML=<div class="phase-num">0${phase.phase}</div><div class="phase-info"><div class="phase-name">${phase.name}</div><div class="phase-dates">${phase.dates}</div></div><div class="phase-focus">${phase.focus}</div><div class="phase-toggle" id="toggle-${phase.phase}">▼</div>;
+    const body = document.createElement('div'); body.className='phase-body'+(phase.phase<=2?' open':''); body.id='phase-body-'+phase.phase;
+    header.addEventListener('click',()=>{body.classList.toggle('open');document.getElementById('toggle-'+phase.phase).classList.toggle('open')});
+    phase.weeks.forEach(week=>{
+      const weekEl=document.createElement('div');weekEl.className='week-block';
+      weekEl.innerHTML=<div class="week-header"><div class="week-num-badge">НЕДЕЛЯ ${week.num}</div><div class="week-title">${week.title} · ${week.dates}</div><div class="week-volume">${week.volume}</div></div>;
+      const daysEl=document.createElement('div');daysEl.className='week-days';
+      week.days.forEach(day=>{
+        const key=day.date.replace(' ','-');
+        const isDone=completed[key];
+        const dayEl=document.createElement('div');
+        dayEl.className='day-cell'+(isDone?' completed':'');
+12:02
+const wHTML=day.workouts.map(w=><div class="workout-pill wp-${w.type}">${w.text.replace(/\n/g,'<br>')}</div>).join('');
+        dayEl.innerHTML=<div class="day-name">${day.name}</div><div class="day-date">${day.date}</div>${wHTML}<div class="day-check${isDone?' done':''}" data-key="${key}">✓</div>;
+        dayEl.querySelector('.day-check').addEventListener('click',e=>{
+          e.stopPropagation();const k=e.currentTarget.dataset.key;
+          const s=load('completed_days',{});s[k]=!s[k];if(!s[k])delete s[k];save('completed_days',s);
+          e.currentTarget.classList.toggle('done');dayEl.classList.toggle('completed');
+        });
+        daysEl.appendChild(dayEl);
+      });
+      weekEl.appendChild(daysEl);body.appendChild(weekEl);
+    });
+    phaseEl.appendChild(header);phaseEl.appendChild(body);container.appendChild(phaseEl);
+  });
+}
+// ═══ PULSE ═══
+let currentScores={sport:7,career:7,mental:6,family:5};
+let selectedWeekKey=null;
+function buildWeekSelector(){
+  const container=document.getElementById('week-selector');container.innerHTML='';
+  const data=load('weekly',{});
+  let cur=new Date(START_DATE);while(cur.getDay()!==0)cur.setDate(cur.getDate()-1);
+  let wn=1;
+  while(cur<=YEAR_END){
+    const wk=formatDateKey(cur);const hasEntry=!!data[wk];
+    const isCurrent=cur<=TODAY&&new Date(cur.getTime()+6*86400000)>=TODAY;
+    const btn=document.createElement('div');
+    btn.className='ws-item'+(hasEntry?' has-entry':'')+(isCurrent?' active':'');
+    btn.textContent='Нед '+wn;btn.title=cur.toLocaleDateString('ru-RU',{day:'numeric',month:'short'});
+    btn.dataset.weekKey=wk;btn.dataset.weekNum=wn;
+    btn.dataset.weekDate=cur.toLocaleDateString('ru-RU',{day:'numeric',month:'long'});
+    btn.addEventListener('click',()=>{document.querySelectorAll('.ws-item').forEach(b=>b.classList.remove('active'));btn.classList.add('active');selectWeek(wk,wn,btn.dataset.weekDate)});
+    if(isCurrent&&!selectedWeekKey)selectWeek(wk,wn,btn.dataset.weekDate);
+    container.appendChild(btn);cur.setDate(cur.getDate()+7);wn++;
   }
-
-  // TABS
-  function switchTab(tabEl, id) {
-    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-    document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
-    tabEl.classList.add('active');
-    document.getElementById('tab-' + id).classList.add('active');
-  }
-
-  // JOURNAL
-  let weekNum = 1;
-  function addJournalEntry() {
-    weekNum++;
-    const d = new Date();
-    d.setDate(d.getDate() + (weekNum-1)*7);
-    const dateStr = d.toLocaleDateString('ru-RU', { day:'numeric', month:'long', year:'numeric' });
-    const entry = document.createElement('div');
-    entry.className = 'journal-entry';
-    entry.innerHTML = `
-      <div class="journal-date">ВОСКРЕСЕНЬЕ · ${dateStr} · НЕДЕЛЯ ${weekNum}</div>
-      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px">
-        <div>
-          <div style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--muted);margin-bottom:6px">ЧТО ТРЕВОЖИТ</div>
-          <textarea class="journal-input" rows="3" placeholder="Напиши честно..."></textarea>
-        </div>
-        <div>
-          <div style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--muted);margin-bottom:6px">ЧТО КОНТРОЛИРУЮ</div>
-          <textarea class="journal-input" rows="3" placeholder="Что в моих руках..."></textarea>
-        </div>
-        <div>
-          <div style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--muted);margin-bottom:6px">1 ДЕЙСТВИЕ ЭТОЙ НЕДЕЛИ</div>
-          <textarea class="journal-input" rows="3" placeholder="Одно конкретное..."></textarea>
-        </div>
-      </div>
-    `;
-    document.getElementById('journal-entries').appendChild(entry);
-    entry.scrollIntoView({ behavior: 'smooth' });
-  }
+}
+function selectWeek(wk,wn,wd){
+  selectedWeekKey=wk;const data=load('weekly',{});const e=data[wk]||{};
+  currentScores.sport=e.sport||7;currentScores.career=e.career||7;currentScores.mental=e.mental||6;currentScores.family=e.family||5;
+  ['sport','career','mental','family'].forEach(k=>document.getElementById('sf-'+k).textContent=currentScores[k]);
+  document.getElementById('jf-worry').value=e.worry||'';document.getElementById('jf-control').value=e.control||'';document.getElementById('jf-action').value=e.action||'';document.getElementById('jf-notes').value=e.notes||'';
+  if(wn&&wd)document.getElementById('journal-week-title').textContent=НЕДЕЛЯ ${wn} · ${wd.toUpperCase()};
+  renderHistory();
+}
+function adjScore(key,delta){currentScores[key]=Math.max(1,Math.min(10,currentScores[key]+delta));document.getElementById('sf-'+key).textContent=currentScores[key];}
+function saveWeekEntry(){
+  if(!selectedWeekKey)return;
+  const data=load('weekly',{});
+  data[selectedWeekKey]={sport:currentScores.sport,career:currentScores.career,mental:currentScores.mental,family:currentScores.family,worry:document.getElementById('jf-worry').value,control:document.getElementById('jf-control').value,action:document.getElementById('jf-action').value,notes:document.getElementById('jf-notes').value,saved:new Date().toISOString()};
+  save('weekly',data);
+  ['sport','career','mental','family'].forEach(k=>{document.getElementById('h-'+k).textContent=currentScores[k];document.getElementById('hb-'+k).style.width=(currentScores[k]*10)+'%'});
+  const st=document.getElementById('save-status');st.textContent='✓ Сохранено';st.style.opacity='1';setTimeout(()=>st.style.opacity='0',2000);
+  buildWeekSelector();buildHeatmap();renderHistory();
+}
+function renderHistory(){
+  const container=document.getElementById('pulse-history-list');
+  const data=load('weekly',{});const entries=Object.entries(data).sort((a,b)=>b[0].localeCompare(a[0]));
+12:02
+if(!entries.length){container.innerHTML='<div style="font-family:\'JetBrains Mono\',monospace;font-size:10px;color:var(--muted)">Ещё нет записей.</div>';return;}
+  container.innerHTML=entries.map(([key,e])=>{
+    const avg=((e.sport+e.career+e.mental+e.family)/4).toFixed(1);
+    const d=new Date(key);const ds=d.toLocaleDateString('ru-RU',{day:'numeric',month:'short'});
+    return<div style="border-bottom:1px solid var(--bg3);padding:12px 0;display:grid;grid-template-columns:120px 1fr;gap:16px"><div><div style="font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted)">${ds}</div><div style="font-family:'Bebas Neue',sans-serif;font-size:28px;color:${avg>=7?'var(--accent)':avg>=5?'var(--orange)':'var(--red)'}">${avg}</div><div style="font-size:9px"><span style="color:var(--blue)">С${e.sport}</span>·<span style="color:var(--accent)">К${e.career}</span>·<span style="color:var(--green)">М${e.mental}</span>·<span style="color:var(--red)">С${e.family}</span></div></div><div>${e.action?<div style="font-size:11px;color:var(--white);margin-bottom:4px"> ${e.action}</div>:''} ${e.worry?<div style="font-size:10px;color:var(--muted)"> ${e.worry.substring(0,100)}${e.worry.length>100?'…':''}</div>:''}</div></div>;
+  }).join('');
+}
+function toggleGoal(li){li.querySelector('.gi-box').classList.toggle('done');li.querySelector('.gi-text').classList.toggle('done')}
+// ═══ INIT ═══
+buildHeatmap();buildTrainingPlan();buildWeekSelector();renderHistory();
+const lastData=load('weekly',{});
+const lastEntry=Object.values(lastData).sort((a,b)=>new Date(b.saved||0)-new Date(a.saved||0))[0];
+if(lastEntry){['sport','career','mental','family'].forEach(k=>{document.getElementById('h-'+k).textContent=lastEntry[k];document.getElementById('hb-'+k).style.width=(lastEntry[k]*10)+'%'})}
 </script>
 </body>
 </html>
