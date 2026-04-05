@@ -1,0 +1,1290 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ARTEM DENISOV — СИСТЕМА РОСТА 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=IBM+Plex+Mono:wght@300;400;500&family=IBM+Plex+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --black: #0a0a0a;
+    --white: #f0ede6;
+    --accent: #e8d44d;
+    --red: #e84d4d;
+    --blue: #4d8fe8;
+    --green: #4de87a;
+    --gray: #2a2a2a;
+    --gray2: #1a1a1a;
+    --muted: #666;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--black);
+    color: var(--white);
+    font-family: 'IBM Plex Sans', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* HEADER */
+  .header {
+    padding: 40px 40px 0;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: end;
+    border-bottom: 1px solid #222;
+    padding-bottom: 24px;
+  }
+
+  .header-name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(48px, 8vw, 96px);
+    letter-spacing: 4px;
+    line-height: 1;
+    color: var(--white);
+  }
+
+  .header-name span { color: var(--accent); }
+
+  .header-meta {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    text-align: right;
+    line-height: 1.8;
+  }
+
+  .header-tag {
+    display: inline-block;
+    background: var(--accent);
+    color: var(--black);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    font-weight: 500;
+    padding: 3px 8px;
+    margin-top: 8px;
+  }
+
+  /* COUNTDOWN */
+  .countdown-bar {
+    background: var(--gray2);
+    padding: 16px 40px;
+    display: flex;
+    align-items: center;
+    gap: 40px;
+    border-bottom: 1px solid #222;
+    flex-wrap: wrap;
+  }
+
+  .countdown-item {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+  }
+
+  .countdown-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 36px;
+    color: var(--accent);
+    line-height: 1;
+  }
+
+  .countdown-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+
+  .countdown-divider { color: #333; font-size: 24px; }
+
+  /* PROGRESS BAR */
+  .progress-bar-wrap {
+    flex: 1;
+    min-width: 200px;
+  }
+
+  .progress-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    margin-bottom: 6px;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .progress-track {
+    height: 4px;
+    background: #333;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: var(--accent);
+    transition: width 1s ease;
+  }
+
+  /* MAIN GRID */
+  .main {
+    padding: 32px 40px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 2px;
+  }
+
+  @media (max-width: 900px) {
+    .main { grid-template-columns: 1fr; padding: 16px; }
+    .header { padding: 24px 16px 16px; }
+    .countdown-bar { padding: 12px 16px; gap: 20px; }
+  }
+
+  /* BLOCK */
+  .block {
+    background: var(--gray2);
+    padding: 28px;
+    border: 1px solid #1e1e1e;
+    position: relative;
+    transition: border-color 0.2s;
+  }
+
+  .block:hover { border-color: #333; }
+
+  .block-wide {
+    grid-column: span 2;
+  }
+
+  .block-full {
+    grid-column: span 3;
+  }
+
+  .block-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 72px;
+    color: #1a1a1a;
+    position: absolute;
+    top: 12px;
+    right: 20px;
+    line-height: 1;
+    pointer-events: none;
+  }
+
+  .block-tag {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 9px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 12px;
+  }
+
+  .block-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px;
+    letter-spacing: 2px;
+    margin-bottom: 20px;
+    line-height: 1;
+  }
+
+  /* STATUS PILLS */
+  .status {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    padding: 4px 10px;
+    border-radius: 2px;
+    margin-bottom: 16px;
+  }
+
+  .status-dot { width: 6px; height: 6px; border-radius: 50%; }
+  .status.active { background: rgba(78,232,122,0.1); color: var(--green); }
+  .status.active .status-dot { background: var(--green); animation: pulse 2s infinite; }
+  .status.pending { background: rgba(232,212,77,0.1); color: var(--accent); }
+  .status.pending .status-dot { background: var(--accent); }
+  .status.critical { background: rgba(232,77,77,0.1); color: var(--red); }
+  .status.critical .status-dot { background: var(--red); }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+  }
+
+  /* CHECKLIST */
+  .checklist { list-style: none; }
+
+  .checklist li {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 10px 0;
+    border-bottom: 1px solid #1e1e1e;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .checklist li:last-child { border-bottom: none; }
+  .checklist li:hover { padding-left: 4px; }
+
+  .check-box {
+    width: 16px;
+    height: 16px;
+    border: 1px solid #444;
+    flex-shrink: 0;
+    margin-top: 2px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+  }
+
+  .check-box.done {
+    background: var(--accent);
+    border-color: var(--accent);
+  }
+
+  .check-box.done::after {
+    content: '✓';
+    font-size: 10px;
+    color: var(--black);
+    font-weight: bold;
+  }
+
+  .check-text {
+    font-size: 13px;
+    line-height: 1.5;
+    color: #ccc;
+    transition: all 0.2s;
+  }
+
+  .check-text.done {
+    color: #555;
+    text-decoration: line-through;
+  }
+
+  .check-meta {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 9px;
+    color: var(--muted);
+    margin-top: 2px;
+  }
+
+  /* METRICS */
+  .metrics {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-top: 4px;
+  }
+
+  .metric {
+    background: #111;
+    padding: 14px;
+    border: 1px solid #222;
+  }
+
+  .metric-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 9px;
+    color: var(--muted);
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+
+  .metric-now {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 24px;
+    line-height: 1;
+    color: var(--white);
+  }
+
+  .metric-target {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    color: var(--accent);
+    margin-top: 4px;
+  }
+
+  .metric-bar {
+    height: 2px;
+    background: #333;
+    margin-top: 8px;
+  }
+
+  .metric-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent), var(--green));
+  }
+
+  /* ROADMAP */
+  .roadmap { margin-top: 4px; }
+
+  .roadmap-item {
+    display: grid;
+    grid-template-columns: 80px 1fr;
+    gap: 16px;
+    margin-bottom: 2px;
+  }
+
+  .roadmap-month {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    padding-top: 12px;
+    text-align: right;
+    line-height: 1.4;
+  }
+
+  .roadmap-content {
+    background: #111;
+    padding: 12px 16px;
+    border-left: 2px solid #333;
+    transition: border-color 0.2s;
+  }
+
+  .roadmap-content.now { border-color: var(--accent); }
+  .roadmap-content.soon { border-color: #333; }
+  .roadmap-content.later { border-color: #1e1e1e; opacity: 0.7; }
+
+  .roadmap-focus {
+    font-size: 12px;
+    font-weight: 600;
+    margin-bottom: 4px;
+    color: var(--white);
+  }
+
+  .roadmap-detail {
+    font-size: 11px;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+
+  /* RESOURCES */
+  .resources { margin-top: 4px; }
+
+  .resource-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 10px 0;
+    border-bottom: 1px solid #1e1e1e;
+  }
+
+  .resource-item:last-child { border-bottom: none; }
+
+  .resource-icon {
+    font-size: 16px;
+    flex-shrink: 0;
+    width: 24px;
+    text-align: center;
+  }
+
+  .resource-text {
+    font-size: 12px;
+    line-height: 1.5;
+    color: #ccc;
+  }
+
+  .resource-text strong {
+    color: var(--white);
+    font-weight: 600;
+  }
+
+  .resource-cat {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 9px;
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+
+  /* WEEKLY RHYTHM */
+  .week-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 4px;
+    margin-top: 4px;
+  }
+
+  .day-col { }
+
+  .day-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 9px;
+    color: var(--muted);
+    text-align: center;
+    margin-bottom: 6px;
+    text-transform: uppercase;
+  }
+
+  .day-item {
+    background: #111;
+    padding: 6px 4px;
+    font-size: 9px;
+    color: #777;
+    text-align: center;
+    margin-bottom: 3px;
+    border: 1px solid #1a1a1a;
+    line-height: 1.3;
+  }
+
+  .day-item.sport { border-color: var(--blue); color: #7ab3e8; }
+  .day-item.mental { border-color: var(--green); color: #7ae89a; }
+  .day-item.work { border-color: var(--accent); color: #e8d07a; }
+  .day-item.off { opacity: 0.3; }
+
+  /* FOOTER */
+  .footer {
+    padding: 24px 40px;
+    border-top: 1px solid #1e1e1e;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: gap;
+  }
+
+  .footer-text {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    color: #333;
+  }
+
+  .footer-motto {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 20px;
+    color: #222;
+    letter-spacing: 3px;
+  }
+
+  /* SCORE */
+  .score-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 8px;
+    margin-top: 4px;
+  }
+
+  .score-item {
+    text-align: center;
+    padding: 16px 8px;
+    background: #111;
+    border: 1px solid #222;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .score-item:hover { border-color: var(--accent); }
+
+  .score-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 40px;
+    line-height: 1;
+    color: var(--white);
+    display: block;
+  }
+
+  .score-area {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 9px;
+    color: var(--muted);
+    text-transform: uppercase;
+    margin-top: 4px;
+    display: block;
+  }
+
+  .score-edit {
+    display: flex;
+    gap: 4px;
+    justify-content: center;
+    margin-top: 8px;
+  }
+
+  .score-btn {
+    width: 20px;
+    height: 20px;
+    background: #222;
+    border: none;
+    color: var(--white);
+    cursor: pointer;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s;
+  }
+
+  .score-btn:hover { background: var(--accent); color: var(--black); }
+
+  /* JOURNAL */
+  .journal-entry {
+    background: #111;
+    padding: 16px;
+    margin-bottom: 8px;
+    border-left: 2px solid #333;
+  }
+
+  .journal-date {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 9px;
+    color: var(--muted);
+    margin-bottom: 8px;
+  }
+
+  .journal-input {
+    background: none;
+    border: none;
+    color: var(--white);
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 13px;
+    width: 100%;
+    resize: none;
+    outline: none;
+    line-height: 1.6;
+  }
+
+  .journal-input::placeholder { color: #444; }
+
+  .add-entry-btn {
+    background: none;
+    border: 1px solid #333;
+    color: var(--muted);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    padding: 10px 20px;
+    cursor: pointer;
+    width: 100%;
+    transition: all 0.2s;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-top: 8px;
+  }
+
+  .add-entry-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* TABS */
+  .tabs {
+    display: flex;
+    gap: 0;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #222;
+  }
+
+  .tab {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    padding: 10px 16px;
+    cursor: pointer;
+    color: var(--muted);
+    border-bottom: 2px solid transparent;
+    transition: all 0.2s;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  .tab.active {
+    color: var(--accent);
+    border-bottom-color: var(--accent);
+  }
+
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+
+  /* SECTION DIVIDER */
+  .section-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 9px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    padding: 24px 40px 8px;
+    border-top: 1px solid #111;
+  }
+
+  @media (max-width: 900px) {
+    .block-wide, .block-full { grid-column: span 1; }
+    .score-grid { grid-template-columns: repeat(3, 1fr); }
+    .week-grid { grid-template-columns: repeat(4, 1fr); }
+    .metrics { grid-template-columns: 1fr; }
+    .section-label { padding: 16px 16px 8px; }
+    .footer { padding: 16px; flex-direction: column; gap: 8px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div>
+    <div class="header-name">АРТЁМ <span>ДЕНИСОВ</span></div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px">
+      <span class="header-tag">СИСТЕМА РОСТА 2026–2027</span>
+      <span class="header-tag" style="background:#1a1a1a;color:#666">VP READY</span>
+      <span class="header-tag" style="background:#1a1a1a;color:#666">ТРИАТЛОН · ОЛИМПИК</span>
+    </div>
+  </div>
+  <div class="header-meta">
+    38 лет · 186 см · 82 кг<br>
+    Директор B2C · 1500+ команда<br>
+    <span id="today-date"></span>
+  </div>
+</div>
+
+<!-- COUNTDOWN -->
+<div class="countdown-bar">
+  <div class="countdown-item">
+    <div class="countdown-num" id="days-to-race">—</div>
+    <div class="countdown-label">дней до<br>триатлона</div>
+  </div>
+  <div class="countdown-divider">/</div>
+  <div class="countdown-item">
+    <div class="countdown-num" id="days-year">—</div>
+    <div class="countdown-label">дней<br>в карте</div>
+  </div>
+  <div class="countdown-divider">/</div>
+  <div class="progress-bar-wrap">
+    <div class="progress-label">
+      <span>ПРОГРЕСС ГОДА</span>
+      <span id="year-pct">—%</span>
+    </div>
+    <div class="progress-track">
+      <div class="progress-fill" id="year-fill" style="width:0%"></div>
+    </div>
+  </div>
+</div>
+
+<!-- SCORE SECTION -->
+<div class="section-label">// ЕЖЕНЕДЕЛЬНЫЙ ПУЛЬС — обновляй каждое воскресенье</div>
+<div style="padding: 0 40px 0; background: var(--gray2); border-bottom: 1px solid #111;">
+  <div style="padding: 20px 0;">
+    <div class="score-grid">
+      <div class="score-item" id="score-career">
+        <span class="score-num" id="v-career">7</span>
+        <span class="score-area">Карьера</span>
+        <div class="score-edit">
+          <button class="score-btn" onclick="changeScore('career',-1)">−</button>
+          <button class="score-btn" onclick="changeScore('career',1)">+</button>
+        </div>
+      </div>
+      <div class="score-item" id="score-sport">
+        <span class="score-num" id="v-sport">8</span>
+        <span class="score-area">Спорт</span>
+        <div class="score-edit">
+          <button class="score-btn" onclick="changeScore('sport',-1)">−</button>
+          <button class="score-btn" onclick="changeScore('sport',1)">+</button>
+        </div>
+      </div>
+      <div class="score-item" id="score-mental">
+        <span class="score-num" id="v-mental">6</span>
+        <span class="score-area">Ментал</span>
+        <div class="score-edit">
+          <button class="score-btn" onclick="changeScore('mental',-1)">−</button>
+          <button class="score-btn" onclick="changeScore('mental',1)">+</button>
+        </div>
+      </div>
+      <div class="score-item" id="score-family">
+        <span class="score-num" id="v-family">5</span>
+        <span class="score-area">Семья</span>
+        <div class="score-edit">
+          <button class="score-btn" onclick="changeScore('family',-1)">−</button>
+          <button class="score-btn" onclick="changeScore('family',1)">+</button>
+        </div>
+      </div>
+      <div class="score-item" style="border-color: var(--accent);">
+        <span class="score-num" id="v-total" style="color:var(--accent)">—</span>
+        <span class="score-area" style="color:var(--accent)">Итого/40</span>
+        <div style="height:28px"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MAIN BLOCKS -->
+<div class="section-label">// АКТИВНЫЕ ТРЕКИ</div>
+<div class="main">
+
+  <!-- SPORT -->
+  <div class="block">
+    <div class="block-num">01</div>
+    <div class="block-tag">// спорт</div>
+    <div class="block-title" style="color:var(--blue)">ТРИАТЛОН<br>ОЛИМПИК</div>
+    <div class="status active"><div class="status-dot"></div>АКТИВНО · 21 ИЮНЯ</div>
+
+    <div class="metrics">
+      <div class="metric">
+        <div class="metric-label">Плавание/100м</div>
+        <div class="metric-now">1:36</div>
+        <div class="metric-target">→ цель 1:20</div>
+        <div class="metric-bar"><div class="metric-bar-fill" style="width:65%"></div></div>
+      </div>
+      <div class="metric">
+        <div class="metric-label">Велосипед 40км</div>
+        <div class="metric-now">1:02</div>
+        <div class="metric-target">→ цель 1:00</div>
+        <div class="metric-bar"><div class="metric-bar-fill" style="width:85%"></div></div>
+      </div>
+      <div class="metric">
+        <div class="metric-label">Бег темп/км</div>
+        <div class="metric-now">4:15</div>
+        <div class="metric-target">→ цель 4:00 ⚠️</div>
+        <div class="metric-bar"><div class="metric-bar-fill" style="width:55%"></div></div>
+      </div>
+      <div class="metric">
+        <div class="metric-label">Тренировок/нед</div>
+        <div class="metric-now">5-6</div>
+        <div class="metric-target">→ держать</div>
+        <div class="metric-bar"><div class="metric-bar-fill" style="width:90%"></div></div>
+      </div>
+    </div>
+
+    <div style="margin-top:16px">
+      <div class="block-tag" style="margin-bottom:8px">// фокус до старта</div>
+      <ul class="checklist" id="sport-list">
+        <li onclick="toggle(this)">
+          <div class="check-box"></div>
+          <div><div class="check-text">Интервалы бег: 6×1км на 3:55 — 2×/неделю</div><div class="check-meta">ГЛАВНЫЙ ПРИОРИТЕТ</div></div>
+        </li>
+        <li onclick="toggle(this)">
+          <div class="check-box"></div>
+          <div><div class="check-text">Кирпичная тренировка вело→бег — 1×/неделю</div><div class="check-meta">ПЕРЕХОДНАЯ ЗОНА</div></div>
+        </li>
+        <li onclick="toggle(this)">
+          <div class="check-box"></div>
+          <div><div class="check-text">Отработать T1/T2 зоны — 3-4 раза физически</div><div class="check-meta">СЭКОНОМИШЬ 2-3 МИНУТЫ</div></div>
+        </li>
+        <li onclick="toggle(this)">
+          <div class="check-box"></div>
+          <div><div class="check-text">Tapering: -30% объём за 2 недели до старта</div><div class="check-meta">С 7 ИЮНЯ</div></div>
+        </li>
+        <li onclick="toggle(this)">
+          <div class="check-box"></div>
+          <div><div class="check-text">Выбрать следующий старт — сентябрь/октябрь</div><div class="check-meta">ПОСЛЕ 21 ИЮНЯ</div></div>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- CAREER -->
+  <div class="block">
+    <div class="block-num">02</div>
+    <div class="block-tag">// карьера</div>
+    <div class="block-title" style="color:var(--accent)">VP/C-LEVEL<br>ПЕРЕХОД</div>
+    <div class="status pending"><div class="status-dot"></div>СТАРТ — ИЮЛЬ 2026</div>
+
+    <ul class="checklist">
+      <li onclick="toggle(this)">
+        <div class="check-box"></div>
+        <div><div class="check-text">Переписать резюме: продажа → не отчёт</div><div class="check-meta">МАЙ · ФАЗА УПАКОВКИ</div></div>
+      </li>
+      <li onclick="toggle(this)">
+        <div class="check-box"></div>
+        <div><div class="check-text">Сделать LinkedIn на 100% + английская версия</div><div class="check-meta">МАЙ</div></div>
+      </li>
+      <li onclick="toggle(this)">
+        <div class="check-box"></div>
+        <div><div class="check-text">Сформулировать «питч за 90 секунд»</div><div class="check-meta">МАЙ</div></div>
+      </li>
+      <li onclick="toggle(this)">
+        <div class="check-box"></div>
+        <div><div class="check-text">Список 5 целевых компаний с именами</div><div class="check-meta">ИЮНЬ</div></div>
+      </li>
+      <li onclick="toggle(this)">
+        <div class="check-box"></div>
+        <div><div class="check-text">Выйти на хедхантеров: Ward Howell, Kontakt, Cornerstone</div><div class="check-meta">ИЮЛЬ</div></div>
+      </li>
+      <li onclick="toggle(this)">
+        <div class="check-box"></div>
+        <div><div class="check-text">2 кофе-встречи в неделю с рынком</div><div class="check-meta">АВГ-СЕН · АКТИВНЫЙ ПОИСК</div></div>
+      </li>
+      <li onclick="toggle(this)">
+        <div class="check-box"></div>
+        <div><div class="check-text">3 рекомендации на LinkedIn от партнёров</div><div class="check-meta">ИЮЛЬ</div></div>
+      </li>
+    </ul>
+  </div>
+
+  <!-- MENTAL -->
+  <div class="block">
+    <div class="block-num">03</div>
+    <div class="block-tag">// ментальное</div>
+    <div class="block-title" style="color:var(--green)">СИСТЕМА,<br>НЕ ПОЖАР</div>
+    <div class="status critical"><div class="status-dot"></div>ТРЕБУЕТ ВНИМАНИЯ СЕЙЧАС</div>
+
+    <ul class="checklist">
+      <li onclick="toggle(this)">
+        <div class="check-box"></div>
+        <div><div class="check-text">Визит к психиатру — ревизия дозы цепралекса</div><div class="check-meta">АПРЕЛЬ · СРОЧНО</div></div>
+      </li>
+      <li onclick="toggle(this)">
+        <div class="check-box"></div>
+        <div><div class="check-text">Найти психотерапевта КПТ — 1×/2 недели регулярно</div><div class="check-meta">АПРЕЛЬ-МАЙ</div></div>
+      </li>
+      <li onclick="toggle(this)">
+        <div class="check-box"></div>
+        <div><div class="check-text">Утренний журнал 10 мин: тревога / контроль / действие</div><div class="check-meta">ЕЖЕДНЕВНО</div></div>
+      </li>
+      <li onclick="toggle(this)">
+        <div class="check-box"></div>
+        <div><div class="check-text">Сон: минимум 7.5 часов при текущих нагрузках</div><div class="check-meta">ЕЖЕДНЕВНО</div></div>
+      </li>
+      <li onclick="toggle(this)">
+        <div class="check-box"></div>
+        <div><div class="check-text">Oura Ring — купить, настроить мониторинг HRV</div><div class="check-meta">АПРЕЛЬ</div></div>
+      </li>
+      <li onclick="toggle(this)">
+        <div class="check-box"></div>
+        <div><div class="check-text">Обсудить с врачом: магний L-треонат + ашваганда</div><div class="check-meta">МАЙ</div></div>
+      </li>
+    </ul>
+  </div>
+
+  <!-- FAMILY -->
+  <div class="block">
+    <div class="block-num">04</div>
+    <div class="block-tag">// семья</div>
+    <div class="block-title" style="color:var(--red)">ЧЕСТНЫЙ<br>РАЗГОВОР</div>
+    <div class="status critical"><div class="status-dot"></div>ПОСЛЕ ТРИАТЛОНА · ИЮЛЬ</div>
+
+    <ul class="checklist">
+      <li onclick="toggle(this)">
+        <div class="check-box"></div>
+        <div><div class="check-text">Разговор с женой: как видим следующие 5 лет</div><div class="check-meta">ИЮЛЬ · НЕ ОТКЛАДЫВАТЬ</div></div>
+      </li>
+      <li onclick="toggle(this)">
+        <div class="check-box"></div>
+        <div><div class="check-text">Парный терапевт — минимум 1 попытка</div><div class="check-meta">ИЮЛЬ-АВГ</div></div>
+      </li>
+      <li onclick="toggle(this)">
+        <div class="check-box"></div>
+        <div><div class="check-text">Ким: 1 ритуал в неделю только вдвоём без телефона</div><div class="check-meta">ЕЖЕНЕДЕЛЬНО · СЕЙЧАС</div></div>
+      </li>
+      <li onclick="toggle(this)">
+        <div class="check-box"></div>
+        <div><div class="check-text">Прочитать Готтман «7 принципов» — основа разговора</div><div class="check-meta">МАЙ-ИЮНЬ</div></div>
+      </li>
+    </ul>
+  </div>
+
+  <!-- LEARNING -->
+  <div class="block block-wide">
+    <div class="block-num">05</div>
+    <div class="block-tag">// обучение и мышление</div>
+    <div class="block-title">РАСШИРЕНИЕ<br>КАРТИНЫ МИРА</div>
+    <div class="status active"><div class="status-dot"></div>ФОРМАТ: ПОДКАСТЫ НА ТРЕНИРОВКАХ + САММАРИ</div>
+
+    <div class="tabs">
+      <div class="tab active" onclick="switchTab(this,'books')">📖 Книги</div>
+      <div class="tab" onclick="switchTab(this,'podcasts')">🎧 Подкасты</div>
+      <div class="tab" onclick="switchTab(this,'tools')">🛠️ Инструменты</div>
+      <div class="tab" onclick="switchTab(this,'stack')">💊 Стек</div>
+    </div>
+
+    <div class="tab-content active" id="tab-books">
+      <div class="resources">
+        <div class="resource-item">
+          <div class="resource-icon">📖</div>
+          <div class="resource-text">
+            <div class="resource-cat">карьера · управление</div>
+            <strong>The First 90 Days</strong> — Уоткинс · Читай ДО оффера, не после
+          </div>
+        </div>
+        <div class="resource-item">
+          <div class="resource-icon">📖</div>
+          <div class="resource-text">
+            <div class="resource-cat">карьера · переход</div>
+            <strong>Играй на повышение</strong> — Ибарра · Точно в твою ситуацию
+          </div>
+        </div>
+        <div class="resource-item">
+          <div class="resource-icon">📖</div>
+          <div class="resource-text">
+            <div class="resource-cat">продукт · VP Product</div>
+            <strong>Inspired</strong> — Марти Каган · Библия продакта. Нужна для новой роли
+          </div>
+        </div>
+        <div class="resource-item">
+          <div class="resource-icon">📖</div>
+          <div class="resource-text">
+            <div class="resource-cat">мышление · масштаб</div>
+            <strong>Антихрупкость</strong> — Талеб · Для человека в твоей точке неопределённости
+          </div>
+        </div>
+        <div class="resource-item">
+          <div class="resource-icon">📖</div>
+          <div class="resource-text">
+            <div class="resource-cat">мышление · смысл</div>
+            <strong>Экзистенциальная психотерапия</strong> — Ялом · После Франкла — следующий уровень
+          </div>
+        </div>
+        <div class="resource-item">
+          <div class="resource-icon">📖</div>
+          <div class="resource-text">
+            <div class="resource-cat">наука · картина мира</div>
+            <strong>Вы конечно шутите, мистер Фейнман</strong> · После Хокинга — твой следующий
+          </div>
+        </div>
+        <div class="resource-item">
+          <div class="resource-icon">📖</div>
+          <div class="resource-text">
+            <div class="resource-cat">семья</div>
+            <strong>7 принципов счастливого брака</strong> — Готтман · Основа для разговора с женой
+          </div>
+        </div>
+        <div class="resource-item">
+          <div class="resource-icon">📖</div>
+          <div class="resource-text">
+            <div class="resource-cat">спорт · мотивация</div>
+            <strong>Не сдавайся</strong> — Крис Маккормак · Чемпион Ironman. Читается за вечер
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tab-content" id="tab-podcasts">
+      <div class="resources">
+        <div class="resource-item">
+          <div class="resource-icon">🎧</div>
+          <div class="resource-text">
+            <div class="resource-cat">наука · смысл · длинные разговоры</div>
+            <strong>Lex Fridman Podcast</strong> · Физики, философы, CEO. На длинные велотренировки
+          </div>
+        </div>
+        <div class="resource-item">
+          <div class="resource-icon">🎧</div>
+          <div class="resource-text">
+            <div class="resource-cat">нейронаука · протоколы · без воды</div>
+            <strong>Huberman Lab</strong> · Сон, стресс, дофамин, физнагрузка и мозг. Обязательно
+          </div>
+        </div>
+        <div class="resource-item">
+          <div class="resource-icon">🎧</div>
+          <div class="resource-text">
+            <div class="resource-cat">продукт · VP-уровень</div>
+            <strong>Lenny's Podcast</strong> · Интервью с VP Product топ-компаний. Готовься к роли
+          </div>
+        </div>
+        <div class="resource-item">
+          <div class="resource-icon">🎧</div>
+          <div class="resource-text">
+            <div class="resource-cat">триатлон · конкретно</div>
+            <strong>Triathlon Taren</strong> · Без воды, по делу. На беговые тренировки
+          </div>
+        </div>
+        <div class="resource-item">
+          <div class="resource-icon">🎧</div>
+          <div class="resource-text">
+            <div class="resource-cat">лидерство · масштаб</div>
+            <strong>Masters of Scale</strong> — Рид Хоффман · Как думают основатели компаний
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tab-content" id="tab-tools">
+      <div class="resources">
+        <div class="resource-item">
+          <div class="resource-icon">📱</div>
+          <div class="resource-text">
+            <div class="resource-cat">обучение · формат</div>
+            <strong>SmartReading / Blinkist</strong> · Саммари за 15 мин. Если зацепило — углубляешься
+          </div>
+        </div>
+        <div class="resource-item">
+          <div class="resource-icon">🏃</div>
+          <div class="resource-text">
+            <div class="resource-cat">тренировки · AI-план</div>
+            <strong>TrainerRoad / Trainasone</strong> · AI-адаптивные планы под твой уровень
+          </div>
+        </div>
+        <div class="resource-item">
+          <div class="resource-icon">⌚</div>
+          <div class="resource-text">
+            <div class="resource-cat">здоровье · сон · HRV</div>
+            <strong>Oura Ring Gen4</strong> · Трекинг HRV, сна, восстановления. Изменит понимание себя
+          </div>
+        </div>
+        <div class="resource-item">
+          <div class="resource-icon">⌚</div>
+          <div class="resource-text">
+            <div class="resource-cat">спорт · мультиспорт</div>
+            <strong>Garmin Forerunner 965</strong> · Если нет — купить до старта
+          </div>
+        </div>
+        <div class="resource-item">
+          <div class="resource-icon">🤖</div>
+          <div class="resource-text">
+            <div class="resource-cat">ИИ · практика</div>
+            <strong>Claude / ChatGPT</strong> · Строй инструменты каждую неделю. Это лучшее обучение ИИ
+          </div>
+        </div>
+        <div class="resource-item">
+          <div class="resource-icon">📊</div>
+          <div class="resource-text">
+            <div class="resource-cat">карьерный поиск</div>
+            <strong>Notion</strong> · Трекинг: компания / контакт / статус / следующий шаг
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tab-content" id="tab-stack">
+      <div class="resources">
+        <div class="resource-item">
+          <div class="resource-icon">💊</div>
+          <div class="resource-text">
+            <div class="resource-cat">базовый стек · спорт + мозг</div>
+            <strong>Магний глицинат</strong> · Сон + мышцы. 400мг перед сном
+          </div>
+        </div>
+        <div class="resource-item">
+          <div class="resource-icon">💊</div>
+          <div class="resource-text">
+            <div class="resource-cat">когнитивная функция</div>
+            <strong>Магний L-треонат</strong> · Обсуди с врачом. Проходит через ГЭБ
+          </div>
+        </div>
+        <div class="resource-item">
+          <div class="resource-icon">💊</div>
+          <div class="resource-text">
+            <div class="resource-cat">кортизол · адаптоген</div>
+            <strong>Ашваганда KSM-66</strong> · Снижает кортизол при хроническом стрессе. С врачом
+          </div>
+        </div>
+        <div class="resource-item">
+          <div class="resource-icon">💊</div>
+          <div class="resource-text">
+            <div class="resource-cat">базовый · иммунитет</div>
+            <strong>Омега-3 + Витамин D3</strong> · 2-3г EPA/DHA, 4000 IU D3. Обязательный базис
+          </div>
+        </div>
+        <div class="resource-item">
+          <div class="resource-icon">⚠️</div>
+          <div class="resource-text">
+            <div class="resource-cat">важно</div>
+            <strong>Всё новое — согласовывать с психиатром</strong> · Цепралекс имеет взаимодействия
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- WEEKLY RHYTHM -->
+<div class="section-label">// НЕДЕЛЬНЫЙ РИТМ — твоя операционная система</div>
+<div style="padding: 0 40px 32px; background: var(--gray2); border-bottom: 1px solid #111;">
+  <div class="week-grid" style="margin-top:20px">
+    <div class="day-col">
+      <div class="day-label">ПН</div>
+      <div class="day-item sport">Плавание</div>
+      <div class="day-item work">Рабочий фокус</div>
+      <div class="day-item mental">Журнал 10мин</div>
+    </div>
+    <div class="day-col">
+      <div class="day-label">ВТ</div>
+      <div class="day-item sport">Интервалы бег</div>
+      <div class="day-item work">Обучение</div>
+      <div class="day-item mental">Журнал 10мин</div>
+    </div>
+    <div class="day-col">
+      <div class="day-label">СР</div>
+      <div class="day-item sport">Велосипед</div>
+      <div class="day-item work">Нетворк / встречи</div>
+      <div class="day-item mental">Журнал 10мин</div>
+    </div>
+    <div class="day-col">
+      <div class="day-label">ЧТ</div>
+      <div class="day-item sport">Плавание</div>
+      <div class="day-item work">Рабочий фокус</div>
+      <div class="day-item mental">Журнал 10мин</div>
+    </div>
+    <div class="day-col">
+      <div class="day-label">ПТ</div>
+      <div class="day-item sport">Кирпич вело→бег</div>
+      <div class="day-item work">Карьерный трек</div>
+      <div class="day-item mental">Журнал 10мин</div>
+    </div>
+    <div class="day-col">
+      <div class="day-label">СБ</div>
+      <div class="day-item sport">Длинная тренировка</div>
+      <div class="day-item" style="color:#555">Ким — ритуал</div>
+      <div class="day-item off">Цифровой детокс</div>
+    </div>
+    <div class="day-col">
+      <div class="day-label">ВС</div>
+      <div class="day-item sport">Восстановление / йога</div>
+      <div class="day-item" style="color:var(--accent);border-color:var(--accent)">Обновить пульс ↑</div>
+      <div class="day-item mental">Рефлексия недели</div>
+    </div>
+  </div>
+</div>
+
+<!-- ROADMAP -->
+<div class="section-label">// ДОРОЖНАЯ КАРТА</div>
+<div style="padding: 20px 40px 32px;">
+  <div class="roadmap">
+    <div class="roadmap-item">
+      <div class="roadmap-month">АПР<br>МАЙ</div>
+      <div class="roadmap-content now">
+        <div class="roadmap-focus">🔥 ОСТРАЯ ФАЗА + ПОДГОТОВКА</div>
+        <div class="roadmap-detail">Разбор ДТП-ситуации · Психиатр (ревизия дозы) · Найти КПТ-терапевта · Oura Ring · Триатлон-фокус: интервалы бег · Кирпичные тренировки · Начало упаковки резюме</div>
+      </div>
+    </div>
+    <div class="roadmap-item">
+      <div class="roadmap-month">ИЮНЬ</div>
+      <div class="roadmap-content now">
+        <div class="roadmap-focus">🏁 СТАРТ 21 ИЮНЯ + ПАУЗА</div>
+        <div class="roadmap-detail">Tapering -30% · Олимпийский триатлон · Отдых 1 неделю после · Выбрать следующий старт осенью</div>
+      </div>
+    </div>
+    <div class="roadmap-item">
+      <div class="roadmap-month">ИЮЛЬ</div>
+      <div class="roadmap-content soon">
+        <div class="roadmap-focus">💬 СЕМЬЯ + КАРЬЕРНЫЙ СТАРТ</div>
+        <div class="roadmap-detail">Честный разговор с женой · Парный терапевт · LinkedIn 100% · Список 5 компаний · Хедхантеры</div>
+      </div>
+    </div>
+    <div class="roadmap-item">
+      <div class="roadmap-month">АВГ<br>СЕН</div>
+      <div class="roadmap-content soon">
+        <div class="roadmap-focus">🎯 АКТИВНЫЙ ПОИСК</div>
+        <div class="roadmap-detail">2 кофе-встречи в неделю · Интервью · Следующий триатлон-старт · Продолжение терапии</div>
+      </div>
+    </div>
+    <div class="roadmap-item">
+      <div class="roadmap-month">ОКТ<br>ДЕК</div>
+      <div class="roadmap-content later">
+        <div class="roadmap-focus">📋 РЕШЕНИЯ И ФИНАЛ</div>
+        <div class="roadmap-detail">Офферы / переговоры · Решение по семье · План Ironman 70.3 на 2027 · Итоги года</div>
+      </div>
+    </div>
+    <div class="roadmap-item">
+      <div class="roadmap-month">ЯНВ<br>МАР 27</div>
+      <div class="roadmap-content later">
+        <div class="roadmap-focus">🚀 НОВЫЙ УРОВЕНЬ</div>
+        <div class="roadmap-detail">Выход на новую роль · Ironman 70.3 в горизонте · Стабильный ментальный фон · Ясность в семье</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- JOURNAL -->
+<div class="section-label">// ЖУРНАЛ — 3 вопроса каждое воскресенье</div>
+<div style="padding: 20px 40px 40px;">
+  <div id="journal-entries">
+    <div class="journal-entry">
+      <div class="journal-date">ВОСКРЕСЕНЬЕ · <span id="entry-date"></span> · НЕДЕЛЯ 1</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px">
+        <div>
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--muted);margin-bottom:6px">ЧТО ТРЕВОЖИТ</div>
+          <textarea class="journal-input" rows="3" placeholder="Напиши честно..."></textarea>
+        </div>
+        <div>
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--muted);margin-bottom:6px">ЧТО КОНТРОЛИРУЮ</div>
+          <textarea class="journal-input" rows="3" placeholder="Что в моих руках..."></textarea>
+        </div>
+        <div>
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--muted);margin-bottom:6px">1 ДЕЙСТВИЕ ЭТОЙ НЕДЕЛИ</div>
+          <textarea class="journal-input" rows="3" placeholder="Одно конкретное..."></textarea>
+        </div>
+      </div>
+    </div>
+  </div>
+  <button class="add-entry-btn" onclick="addJournalEntry()">+ Добавить запись следующей недели</button>
+</div>
+
+<div class="footer">
+  <div class="footer-text">ARTEM DENISOV GROWTH SYSTEM · v1.0 · 2026</div>
+  <div class="footer-motto">ОСМЫСЛЕННАЯ ЖИЗНЬ</div>
+  <div class="footer-text">Обновляй каждое воскресенье</div>
+</div>
+
+<script>
+  // DATES
+  const today = new Date();
+  const raceDate = new Date('2026-06-21');
+  const yearEnd = new Date('2027-03-31');
+  const yearStart = new Date('2026-04-05');
+
+  const daysToRace = Math.ceil((raceDate - today) / (1000*60*60*24));
+  const daysTotal = Math.ceil((yearEnd - yearStart) / (1000*60*60*24));
+  const daysPassed = Math.ceil((today - yearStart) / (1000*60*60*24));
+  const yearPct = Math.max(0, Math.min(100, Math.round(daysPassed / daysTotal * 100)));
+
+  document.getElementById('days-to-race').textContent = Math.max(0, daysToRace);
+  document.getElementById('days-year').textContent = daysTotal;
+  document.getElementById('year-pct').textContent = yearPct + '%';
+  document.getElementById('year-fill').style.width = yearPct + '%';
+
+  const opts = { day: 'numeric', month: 'long', year: 'numeric' };
+  document.getElementById('today-date').textContent = today.toLocaleDateString('ru-RU', opts);
+  document.getElementById('entry-date').textContent = today.toLocaleDateString('ru-RU', opts);
+
+  // SCORES
+  const scores = { career: 7, sport: 8, mental: 6, family: 5 };
+
+  function updateTotal() {
+    const t = Object.values(scores).reduce((a,b) => a+b, 0);
+    document.getElementById('v-total').textContent = t;
+    const pct = t / 40;
+    const el = document.getElementById('v-total');
+    el.style.color = pct > 0.75 ? 'var(--green)' : pct > 0.5 ? 'var(--accent)' : 'var(--red)';
+  }
+
+  function changeScore(key, delta) {
+    scores[key] = Math.max(1, Math.min(10, scores[key] + delta));
+    document.getElementById('v-' + key).textContent = scores[key];
+    updateTotal();
+  }
+
+  updateTotal();
+
+  // CHECKLIST
+  function toggle(li) {
+    const box = li.querySelector('.check-box');
+    const text = li.querySelector('.check-text');
+    box.classList.toggle('done');
+    text.classList.toggle('done');
+  }
+
+  // TABS
+  function switchTab(tabEl, id) {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+    tabEl.classList.add('active');
+    document.getElementById('tab-' + id).classList.add('active');
+  }
+
+  // JOURNAL
+  let weekNum = 1;
+  function addJournalEntry() {
+    weekNum++;
+    const d = new Date();
+    d.setDate(d.getDate() + (weekNum-1)*7);
+    const dateStr = d.toLocaleDateString('ru-RU', { day:'numeric', month:'long', year:'numeric' });
+    const entry = document.createElement('div');
+    entry.className = 'journal-entry';
+    entry.innerHTML = `
+      <div class="journal-date">ВОСКРЕСЕНЬЕ · ${dateStr} · НЕДЕЛЯ ${weekNum}</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px">
+        <div>
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--muted);margin-bottom:6px">ЧТО ТРЕВОЖИТ</div>
+          <textarea class="journal-input" rows="3" placeholder="Напиши честно..."></textarea>
+        </div>
+        <div>
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--muted);margin-bottom:6px">ЧТО КОНТРОЛИРУЮ</div>
+          <textarea class="journal-input" rows="3" placeholder="Что в моих руках..."></textarea>
+        </div>
+        <div>
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--muted);margin-bottom:6px">1 ДЕЙСТВИЕ ЭТОЙ НЕДЕЛИ</div>
+          <textarea class="journal-input" rows="3" placeholder="Одно конкретное..."></textarea>
+        </div>
+      </div>
+    `;
+    document.getElementById('journal-entries').appendChild(entry);
+    entry.scrollIntoView({ behavior: 'smooth' });
+  }
+</script>
+</body>
+</html>
