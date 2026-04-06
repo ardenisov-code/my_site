@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
@@ -31,17 +32,17 @@ html { scroll-behavior: smooth; }
 body { background: var(--bg); color: var(--white); font-family: 'Manrope', sans-serif; min-height: 100vh; overflow-x: hidden; }
 
 .nav {
-  position: sticky; top: 0; z-index: 100;
-  background: rgba(8,8,8,0.97); backdrop-filter: blur(10px);
-  border-bottom: 1px solid var(--bg4);
-  display: flex; align-items: center; padding: 0 24px; overflow-x: auto;
+position: sticky; top: 0; z-index: 100;
+background: rgba(8,8,8,0.97); backdrop-filter: blur(10px);
+border-bottom: 1px solid var(–bg4);
+display: flex; align-items: center; padding: 0 24px; overflow-x: auto;
 }
-.nav-logo { font-family: 'Bebas Neue', sans-serif; font-size: 20px; letter-spacing: 3px; color: var(--accent); padding: 14px 0; margin-right: 32px; white-space: nowrap; }
-.nav-item { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--muted); padding: 16px 14px; cursor: pointer; transition: color 0.2s; text-transform: uppercase; letter-spacing: 1px; border-bottom: 2px solid transparent; white-space: nowrap; }
-.nav-item:hover { color: var(--white); }
-.nav-item.active { color: var(--accent); border-bottom-color: var(--accent); }
-.nav-right { margin-left: auto; font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--muted); display: flex; align-items: center; gap: 16px; }
-.race-badge { background: var(--accent); color: var(--bg); padding: 4px 10px; font-weight: 700; font-size: 10px; animation: pulse-badge 2s infinite; }
+.nav-logo { font-family: ‘Bebas Neue’, sans-serif; font-size: 20px; letter-spacing: 3px; color: var(–accent); padding: 14px 0; margin-right: 32px; white-space: nowrap; }
+.nav-item { font-family: ‘JetBrains Mono’, monospace; font-size: 10px; color: var(–muted); padding: 16px 14px; cursor: pointer; transition: color 0.2s; text-transform: uppercase; letter-spacing: 1px; border-bottom: 2px solid transparent; white-space: nowrap; }
+.nav-item:hover { color: var(–white); }
+.nav-item.active { color: var(–accent); border-bottom-color: var(–accent); }
+.nav-right { margin-left: auto; font-family: ‘JetBrains Mono’, monospace; font-size: 10px; color: var(–muted); display: flex; align-items: center; gap: 16px; }
+.race-badge { background: var(–accent); color: var(–bg); padding: 4px 10px; font-weight: 700; font-size: 10px; animation: pulse-badge 2s infinite; }
 @keyframes pulse-badge { 0%,100%{opacity:1}50%{opacity:0.7} }
 
 .page { display: none; padding: 28px 24px; max-width: 1400px; margin: 0 auto; }
@@ -49,385 +50,388 @@ body { background: var(--bg); color: var(--white); font-family: 'Manrope', sans-
 
 /* HERO */
 .hero { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 2px; margin-bottom: 2px; }
-.hero-card { background: var(--bg2); padding: 24px; border: 1px solid var(--bg4); position: relative; overflow: hidden; }
-.hero-card::before { content:''; position:absolute; top:0;left:0;right:0; height:2px; }
-.hero-card.c-sport::before{background:var(--blue)}.hero-card.c-career::before{background:var(--accent)}.hero-card.c-mental::before{background:var(--green)}.hero-card.c-family::before{background:var(--red)}
-.hero-label { font-family:'JetBrains Mono',monospace; font-size:9px; color:var(--muted); text-transform:uppercase; letter-spacing:2px; margin-bottom:12px; }
-.hero-value { font-family:'Bebas Neue',sans-serif; font-size:56px; line-height:1; margin-bottom:4px; }
-.c-sport .hero-value{color:var(--blue)}.c-career .hero-value{color:var(--accent)}.c-mental .hero-value{color:var(--green)}.c-family .hero-value{color:var(--red)}
-.hero-sub { font-size:11px; color:var(--muted); line-height:1.5; }
-.hero-bar { height:3px; background:var(--bg4); margin-top:16px; }
+.hero-card { background: var(–bg2); padding: 24px; border: 1px solid var(–bg4); position: relative; overflow: hidden; }
+.hero-card::before { content:’’; position:absolute; top:0;left:0;right:0; height:2px; }
+.hero-card.c-sport::before{background:var(–blue)}.hero-card.c-career::before{background:var(–accent)}.hero-card.c-mental::before{background:var(–green)}.hero-card.c-family::before{background:var(–red)}
+.hero-label { font-family:‘JetBrains Mono’,monospace; font-size:9px; color:var(–muted); text-transform:uppercase; letter-spacing:2px; margin-bottom:12px; }
+.hero-value { font-family:‘Bebas Neue’,sans-serif; font-size:56px; line-height:1; margin-bottom:4px; }
+.c-sport .hero-value{color:var(–blue)}.c-career .hero-value{color:var(–accent)}.c-mental .hero-value{color:var(–green)}.c-family .hero-value{color:var(–red)}
+.hero-sub { font-size:11px; color:var(–muted); line-height:1.5; }
+.hero-bar { height:3px; background:var(–bg4); margin-top:16px; }
 .hero-bar-fill { height:100%; transition:width 0.8s ease; }
-.c-sport .hero-bar-fill{background:var(--blue)}.c-career .hero-bar-fill{background:var(--accent)}.c-mental .hero-bar-fill{background:var(--green)}.c-family .hero-bar-fill{background:var(--red)}
+.c-sport .hero-bar-fill{background:var(–blue)}.c-career .hero-bar-fill{background:var(–accent)}.c-mental .hero-bar-fill{background:var(–green)}.c-family .hero-bar-fill{background:var(–red)}
 
 /* COUNTDOWN */
-.countdown-strip { background:var(--bg3); border:1px solid var(--bg4); padding:20px 24px; display:flex; align-items:center; gap:40px; margin-bottom:2px; flex-wrap:wrap; }
+.countdown-strip { background:var(–bg3); border:1px solid var(–bg4); padding:20px 24px; display:flex; align-items:center; gap:40px; margin-bottom:2px; flex-wrap:wrap; }
 .cd-item{text-align:center}
-.cd-num { font-family:'Bebas Neue',sans-serif; font-size:48px; color:var(--accent); line-height:1; display:block; }
-.cd-label { font-family:'JetBrains Mono',monospace; font-size:9px; color:var(--muted); text-transform:uppercase; }
+.cd-num { font-family:‘Bebas Neue’,sans-serif; font-size:48px; color:var(–accent); line-height:1; display:block; }
+.cd-label { font-family:‘JetBrains Mono’,monospace; font-size:9px; color:var(–muted); text-transform:uppercase; }
 .progress-section{flex:1;min-width:200px}
 .prog-row{display:flex;align-items:center;gap:12px;margin-bottom:8px}
-.prog-label{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);width:80px;flex-shrink:0}
-.prog-track{flex:1;height:4px;background:var(--bg4)}
+.prog-label{font-family:‘JetBrains Mono’,monospace;font-size:9px;color:var(–muted);width:80px;flex-shrink:0}
+.prog-track{flex:1;height:4px;background:var(–bg4)}
 .prog-fill{height:100%;transition:width 1s ease}
-.prog-pct{font-family:'JetBrains Mono',monospace;font-size:9px;width:32px;text-align:right}
+.prog-pct{font-family:‘JetBrains Mono’,monospace;font-size:9px;width:32px;text-align:right}
 
 /* HEATMAP */
-.heatmap-section{background:var(--bg2);border:1px solid var(--bg4);padding:24px;margin-bottom:2px}
-.section-title{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:2px;margin-bottom:6px;display:flex;align-items:center;gap:12px}
-.section-sub{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);margin-bottom:20px;text-transform:uppercase;letter-spacing:1px}
+.heatmap-section{background:var(–bg2);border:1px solid var(–bg4);padding:24px;margin-bottom:2px}
+.section-title{font-family:‘Bebas Neue’,sans-serif;font-size:22px;letter-spacing:2px;margin-bottom:6px;display:flex;align-items:center;gap:12px}
+.section-sub{font-family:‘JetBrains Mono’,monospace;font-size:9px;color:var(–muted);margin-bottom:20px;text-transform:uppercase;letter-spacing:1px}
 .heatmap-grid{display:flex;gap:3px;flex-wrap:wrap}
 .hm-week{display:flex;flex-direction:column;gap:3px}
 .hm-cell{width:14px;height:14px;border-radius:2px;cursor:pointer;transition:transform 0.1s;position:relative}
 .hm-cell:hover{transform:scale(1.4);z-index:10}
-.hm-cell.score-0{background:var(--bg4)}.hm-cell.score-1{background:#1a2e1a}.hm-cell.score-2{background:#1e4020}.hm-cell.score-3{background:#235226}.hm-cell.score-4{background:#2a6830}.hm-cell.score-5{background:#357d3c}.hm-cell.score-6{background:#4a9450}.hm-cell.score-7{background:#62ac68}.hm-cell.score-8{background:#82c488}.hm-cell.score-9{background:#a8d9ac}.hm-cell.score-10{background:var(--accent)}
+.hm-cell.score-0{background:var(–bg4)}.hm-cell.score-1{background:#1a2e1a}.hm-cell.score-2{background:#1e4020}.hm-cell.score-3{background:#235226}.hm-cell.score-4{background:#2a6830}.hm-cell.score-5{background:#357d3c}.hm-cell.score-6{background:#4a9450}.hm-cell.score-7{background:#62ac68}.hm-cell.score-8{background:#82c488}.hm-cell.score-9{background:#a8d9ac}.hm-cell.score-10{background:var(–accent)}
 .hm-cell.future{background:#111;border:1px solid #1e1e1e;opacity:0.5}
-.hm-cell.today{border:2px solid var(--accent)!important}
+.hm-cell.today{border:2px solid var(–accent)!important}
 .dot-legend{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:12px}
-.dl-item{display:flex;align-items:center;gap:5px;font-family:'JetBrains Mono',monospace;font-size:8px;color:var(--muted)}
+.dl-item{display:flex;align-items:center;gap:5px;font-family:‘JetBrains Mono’,monospace;font-size:8px;color:var(–muted)}
 .dl-dot{width:10px;height:10px;border-radius:1px}
 
 /* TRAINING */
-.phase-header{display:flex;align-items:center;gap:16px;padding:16px 20px;background:var(--bg3);border:1px solid var(--bg4);margin-bottom:2px;cursor:pointer;transition:background 0.2s}
-.phase-header:hover{background:var(--bg4)}
-.phase-num{font-family:'Bebas Neue',sans-serif;font-size:32px;color:var(--accent);width:40px;flex-shrink:0}
+.phase-header{display:flex;align-items:center;gap:16px;padding:16px 20px;background:var(–bg3);border:1px solid var(–bg4);margin-bottom:2px;cursor:pointer;transition:background 0.2s}
+.phase-header:hover{background:var(–bg4)}
+.phase-num{font-family:‘Bebas Neue’,sans-serif;font-size:32px;color:var(–accent);width:40px;flex-shrink:0}
 .phase-info{flex:1}
-.phase-name{font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:2px}
-.phase-dates{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);margin-top:2px}
-.phase-focus{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);max-width:340px;text-align:right;line-height:1.5}
-.phase-toggle{font-family:'JetBrains Mono',monospace;font-size:14px;color:var(--muted);transition:transform 0.3s}
+.phase-name{font-family:‘Bebas Neue’,sans-serif;font-size:20px;letter-spacing:2px}
+.phase-dates{font-family:‘JetBrains Mono’,monospace;font-size:9px;color:var(–muted);margin-top:2px}
+.phase-focus{font-family:‘JetBrains Mono’,monospace;font-size:10px;color:var(–muted);max-width:340px;text-align:right;line-height:1.5}
+.phase-toggle{font-family:‘JetBrains Mono’,monospace;font-size:14px;color:var(–muted);transition:transform 0.3s}
 .phase-toggle.open{transform:rotate(180deg)}
-.phase-body{display:none;background:var(--bg2);border:1px solid var(--bg4);border-top:none;margin-bottom:2px}
+.phase-body{display:none;background:var(–bg2);border:1px solid var(–bg4);border-top:none;margin-bottom:2px}
 .phase-body.open{display:block}
 
-.week-block{border-bottom:1px solid var(--bg3)}
+.week-block{border-bottom:1px solid var(–bg3)}
 .week-block:last-child{border-bottom:none}
-.week-header{display:flex;align-items:center;gap:16px;padding:12px 20px;background:var(--bg3)}
-.week-num-badge{font-family:'JetBrains Mono',monospace;font-size:9px;background:var(--bg4);color:var(--muted);padding:3px 8px;flex-shrink:0}
-.week-title{font-family:'Manrope',sans-serif;font-size:12px;font-weight:600;flex:1}
-.week-volume{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);text-align:right;line-height:1.5}
+.week-header{display:flex;align-items:center;gap:16px;padding:12px 20px;background:var(–bg3)}
+.week-num-badge{font-family:‘JetBrains Mono’,monospace;font-size:9px;background:var(–bg4);color:var(–muted);padding:3px 8px;flex-shrink:0}
+.week-title{font-family:‘Manrope’,sans-serif;font-size:12px;font-weight:600;flex:1}
+.week-volume{font-family:‘JetBrains Mono’,monospace;font-size:9px;color:var(–muted);text-align:right;line-height:1.5}
 
-.week-days{display:grid;grid-template-columns:repeat(7,1fr);gap:1px;background:var(--bg3)}
-.day-cell{background:var(--bg2);padding:10px 8px;min-height:90px;cursor:default;transition:background 0.15s;position:relative}
+.week-days{display:grid;grid-template-columns:repeat(7,1fr);gap:1px;background:var(–bg3)}
+.day-cell{background:var(–bg2);padding:10px 8px;min-height:90px;cursor:default;transition:background 0.15s;position:relative}
 .day-cell.completed{background:#0a1a0a}
-.day-cell.today-cell{border:1px solid var(--accent)}
-.day-name{font-family:'JetBrains Mono',monospace;font-size:8px;color:var(--muted);text-transform:uppercase;margin-bottom:4px}
-.day-date{font-family:'JetBrains Mono',monospace;font-size:8px;color:var(--muted2);margin-bottom:6px}
+.day-cell.today-cell{border:1px solid var(–accent)}
+.day-name{font-family:‘JetBrains Mono’,monospace;font-size:8px;color:var(–muted);text-transform:uppercase;margin-bottom:4px}
+.day-date{font-family:‘JetBrains Mono’,monospace;font-size:8px;color:var(–muted2);margin-bottom:6px}
 
-.workout-pill{display:flex;align-items:flex-start;gap:4px;font-size:9px;font-family:'JetBrains Mono',monospace;padding:3px 5px;margin-bottom:3px;width:100%;line-height:1.35;border-radius:1px}
-.wp-swim{background:rgba(0,180,255,0.1);color:var(--swim);border-left:2px solid var(--swim)}
-.wp-bike{background:rgba(255,140,0,0.1);color:var(--bike);border-left:2px solid var(--bike)}
-.wp-run{background:rgba(0,232,122,0.1);color:var(--run);border-left:2px solid var(--run)}
-.wp-brick{background:rgba(180,77,255,0.1);color:var(--brick);border-left:2px solid var(--brick)}
-.wp-rest{background:rgba(51,51,51,0.2);color:var(--muted);border-left:2px solid var(--muted2)}
-.wp-race{background:rgba(212,240,0,0.12);color:var(--accent);border-left:2px solid var(--accent)}
-.wp-mob{background:rgba(255,68,68,0.1);color:var(--red);border-left:2px solid var(--red)}
+.workout-pill{display:flex;align-items:flex-start;gap:4px;font-size:9px;font-family:‘JetBrains Mono’,monospace;padding:3px 5px;margin-bottom:3px;width:100%;line-height:1.35;border-radius:1px}
+.wp-swim{background:rgba(0,180,255,0.1);color:var(–swim);border-left:2px solid var(–swim)}
+.wp-bike{background:rgba(255,140,0,0.1);color:var(–bike);border-left:2px solid var(–bike)}
+.wp-run{background:rgba(0,232,122,0.1);color:var(–run);border-left:2px solid var(–run)}
+.wp-brick{background:rgba(180,77,255,0.1);color:var(–brick);border-left:2px solid var(–brick)}
+.wp-rest{background:rgba(51,51,51,0.2);color:var(–muted);border-left:2px solid var(–muted2)}
+.wp-race{background:rgba(212,240,0,0.12);color:var(–accent);border-left:2px solid var(–accent)}
+.wp-mob{background:rgba(255,68,68,0.1);color:var(–red);border-left:2px solid var(–red)}
 
-.day-check{position:absolute;top:6px;right:6px;width:14px;height:14px;border:1px solid var(--bg4);display:flex;align-items:center;justify-content:center;font-size:9px;cursor:pointer;transition:all 0.2s}
-.day-check.done{background:var(--accent);border-color:var(--accent);color:var(--bg)}
+.day-check{position:absolute;top:6px;right:6px;width:14px;height:14px;border:1px solid var(–bg4);display:flex;align-items:center;justify-content:center;font-size:9px;cursor:pointer;transition:all 0.2s}
+.day-check.done{background:var(–accent);border-color:var(–accent);color:var(–bg)}
 
 /* HRZ BOX */
-.hrz-box{background:var(--bg3);border:1px solid var(--bg4);padding:16px 20px;margin-bottom:2px}
-.hrz-title{font-family:'Bebas Neue',sans-serif;font-size:16px;letter-spacing:2px;margin-bottom:12px;color:var(--accent)}
+.hrz-box{background:var(–bg3);border:1px solid var(–bg4);padding:16px 20px;margin-bottom:2px}
+.hrz-title{font-family:‘Bebas Neue’,sans-serif;font-size:16px;letter-spacing:2px;margin-bottom:12px;color:var(–accent)}
 .hrz-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}
-.hrz-zone{padding:10px 8px;text-align:center;border:1px solid var(--bg4)}
-.hrz-num{font-family:'Bebas Neue',sans-serif;font-size:22px;line-height:1}
-.hrz-label{font-family:'JetBrains Mono',monospace;font-size:8px;color:var(--muted);margin-top:2px}
-.hrz-range{font-family:'JetBrains Mono',monospace;font-size:9px;margin-top:4px}
+.hrz-zone{padding:10px 8px;text-align:center;border:1px solid var(–bg4)}
+.hrz-num{font-family:‘Bebas Neue’,sans-serif;font-size:22px;line-height:1}
+.hrz-label{font-family:‘JetBrains Mono’,monospace;font-size:8px;color:var(–muted);margin-top:2px}
+.hrz-range{font-family:‘JetBrains Mono’,monospace;font-size:9px;margin-top:4px}
 
 /* PULSE */
-.journal-form{background:var(--bg2);border:1px solid var(--bg4);padding:24px}
-.journal-week-title{font-family:'Bebas Neue',sans-serif;font-size:24px;letter-spacing:2px;margin-bottom:20px;color:var(--accent)}
+.journal-form{background:var(–bg2);border:1px solid var(–bg4);padding:24px}
+.journal-week-title{font-family:‘Bebas Neue’,sans-serif;font-size:24px;letter-spacing:2px;margin-bottom:20px;color:var(–accent)}
 .journal-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:20px}
-.jf-label{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px}
-.jf-input{width:100%;background:var(--bg3);border:1px solid var(--bg4);color:var(--white);font-family:'Manrope',sans-serif;font-size:12px;padding:10px 12px;resize:vertical;min-height:80px;outline:none;transition:border-color 0.2s;line-height:1.5}
-.jf-input:focus{border-color:var(--accent)}
-.jf-input::placeholder{color:var(--muted2)}
+.jf-label{font-family:‘JetBrains Mono’,monospace;font-size:9px;color:var(–muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px}
+.jf-input{width:100%;background:var(–bg3);border:1px solid var(–bg4);color:var(–white);font-family:‘Manrope’,sans-serif;font-size:12px;padding:10px 12px;resize:vertical;min-height:80px;outline:none;transition:border-color 0.2s;line-height:1.5}
+.jf-input:focus{border-color:var(–accent)}
+.jf-input::placeholder{color:var(–muted2)}
 .scores-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px}
-.sf-label{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);margin-bottom:6px;text-transform:uppercase}
+.sf-label{font-family:‘JetBrains Mono’,monospace;font-size:9px;color:var(–muted);margin-bottom:6px;text-transform:uppercase}
 .sf-controls{display:flex;align-items:center;gap:8px}
-.sf-val{font-family:'Bebas Neue',sans-serif;font-size:32px;line-height:1;width:32px;text-align:center}
-.sf-btn{width:28px;height:28px;background:var(--bg4);border:none;color:var(--white);cursor:pointer;font-size:16px;transition:background 0.2s}
-.sf-btn:hover{background:var(--accent);color:var(--bg)}
-.save-btn{background:var(--accent);color:var(--bg);border:none;font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:2px;padding:12px 32px;cursor:pointer;transition:opacity 0.2s}
+.sf-val{font-family:‘Bebas Neue’,sans-serif;font-size:32px;line-height:1;width:32px;text-align:center}
+.sf-btn{width:28px;height:28px;background:var(–bg4);border:none;color:var(–white);cursor:pointer;font-size:16px;transition:background 0.2s}
+.sf-btn:hover{background:var(–accent);color:var(–bg)}
+.save-btn{background:var(–accent);color:var(–bg);border:none;font-family:‘Bebas Neue’,sans-serif;font-size:18px;letter-spacing:2px;padding:12px 32px;cursor:pointer;transition:opacity 0.2s}
 .save-btn:hover{opacity:0.85}
 .week-selector{display:flex;gap:2px;flex-wrap:wrap;margin-bottom:16px}
-.ws-item{font-family:'JetBrains Mono',monospace;font-size:9px;padding:6px 10px;background:var(--bg3);border:1px solid var(--bg4);cursor:pointer;color:var(--muted);transition:all 0.2s}
-.ws-item:hover{color:var(--white);border-color:var(--muted)}
-.ws-item.active{background:var(--accent);color:var(--bg);border-color:var(--accent)}
-.ws-item.has-entry{border-color:var(--green);color:var(--green)}
+.ws-item{font-family:‘JetBrains Mono’,monospace;font-size:9px;padding:6px 10px;background:var(–bg3);border:1px solid var(–bg4);cursor:pointer;color:var(–muted);transition:all 0.2s}
+.ws-item:hover{color:var(–white);border-color:var(–muted)}
+.ws-item.active{background:var(–accent);color:var(–bg);border-color:var(–accent)}
+.ws-item.has-entry{border-color:var(–green);color:var(–green)}
 
 /* GOALS */
 .goals-grid{display:grid;grid-template-columns:1fr 1fr;gap:2px}
-.goal-card{background:var(--bg2);border:1px solid var(--bg4);padding:24px}
-.goal-area{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:2px;margin-bottom:12px}
-.goal-title{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:1px;margin-bottom:16px}
+.goal-card{background:var(–bg2);border:1px solid var(–bg4);padding:24px}
+.goal-area{font-family:‘JetBrains Mono’,monospace;font-size:9px;color:var(–muted);text-transform:uppercase;letter-spacing:2px;margin-bottom:12px}
+.goal-title{font-family:‘Bebas Neue’,sans-serif;font-size:22px;letter-spacing:1px;margin-bottom:16px}
 .goal-list{list-style:none}
-.goal-item{display:flex;align-items:flex-start;gap:10px;padding:8px 0;border-bottom:1px solid var(--bg3);cursor:pointer;font-size:12px;line-height:1.5}
+.goal-item{display:flex;align-items:flex-start;gap:10px;padding:8px 0;border-bottom:1px solid var(–bg3);cursor:pointer;font-size:12px;line-height:1.5}
 .goal-item:last-child{border-bottom:none}
-.gi-box{width:14px;height:14px;border:1px solid var(--bg4);flex-shrink:0;margin-top:2px;display:flex;align-items:center;justify-content:center;transition:all 0.2s}
-.gi-box.done{background:var(--accent);border-color:var(--accent)}
-.gi-box.done::after{content:'✓';font-size:9px;color:var(--bg);font-weight:bold}
+.gi-box{width:14px;height:14px;border:1px solid var(–bg4);flex-shrink:0;margin-top:2px;display:flex;align-items:center;justify-content:center;transition:all 0.2s}
+.gi-box.done{background:var(–accent);border-color:var(–accent)}
+.gi-box.done::after{content:‘✓’;font-size:9px;color:var(–bg);font-weight:bold}
 .gi-text{color:#bbb}
-.gi-text.done{color:var(--muted);text-decoration:line-through}
-.gi-when{font-family:'JetBrains Mono',monospace;font-size:8px;color:var(--muted);margin-top:2px}
+.gi-text.done{color:var(–muted);text-decoration:line-through}
+.gi-when{font-family:‘JetBrains Mono’,monospace;font-size:8px;color:var(–muted);margin-top:2px}
 
 /* RESOURCES - TABBED */
-.res-tabs{display:flex;gap:0;margin-bottom:0;border-bottom:1px solid var(--bg4);overflow-x:auto}
-.res-tab{font-family:'JetBrains Mono',monospace;font-size:9px;padding:10px 16px;cursor:pointer;color:var(--muted);border-bottom:2px solid transparent;transition:all 0.2s;text-transform:uppercase;letter-spacing:1px;white-space:nowrap}
-.res-tab.active{color:var(--accent);border-bottom-color:var(--accent)}
-.res-tab-content{display:none;background:var(--bg2);border:1px solid var(--bg4);border-top:none;padding:24px}
+.res-tabs{display:flex;gap:0;margin-bottom:0;border-bottom:1px solid var(–bg4);overflow-x:auto}
+.res-tab{font-family:‘JetBrains Mono’,monospace;font-size:9px;padding:10px 16px;cursor:pointer;color:var(–muted);border-bottom:2px solid transparent;transition:all 0.2s;text-transform:uppercase;letter-spacing:1px;white-space:nowrap}
+.res-tab.active{color:var(–accent);border-bottom-color:var(–accent)}
+.res-tab-content{display:none;background:var(–bg2);border:1px solid var(–bg4);border-top:none;padding:24px}
 .res-tab-content.active{display:block}
 .res-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:24px}
-.res-item{display:flex;gap:10px;padding:10px 0;border-bottom:1px solid var(--bg3);align-items:flex-start}
+.res-item{display:flex;gap:10px;padding:10px 0;border-bottom:1px solid var(–bg3);align-items:flex-start}
 .res-item:last-child{border-bottom:none}
 .res-icon{font-size:14px;flex-shrink:0;margin-top:1px}
-.res-name{font-size:12px;font-weight:600;color:var(--white);margin-bottom:2px}
-.res-desc{font-size:10px;color:var(--muted);line-height:1.4}
-.res-tag{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:8px;padding:1px 5px;margin-top:3px;border-radius:1px}
+.res-name{font-size:12px;font-weight:600;color:var(–white);margin-bottom:2px}
+.res-desc{font-size:10px;color:var(–muted);line-height:1.4}
+.res-tag{display:inline-block;font-family:‘JetBrains Mono’,monospace;font-size:8px;padding:1px 5px;margin-top:3px;border-radius:1px}
 
 /* METRICS PAGE */
 .metrics-input-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:2px;margin-bottom:2px}
-.metric-card{background:var(--bg2);border:1px solid var(--bg4);padding:22px}
+.metric-card{background:var(–bg2);border:1px solid var(–bg4);padding:22px}
 .mc-header{display:flex;align-items:center;gap:12px;margin-bottom:16px}
 .mc-icon{font-size:22px}
-.mc-title{font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:2px}
-.mc-sub{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);margin-top:2px}
+.mc-title{font-family:‘Bebas Neue’,sans-serif;font-size:20px;letter-spacing:2px}
+.mc-sub{font-family:‘JetBrains Mono’,monospace;font-size:9px;color:var(–muted);margin-top:2px}
 .mc-current{margin-bottom:16px}
-.mc-val-big{font-family:'Bebas Neue',sans-serif;font-size:52px;line-height:1}
-.mc-target{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);margin-top:4px}
+.mc-val-big{font-family:‘Bebas Neue’,sans-serif;font-size:52px;line-height:1}
+.mc-target{font-family:‘JetBrains Mono’,monospace;font-size:9px;color:var(–muted);margin-top:4px}
 .mc-input-row{display:flex;gap:8px;align-items:center;margin-bottom:8px}
-.mc-input{background:var(--bg3);border:1px solid var(--bg4);color:var(--white);font-family:'JetBrains Mono',monospace;font-size:13px;padding:8px 12px;outline:none;flex:1;transition:border-color 0.2s}
-.mc-input:focus{border-color:var(--accent)}
-.mc-input::placeholder{color:var(--muted2)}
-.mc-btn{background:var(--accent);color:var(--bg);border:none;font-family:'Bebas Neue',sans-serif;font-size:14px;letter-spacing:1px;padding:8px 16px;cursor:pointer;transition:opacity 0.2s;white-space:nowrap}
+.mc-input{background:var(–bg3);border:1px solid var(–bg4);color:var(–white);font-family:‘JetBrains Mono’,monospace;font-size:13px;padding:8px 12px;outline:none;flex:1;transition:border-color 0.2s}
+.mc-input:focus{border-color:var(–accent)}
+.mc-input::placeholder{color:var(–muted2)}
+.mc-btn{background:var(–accent);color:var(–bg);border:none;font-family:‘Bebas Neue’,sans-serif;font-size:14px;letter-spacing:1px;padding:8px 16px;cursor:pointer;transition:opacity 0.2s;white-space:nowrap}
 .mc-btn:hover{opacity:0.85}
 .mc-history{margin-top:12px;max-height:140px;overflow-y:auto}
-.mc-hist-item{display:flex;justify-content:space-between;align-items:center;padding:5px 0;border-bottom:1px solid var(--bg3);font-family:'JetBrains Mono',monospace;font-size:9px}
+.mc-hist-item{display:flex;justify-content:space-between;align-items:center;padding:5px 0;border-bottom:1px solid var(–bg3);font-family:‘JetBrains Mono’,monospace;font-size:9px}
 .mc-hist-item:last-child{border-bottom:none}
-.mc-hist-date{color:var(--muted)}
+.mc-hist-date{color:var(–muted)}
 .mc-hist-val{font-weight:500}
-.mc-del{background:none;border:none;color:var(--muted2);cursor:pointer;font-size:11px;padding:0 4px;transition:color 0.2s}
-.mc-del:hover{color:var(--red)}
+.mc-del{background:none;border:none;color:var(–muted2);cursor:pointer;font-size:11px;padding:0 4px;transition:color 0.2s}
+.mc-del:hover{color:var(–red)}
 
 /* CHARTS */
-.chart-section{background:var(--bg2);border:1px solid var(--bg4);padding:24px;margin-bottom:2px}
-.chart-title{font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:2px;margin-bottom:4px}
-.chart-sub{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);margin-bottom:16px}
+.chart-section{background:var(–bg2);border:1px solid var(–bg4);padding:24px;margin-bottom:2px}
+.chart-title{font-family:‘Bebas Neue’,sans-serif;font-size:18px;letter-spacing:2px;margin-bottom:4px}
+.chart-sub{font-family:‘JetBrains Mono’,monospace;font-size:9px;color:var(–muted);margin-bottom:16px}
 .chart-wrap{position:relative;width:100%;height:180px}
 canvas.metric-chart{width:100%!important;height:180px!important}
 .charts-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:2px;margin-bottom:2px}
 .progress-towards{margin-top:12px}
 .pt-row{display:flex;align-items:center;gap:10px;margin-bottom:6px}
-.pt-label{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);width:120px;flex-shrink:0}
-.pt-track{flex:1;height:6px;background:var(--bg4);border-radius:1px;overflow:hidden}
+.pt-label{font-family:‘JetBrains Mono’,monospace;font-size:9px;color:var(–muted);width:120px;flex-shrink:0}
+.pt-track{flex:1;height:6px;background:var(–bg4);border-radius:1px;overflow:hidden}
 .pt-fill{height:100%;border-radius:1px;transition:width 0.6s ease}
-.pt-val{font-family:'JetBrains Mono',monospace;font-size:9px;width:50px;text-align:right}
+.pt-val{font-family:‘JetBrains Mono’,monospace;font-size:9px;width:50px;text-align:right}
 
 .legend{display:flex;gap:16px;flex-wrap:wrap;margin-bottom:16px}
-.legend-item{display:flex;align-items:center;gap:6px;font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted)}
+.legend-item{display:flex;align-items:center;gap:6px;font-family:‘JetBrains Mono’,monospace;font-size:9px;color:var(–muted)}
 .legend-dot{width:10px;height:10px;border-radius:1px}
 
-.tooltip{position:fixed;background:var(--bg3);border:1px solid var(--bg4);padding:6px 10px;font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--white);z-index:999;pointer-events:none;display:none}
+.tooltip{position:fixed;background:var(–bg3);border:1px solid var(–bg4);padding:6px 10px;font-family:‘JetBrains Mono’,monospace;font-size:9px;color:var(–white);z-index:999;pointer-events:none;display:none}
 
 /* ═══════════════════════════════════════
-   TABLET
+TABLET
 ═══════════════════════════════════════ */
 @media(max-width:900px){
-  .hero{grid-template-columns:1fr 1fr}
-  .goals-grid{grid-template-columns:1fr}
-  .week-days{grid-template-columns:repeat(4,1fr)}
-  .journal-grid{grid-template-columns:1fr}
-  .scores-row{grid-template-columns:1fr 1fr}
-  .hrz-grid{grid-template-columns:repeat(3,1fr)}
-  .res-grid{grid-template-columns:1fr}
-  .metrics-input-grid{grid-template-columns:1fr}
-  .charts-grid{grid-template-columns:1fr}
-  .page{padding:16px 12px}
-  .phase-focus{display:none}
+.hero{grid-template-columns:1fr 1fr}
+.goals-grid{grid-template-columns:1fr}
+.week-days{grid-template-columns:repeat(4,1fr)}
+.journal-grid{grid-template-columns:1fr}
+.scores-row{grid-template-columns:1fr 1fr}
+.hrz-grid{grid-template-columns:repeat(3,1fr)}
+.res-grid{grid-template-columns:1fr}
+.metrics-input-grid{grid-template-columns:1fr}
+.charts-grid{grid-template-columns:1fr}
+.page{padding:16px 12px}
+.phase-focus{display:none}
 }
 
 /* ═══════════════════════════════════════
-   MOBILE  ≤ 640px
+MOBILE  ≤ 640px
 ═══════════════════════════════════════ */
 @media(max-width:640px){
 
-  /* ── body safe area ── */
-  body { padding-bottom: 80px; }
+/* ── body safe area ── */
+body { padding-bottom: 80px; }
 
-  /* ── hide desktop nav, show bottom bar ── */
-  .nav { display: none; }
+/* ── hide desktop nav, show bottom bar ── */
+.nav { display: none; }
 
-  /* ── bottom tab bar ── */
-  .mob-bar {
-    display: flex;
-    position: fixed;
-    bottom: 0; left: 0; right: 0;
-    z-index: 200;
-    background: rgba(10,10,10,0.97);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    border-top: 1px solid #1e1e1e;
-    height: 68px;
-    padding-bottom: env(safe-area-inset-bottom);
-  }
-  .mob-tab {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 3px;
-    cursor: pointer;
-    transition: opacity 0.15s;
-    -webkit-tap-highlight-color: transparent;
-    padding-top: 8px;
-  }
-  .mob-tab:active { opacity: 0.6; }
-  .mob-tab-icon { font-size: 20px; line-height: 1; }
-  .mob-tab-label {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 8px;
-    color: #555;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    transition: color 0.15s;
-  }
-  .mob-tab.active .mob-tab-label { color: var(--accent); }
-  .mob-tab.active .mob-tab-icon { filter: drop-shadow(0 0 6px var(--accent)); }
+/* ── bottom tab bar ── */
+.mob-bar {
+display: flex;
+position: fixed;
+bottom: 0; left: 0; right: 0;
+z-index: 200;
+background: rgba(10,10,10,0.97);
+backdrop-filter: blur(16px);
+-webkit-backdrop-filter: blur(16px);
+border-top: 1px solid #1e1e1e;
+height: 68px;
+padding-bottom: env(safe-area-inset-bottom);
+}
+.mob-tab {
+flex: 1;
+display: flex;
+flex-direction: column;
+align-items: center;
+justify-content: center;
+gap: 3px;
+cursor: pointer;
+transition: opacity 0.15s;
+-webkit-tap-highlight-color: transparent;
+padding-top: 8px;
+}
+.mob-tab:active { opacity: 0.6; }
+.mob-tab-icon { font-size: 20px; line-height: 1; }
+.mob-tab-label {
+font-family: ‘JetBrains Mono’, monospace;
+font-size: 8px;
+color: #555;
+text-transform: uppercase;
+letter-spacing: 0.5px;
+transition: color 0.15s;
+}
+.mob-tab.active .mob-tab-label { color: var(–accent); }
+.mob-tab.active .mob-tab-icon { filter: drop-shadow(0 0 6px var(–accent)); }
 
-  /* ── mobile header strip ── */
-  .mob-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 14px 16px 10px;
-    background: var(--bg);
-    border-bottom: 1px solid #111;
-    position: sticky;
-    top: 0;
-    z-index: 99;
-  }
-  .mob-header-title {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 22px;
-    letter-spacing: 3px;
-    color: var(--accent);
-  }
-  .mob-race-badge {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 9px;
-    background: var(--accent);
-    color: var(--bg);
-    padding: 4px 8px;
-    font-weight: 700;
-    animation: pulse-badge 2s infinite;
-  }
+/* ── mobile header strip ── */
+.mob-header {
+display: flex;
+align-items: center;
+justify-content: space-between;
+padding: 14px 16px 10px;
+background: var(–bg);
+border-bottom: 1px solid #111;
+position: sticky;
+top: 0;
+z-index: 99;
+}
+.mob-header-title {
+font-family: ‘Bebas Neue’, sans-serif;
+font-size: 22px;
+letter-spacing: 3px;
+color: var(–accent);
+}
+.mob-race-badge {
+font-family: ‘JetBrains Mono’, monospace;
+font-size: 9px;
+background: var(–accent);
+color: var(–bg);
+padding: 4px 8px;
+font-weight: 700;
+animation: pulse-badge 2s infinite;
+}
 
-  /* ── page padding ── */
-  .page { padding: 12px 12px 16px; }
+/* ── page padding ── */
+.page { padding: 12px 12px 16px; }
 
-  /* ── countdown strip ── */
-  .countdown-strip {
-    flex-direction: row;
-    gap: 0;
-    padding: 12px 0;
-    justify-content: space-around;
-    border-radius: 0;
-  }
-  .cd-num { font-size: 36px; }
-  .cd-label { font-size: 8px; }
-  .progress-section { width: 100%; padding: 12px 16px 0; order: 99; flex-basis: 100%; }
+/* ── countdown strip ── */
+.countdown-strip {
+flex-direction: row;
+gap: 0;
+padding: 12px 0;
+justify-content: space-around;
+border-radius: 0;
+}
+.cd-num { font-size: 36px; }
+.cd-label { font-size: 8px; }
+.progress-section { width: 100%; padding: 12px 16px 0; order: 99; flex-basis: 100%; }
 
-  /* ── hero cards: horizontal scroll strip ── */
-  .hero {
-    display: flex;
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
-    -webkit-overflow-scrolling: touch;
-    gap: 8px;
-    padding-bottom: 4px;
-    margin-bottom: 8px;
-  }
-  .hero::-webkit-scrollbar { display: none; }
-  .hero-card {
-    flex: 0 0 72vw;
-    scroll-snap-align: start;
-    border-radius: 2px;
-  }
-  .hero-value { font-size: 48px; }
+/* ── hero cards: horizontal scroll strip ── */
+.hero {
+display: flex;
+overflow-x: auto;
+scroll-snap-type: x mandatory;
+-webkit-overflow-scrolling: touch;
+gap: 8px;
+padding-bottom: 4px;
+margin-bottom: 8px;
+}
+.hero::-webkit-scrollbar { display: none; }
+.hero-card {
+flex: 0 0 72vw;
+scroll-snap-align: start;
+border-radius: 2px;
+}
+.hero-value { font-size: 48px; }
 
-  /* ── hrz zones: 3-col ── */
-  .hrz-grid { grid-template-columns: repeat(3, 1fr); gap: 4px; }
-  .hrz-num { font-size: 18px; }
+/* ── hrz zones: 3-col ── */
+.hrz-grid { grid-template-columns: repeat(3, 1fr); gap: 4px; }
+.hrz-num { font-size: 18px; }
 
-  /* ── heatmap: smaller cells ── */
-  .hm-cell { width: 10px; height: 10px; }
+/* ── heatmap: smaller cells ── */
+.hm-cell { width: 10px; height: 10px; }
 
-  /* ── training: week days single col ── */
-  .week-days { grid-template-columns: 1fr; gap: 1px; }
-  .day-cell { min-height: auto; padding: 10px 12px; display: flex; flex-wrap: wrap; gap: 4px; align-items: flex-start; }
-  .day-name { width: 24px; font-size: 8px; flex-shrink: 0; padding-top: 1px; }
-  .day-date { width: 40px; font-size: 8px; color: var(--muted); flex-shrink: 0; padding-top: 1px; }
-  .workout-pill { flex: 1; font-size: 10px; padding: 4px 8px; }
-  .day-check { position: static; margin-left: auto; flex-shrink: 0; width: 22px; height: 22px; font-size: 12px; }
-  .phase-focus { display: none; }
-  .week-header { flex-wrap: wrap; gap: 6px; }
-  .week-volume { display: none; }
-  .phase-header { gap: 10px; padding: 12px 14px; }
-  .phase-num { font-size: 24px; width: 30px; }
-  .phase-name { font-size: 16px; }
+/* ── training: week days single col ── */
+.week-days { grid-template-columns: 1fr; gap: 1px; }
+.day-cell { min-height: auto; padding: 10px 12px; display: flex; flex-wrap: wrap; gap: 4px; align-items: flex-start; }
+.day-name { width: 24px; font-size: 8px; flex-shrink: 0; padding-top: 1px; }
+.day-date { width: 40px; font-size: 8px; color: var(–muted); flex-shrink: 0; padding-top: 1px; }
+.workout-pill { flex: 1; font-size: 10px; padding: 4px 8px; }
+.day-check { position: static; margin-left: auto; flex-shrink: 0; width: 22px; height: 22px; font-size: 12px; }
+.phase-focus { display: none; }
+.week-header { flex-wrap: wrap; gap: 6px; }
+.week-volume { display: none; }
+.phase-header { gap: 10px; padding: 12px 14px; }
+.phase-num { font-size: 24px; width: 30px; }
+.phase-name { font-size: 16px; }
 
-  /* ── pulse / journal ── */
-  .scores-row { grid-template-columns: 1fr 1fr; gap: 8px; }
-  .sf-val { font-size: 40px; }
-  .sf-btn { width: 36px; height: 36px; font-size: 20px; }
-  .journal-grid { grid-template-columns: 1fr; gap: 10px; }
-  .journal-form { padding: 16px; }
-  .jf-input { font-size: 14px; padding: 12px; min-height: 72px; }
-  .week-selector { gap: 4px; }
-  .ws-item { font-size: 10px; padding: 8px 10px; }
+/* ── pulse / journal ── */
+.scores-row { grid-template-columns: 1fr 1fr; gap: 8px; }
+.sf-val { font-size: 40px; }
+.sf-btn { width: 36px; height: 36px; font-size: 20px; }
+.journal-grid { grid-template-columns: 1fr; gap: 10px; }
+.journal-form { padding: 16px; }
+.jf-input { font-size: 14px; padding: 12px; min-height: 72px; }
+.week-selector { gap: 4px; }
+.ws-item { font-size: 10px; padding: 8px 10px; }
 
-  /* ── goals ── */
-  .goals-grid { grid-template-columns: 1fr; }
-  .goal-item { padding: 10px 0; font-size: 13px; }
-  .gi-box { width: 18px; height: 18px; }
-  .gi-box.done::after { font-size: 11px; }
+/* ── goals ── */
+.goals-grid { grid-template-columns: 1fr; }
+.goal-item { padding: 10px 0; font-size: 13px; }
+.gi-box { width: 18px; height: 18px; }
+.gi-box.done::after { font-size: 11px; }
 
-  /* ── metrics ── */
-  .metrics-input-grid { grid-template-columns: 1fr; gap: 8px; }
-  .metric-card { padding: 16px; }
-  .mc-val-big { font-size: 44px; }
-  .mc-input { font-size: 16px; padding: 12px 14px; } /* 16px prevents iOS zoom */
-  .mc-btn { padding: 12px 16px; font-size: 15px; }
-  .charts-grid { grid-template-columns: 1fr; gap: 8px; }
-  .chart-wrap { height: 160px; }
+/* ── metrics ── */
+.metrics-input-grid { grid-template-columns: 1fr; gap: 8px; }
+.metric-card { padding: 16px; }
+.mc-val-big { font-size: 44px; }
+.mc-input { font-size: 16px; padding: 12px 14px; } /* 16px prevents iOS zoom */
+.mc-btn { padding: 12px 16px; font-size: 15px; }
+.charts-grid { grid-template-columns: 1fr; gap: 8px; }
+.chart-wrap { height: 160px; }
 
-  /* ── resources ── */
-  .res-grid { grid-template-columns: 1fr; }
-  .res-tabs { gap: 0; }
-  .res-tab { font-size: 9px; padding: 10px 10px; }
-  .res-tab-content { padding: 14px; }
-  .res-name { font-size: 13px; }
-  .res-desc { font-size: 11px; }
+/* ── resources ── */
+.res-grid { grid-template-columns: 1fr; }
+.res-tabs { gap: 0; }
+.res-tab { font-size: 9px; padding: 10px 10px; }
+.res-tab-content { padding: 14px; }
+.res-name { font-size: 13px; }
+.res-desc { font-size: 11px; }
 
-  /* ── weekly rhythm grid ── */
-  .heatmap-section > div[style*="repeat(7"] {
-    grid-template-columns: repeat(4, 1fr) !important;
-  }
+/* ── weekly rhythm grid ── */
+.heatmap-section > div[style*=“repeat(7”] {
+grid-template-columns: repeat(4, 1fr) !important;
+}
 }
 </style>
+
 </head>
 <body>
 <div class="tooltip" id="tooltip"></div>
 
 <!-- MOBILE HEADER (only shown on mobile) -->
+
 <div class="mob-header" id="mob-header" style="display:none">
   <div class="mob-header-title">АД · 2026</div>
   <div class="mob-race-badge">🏁 <span id="mob-countdown">—</span> дн</div>
 </div>
 
 <!-- MOBILE BOTTOM TAB BAR -->
+
 <div class="mob-bar" id="mob-bar" style="display:none">
   <div class="mob-tab active" onclick="showPage('dashboard',this)" data-page="dashboard">
     <div class="mob-tab-icon">⚡</div>
@@ -470,6 +474,7 @@ canvas.metric-chart{width:100%!important;height:180px!important}
 </nav>
 
 <!-- ══════════════ DASHBOARD ══════════════ -->
+
 <div class="page active" id="page-dashboard">
   <div class="countdown-strip">
     <div class="cd-item"><span class="cd-num" id="cd-days">—</span><span class="cd-label">дней до гонки</span></div>
@@ -510,6 +515,7 @@ canvas.metric-chart{width:100%!important;height:180px!important}
   </div>
 
   <!-- HRZ -->
+
   <div class="hrz-box" style="margin-top:2px">
     <div class="hrz-title">ЧСС ЗОНЫ · МАКС ~187 · FTP 260 ВТ</div>
     <div class="hrz-grid">
@@ -522,6 +528,7 @@ canvas.metric-chart{width:100%!important;height:180px!important}
   </div>
 
   <!-- HEATMAP -->
+
   <div class="heatmap-section" style="margin-top:2px">
     <div class="section-title">ИСТОРИЯ НЕДЕЛЬ <span style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);font-weight:300">// каждая ячейка = воскресный пульс</span></div>
     <div class="section-sub">апрель 2026 — март 2027 · нажми для просмотра</div>
@@ -536,6 +543,7 @@ canvas.metric-chart{width:100%!important;height:180px!important}
   </div>
 
   <!-- WEEKLY RHYTHM -->
+
   <div class="heatmap-section" style="margin-top:2px">
     <div class="section-title">НЕДЕЛЬНЫЙ РИТМ</div>
     <div class="section-sub">блок 1 (нед 1-3) · базовая структура</div>
@@ -552,6 +560,7 @@ canvas.metric-chart{width:100%!important;height:180px!important}
 </div>
 
 <!-- ══════════════ TRAINING ══════════════ -->
+
 <div class="page" id="page-training">
   <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:12px">
     <div>
@@ -579,6 +588,7 @@ canvas.metric-chart{width:100%!important;height:180px!important}
 </div>
 
 <!-- ══════════════ PULSE ══════════════ -->
+
 <div class="page" id="page-pulse">
   <div style="font-family:'Bebas Neue',sans-serif;font-size:32px;letter-spacing:3px;margin-bottom:4px">ЕЖЕНЕДЕЛЬНЫЙ ПУЛЬС</div>
   <div style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);margin-bottom:24px">ОБНОВЛЯЙ КАЖДОЕ ВОСКРЕСЕНЬЕ · ШКАЛА 1-10</div>
@@ -608,146 +618,132 @@ canvas.metric-chart{width:100%!important;height:180px!important}
 </div>
 
 <!-- ══════════════ GOALS ══════════════ -->
+
 <div class="page" id="page-goals">
-  <div style="font-family:'Bebas Neue',sans-serif;font-size:32px;letter-spacing:3px;margin-bottom:4px">ЦЕЛИ ГОДА</div>
-  <div style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);margin-bottom:24px">АПРЕЛЬ 2026 — МАРТ 2027</div>
-  <div class="goals-grid">
-    <div class="goal-card">
-      <div class="goal-area" style="color:var(--blue)">// 🏁 спорт</div>
-      <div class="goal-title">ТРИАТЛОН</div>
-      <ul class="goal-list">
-        <li class="goal-item" onclick="toggleGoal(this)"><div class="gi-box"></div><div><div class="gi-text">FTP-тест: 20мин макс ×0.95 = точка отсчёта</div><div class="gi-when">АПРЕЛЬ · СРОЧНО · ВСЁ ОТ ЭТОГО ЧИСЛА</div></div></li>
-        <li class="goal-item" onclick="toggleGoal(this)"><div class="gi-box"></div><div><div class="gi-text">Финишировать олимпийский триатлон 21 июня</div><div class="gi-when">21 ИЮНЯ 2026 · ГЛАВНАЯ ЦЕЛЬ</div></div></li>
-        <li class="goal-item" onclick="toggleGoal(this)"><div class="gi-box"></div><div><div class="gi-text">Бег: выйти на 4:00/км после велосипеда</div><div class="gi-when">СЕЙЧАС 4:15 · ЛАКТАТНЫЙ ПОРОГ УЖЕ ВЫШЕ 4:00</div></div></li>
-        <li class="goal-item" onclick="toggleGoal(this)"><div class="gi-box"></div><div><div class="gi-text">Велосипед: 40км за 59-62мин (аэропозиция!)</div><div class="gi-when">АЭРОДИНАМИКА = ГЛАВНЫЙ РЫЧАГ +1.5-2 КМ/Ч</div></div></li>
-        <li class="goal-item" onclick="toggleGoal(this)"><div class="gi-box"></div><div><div class="gi-text">Плавание: 1500м в темпе 1:31-1:33</div><div class="gi-when">СЕЙЧАС 1:35 · БЛИЗКО</div></div></li>
-        <li class="goal-item" onclick="toggleGoal(this)"><div class="gi-box"></div><div><div class="gi-text">Аэрошлем + триsuit — +0.8-1.3 км/ч без ватт</div><div class="gi-when">ДО ГОНКИ</div></div></li>
-        <li class="goal-item" onclick="toggleGoal(this)"><div class="gi-box"></div><div><div class="gi-text">Зарегистрироваться на следующий старт осень 2026</div><div class="gi-when">ПОСЛЕ 21 ИЮНЯ</div></div></li>
-        <li class="goal-item" onclick="toggleGoal(this)"><div class="gi-box"></div><div><div class="gi-text">Ironman 70.3 — поставить в план на 2027</div><div class="gi-when">ГОРИЗОНТ 2027</div></div></li>
-      </ul>
+  <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:20px">
+    <div>
+      <div style="font-family:'Bebas Neue',sans-serif;font-size:32px;letter-spacing:3px">ЦЕЛИ ГОДА</div>
+      <div style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted)">АПРЕЛЬ 2026 — МАРТ 2027 · нажми цель чтобы отметить · долгое нажатие — удалить</div>
     </div>
-    <div class="goal-card">
-      <div class="goal-area" style="color:var(--accent)">// 💼 карьера</div>
-      <div class="goal-title">VP ПЕРЕХОД</div>
-      <ul class="goal-list">
-        <li class="goal-item" onclick="toggleGoal(this)"><div class="gi-box"></div><div><div class="gi-text">Переписать резюме как продающий документ</div><div class="gi-when">МАЙ 2026</div></div></li>
-        <li class="goal-item" onclick="toggleGoal(this)"><div class="gi-box"></div><div><div class="gi-text">LinkedIn 100% + английская версия</div><div class="gi-when">МАЙ 2026</div></div></li>
-        <li class="goal-item" onclick="toggleGoal(this)"><div class="gi-box"></div><div><div class="gi-text">Питч за 90 секунд — отточить</div><div class="gi-when">МАЙ 2026</div></div></li>
-        <li class="goal-item" onclick="toggleGoal(this)"><div class="gi-box"></div><div><div class="gi-text">Список 5 целевых компаний с именами</div><div class="gi-when">ИЮНЬ 2026</div></div></li>
-        <li class="goal-item" onclick="toggleGoal(this)"><div class="gi-box"></div><div><div class="gi-text">Выйти на Ward Howell, Kontakt, Cornerstone, Transearch</div><div class="gi-when">ИЮЛЬ 2026</div></div></li>
-        <li class="goal-item" onclick="toggleGoal(this)"><div class="gi-box"></div><div><div class="gi-text">2 кофе-нетворк в неделю стабильно</div><div class="gi-when">АВГ-СЕН 2026</div></div></li>
-        <li class="goal-item" onclick="toggleGoal(this)"><div class="gi-box"></div><div><div class="gi-text">Получить оффер VP уровня</div><div class="gi-when">ОКТ-ДЕК 2026</div></div></li>
-      </ul>
-    </div>
-    <div class="goal-card">
-      <div class="goal-area" style="color:var(--green)">// 🧠 ментальное</div>
-      <div class="goal-title">СИСТЕМА, НЕ ПОЖАР</div>
-      <ul class="goal-list">
-        <li class="goal-item" onclick="toggleGoal(this)"><div class="gi-box"></div><div><div class="gi-text">Визит к психиатру — ревизия цепралекса</div><div class="gi-when">АПРЕЛЬ · СРОЧНО</div></div></li>
-        <li class="goal-item" onclick="toggleGoal(this)"><div class="gi-box"></div><div><div class="gi-text">Найти КПТ-терапевта, 1×/2нед регулярно</div><div class="gi-when">АПРЕЛЬ-МАЙ</div></div></li>
-        <li class="goal-item" onclick="toggleGoal(this)"><div class="gi-box"></div><div><div class="gi-text">Купить Oura Ring — мониторинг HRV/сна</div><div class="gi-when">АПРЕЛЬ</div></div></li>
-        <li class="goal-item" onclick="toggleGoal(this)"><div class="gi-box"></div><div><div class="gi-text">Утренний журнал 10 мин — ежедневно</div><div class="gi-when">ПОСТОЯННО</div></div></li>
-        <li class="goal-item" onclick="toggleGoal(this)"><div class="gi-box"></div><div><div class="gi-text">Сон минимум 7.5ч при текущих нагрузках</div><div class="gi-when">ПОСТОЯННО</div></div></li>
-      </ul>
-    </div>
-    <div class="goal-card">
-      <div class="goal-area" style="color:var(--red)">// ❤️ семья</div>
-      <div class="goal-title">ЧЕСТНОСТЬ</div>
-      <ul class="goal-list">
-        <li class="goal-item" onclick="toggleGoal(this)"><div class="gi-box"></div><div><div class="gi-text">Ким: 1 ритуал в неделю только вдвоём</div><div class="gi-when">СЕЙЧАС · КАЖДУЮ НЕДЕЛЮ</div></div></li>
-        <li class="goal-item" onclick="toggleGoal(this)"><div class="gi-box"></div><div><div class="gi-text">Прочитать Готтман — до разговора с женой</div><div class="gi-when">МАЙ-ИЮНЬ</div></div></li>
-        <li class="goal-item" onclick="toggleGoal(this)"><div class="gi-box"></div><div><div class="gi-text">Честный разговор о следующих 5 годах</div><div class="gi-when">ИЮЛЬ · ПОСЛЕ ГОНКИ</div></div></li>
-        <li class="goal-item" onclick="toggleGoal(this)"><div class="gi-box"></div><div><div class="gi-text">Парный терапевт — минимум 1 попытка</div><div class="gi-when">ИЮЛЬ-АВГ</div></div></li>
-      </ul>
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
+      <div id="goals-stats" style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);padding:8px 12px;background:var(--bg2);border:1px solid var(--bg4)"></div>
     </div>
   </div>
+
+  <!-- ADD GOAL FORM -->
+
+  <div style="background:var(--bg2);border:1px solid var(--bg4);padding:20px;margin-bottom:2px">
+    <div style="font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--accent);text-transform:uppercase;letter-spacing:2px;margin-bottom:12px">+ ДОБАВИТЬ ЦЕЛЬ</div>
+    <div style="display:grid;grid-template-columns:auto 1fr 1fr auto;gap:8px;align-items:center;flex-wrap:wrap">
+      <select id="new-goal-cat" style="background:var(--bg3);border:1px solid var(--bg4);color:var(--white);font-family:'JetBrains Mono',monospace;font-size:11px;padding:10px 12px;outline:none;cursor:pointer">
+        <option value="sport">🏁 Спорт</option>
+        <option value="career">💼 Карьера</option>
+        <option value="mental">🧠 Ментал</option>
+        <option value="family">❤️ Семья</option>
+        <option value="custom">⭐ Своё</option>
+      </select>
+      <input id="new-goal-text" placeholder="Текст цели..." style="background:var(--bg3);border:1px solid var(--bg4);color:var(--white);font-family:'Manrope',sans-serif;font-size:13px;padding:10px 12px;outline:none;flex:1;min-width:0" onkeydown="if(event.key==='Enter')addGoal()">
+      <input id="new-goal-when" placeholder="Срок (напр. МАЙ 2026)" style="background:var(--bg3);border:1px solid var(--bg4);color:var(--white);font-family:'JetBrains Mono',monospace;font-size:11px;padding:10px 12px;outline:none" onkeydown="if(event.key==='Enter')addGoal()">
+      <button onclick="addGoal()" style="background:var(--accent);color:var(--bg);border:none;font-family:'Bebas Neue',sans-serif;font-size:16px;letter-spacing:1px;padding:10px 20px;cursor:pointer;white-space:nowrap">ДОБАВИТЬ</button>
+    </div>
+  </div>
+
+  <!-- GOALS GRID - rendered by JS -->
+
+  <div class="goals-grid" id="goals-grid"></div>
 </div>
 
 <!-- ══════════════ METRICS ══════════════ -->
+
 <div class="page" id="page-metrics">
   <div style="font-family:'Bebas Neue',sans-serif;font-size:32px;letter-spacing:3px;margin-bottom:4px">СПОРТИВНЫЙ ПРОГРЕСС</div>
   <div style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);margin-bottom:20px">ВНОСИ ДАННЫЕ КАЖДУЮ НЕДЕЛЮ · ГРАФИКИ СТРОЯТСЯ АВТОМАТИЧЕСКИ</div>
 
   <!-- INPUT CARDS -->
+
   <div class="metrics-input-grid">
 
-    <!-- FTP -->
-    <div class="metric-card">
-      <div class="mc-header">
-        <div class="mc-icon">🚴</div>
-        <div><div class="mc-title" style="color:var(--bike)">FTP</div><div class="mc-sub">Функциональная пороговая мощность</div></div>
+```
+<!-- FTP -->
+<div class="metric-card">
+  <div class="mc-header">
+    <div class="mc-icon">🚴</div>
+    <div><div class="mc-title" style="color:var(--bike)">FTP</div><div class="mc-sub">Функциональная пороговая мощность</div></div>
+  </div>
+  <div class="mc-current">
+    <div class="mc-val-big" id="ftp-current" style="color:var(--bike)">260</div>
+    <div class="mc-target">Вт · Цель: 275-280 Вт к гонке</div>
+    <div class="progress-towards" style="margin-top:10px">
+      <div class="pt-row">
+        <div class="pt-label">260 → 280 Вт</div>
+        <div class="pt-track"><div class="pt-fill" id="ftp-progress" style="background:var(--bike);width:0%"></div></div>
+        <div class="pt-val" id="ftp-pct" style="color:var(--bike)">0%</div>
       </div>
-      <div class="mc-current">
-        <div class="mc-val-big" id="ftp-current" style="color:var(--bike)">260</div>
-        <div class="mc-target">Вт · Цель: 275-280 Вт к гонке</div>
-        <div class="progress-towards" style="margin-top:10px">
-          <div class="pt-row">
-            <div class="pt-label">260 → 280 Вт</div>
-            <div class="pt-track"><div class="pt-fill" id="ftp-progress" style="background:var(--bike);width:0%"></div></div>
-            <div class="pt-val" id="ftp-pct" style="color:var(--bike)">0%</div>
-          </div>
-        </div>
-      </div>
-      <div class="mc-input-row">
-        <input class="mc-input" id="ftp-input" type="number" placeholder="Введи FTP, Вт" min="200" max="400">
-        <button class="mc-btn" onclick="saveMetric('ftp')">+ ДОБАВИТЬ</button>
-      </div>
-      <div style="font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);margin-bottom:8px">📌 Тест: 20мин макс × 0.95</div>
-      <div class="mc-history" id="ftp-history"></div>
     </div>
+  </div>
+  <div class="mc-input-row">
+    <input class="mc-input" id="ftp-input" type="number" placeholder="Введи FTP, Вт" min="200" max="400">
+    <button class="mc-btn" onclick="saveMetric('ftp')">+ ДОБАВИТЬ</button>
+  </div>
+  <div style="font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);margin-bottom:8px">📌 Тест: 20мин макс × 0.95</div>
+  <div class="mc-history" id="ftp-history"></div>
+</div>
 
-    <!-- SWIM -->
-    <div class="metric-card">
-      <div class="mc-header">
-        <div class="mc-icon">🏊</div>
-        <div><div class="mc-title" style="color:var(--swim)">ПЛАВАНИЕ</div><div class="mc-sub">Темп на 100 метров</div></div>
+<!-- SWIM -->
+<div class="metric-card">
+  <div class="mc-header">
+    <div class="mc-icon">🏊</div>
+    <div><div class="mc-title" style="color:var(--swim)">ПЛАВАНИЕ</div><div class="mc-sub">Темп на 100 метров</div></div>
+  </div>
+  <div class="mc-current">
+    <div class="mc-val-big" id="swim-current" style="color:var(--swim)">1:35</div>
+    <div class="mc-target">мин/100м · Цель: 1:30-1:31 к гонке</div>
+    <div class="progress-towards" style="margin-top:10px">
+      <div class="pt-row">
+        <div class="pt-label">1:36 → 1:30</div>
+        <div class="pt-track"><div class="pt-fill" id="swim-progress" style="background:var(--swim);width:0%"></div></div>
+        <div class="pt-val" id="swim-pct" style="color:var(--swim)">0%</div>
       </div>
-      <div class="mc-current">
-        <div class="mc-val-big" id="swim-current" style="color:var(--swim)">1:35</div>
-        <div class="mc-target">мин/100м · Цель: 1:30-1:31 к гонке</div>
-        <div class="progress-towards" style="margin-top:10px">
-          <div class="pt-row">
-            <div class="pt-label">1:36 → 1:30</div>
-            <div class="pt-track"><div class="pt-fill" id="swim-progress" style="background:var(--swim);width:0%"></div></div>
-            <div class="pt-val" id="swim-pct" style="color:var(--swim)">0%</div>
-          </div>
-        </div>
-      </div>
-      <div class="mc-input-row">
-        <input class="mc-input" id="swim-input" type="text" placeholder="1:32 (мин:сек на 100м)">
-        <button class="mc-btn" onclick="saveMetric('swim')">+ ДОБАВИТЬ</button>
-      </div>
-      <div style="font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);margin-bottom:8px">📌 Замеряй на 1500м контрольном заплыве</div>
-      <div class="mc-history" id="swim-history"></div>
     </div>
+  </div>
+  <div class="mc-input-row">
+    <input class="mc-input" id="swim-input" type="text" placeholder="1:32 (мин:сек на 100м)">
+    <button class="mc-btn" onclick="saveMetric('swim')">+ ДОБАВИТЬ</button>
+  </div>
+  <div style="font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);margin-bottom:8px">📌 Замеряй на 1500м контрольном заплыве</div>
+  <div class="mc-history" id="swim-history"></div>
+</div>
 
-    <!-- RUN -->
-    <div class="metric-card">
-      <div class="mc-header">
-        <div class="mc-icon">🏃</div>
-        <div><div class="mc-title" style="color:var(--run)">БЕГ</div><div class="mc-sub">Темп на 10 км (оценочный)</div></div>
+<!-- RUN -->
+<div class="metric-card">
+  <div class="mc-header">
+    <div class="mc-icon">🏃</div>
+    <div><div class="mc-title" style="color:var(--run)">БЕГ</div><div class="mc-sub">Темп на 10 км (оценочный)</div></div>
+  </div>
+  <div class="mc-current">
+    <div class="mc-val-big" id="run-current" style="color:var(--run)">4:15</div>
+    <div class="mc-target">мин/км · Цель: 4:00/км к гонке</div>
+    <div class="progress-towards" style="margin-top:10px">
+      <div class="pt-row">
+        <div class="pt-label">4:15 → 4:00</div>
+        <div class="pt-track"><div class="pt-fill" id="run-progress" style="background:var(--run);width:0%"></div></div>
+        <div class="pt-val" id="run-pct" style="color:var(--run)">0%</div>
       </div>
-      <div class="mc-current">
-        <div class="mc-val-big" id="run-current" style="color:var(--run)">4:15</div>
-        <div class="mc-target">мин/км · Цель: 4:00/км к гонке</div>
-        <div class="progress-towards" style="margin-top:10px">
-          <div class="pt-row">
-            <div class="pt-label">4:15 → 4:00</div>
-            <div class="pt-track"><div class="pt-fill" id="run-progress" style="background:var(--run);width:0%"></div></div>
-            <div class="pt-val" id="run-pct" style="color:var(--run)">0%</div>
-          </div>
-        </div>
-      </div>
-      <div class="mc-input-row">
-        <input class="mc-input" id="run-input" type="text" placeholder="4:08 (мин:сек на км)">
-        <button class="mc-btn" onclick="saveMetric('run')">+ ДОБАВИТЬ</button>
-      </div>
-      <div style="font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);margin-bottom:8px">📌 Лучший темп на интервальной тренировке</div>
-      <div class="mc-history" id="run-history"></div>
     </div>
+  </div>
+  <div class="mc-input-row">
+    <input class="mc-input" id="run-input" type="text" placeholder="4:08 (мин:сек на км)">
+    <button class="mc-btn" onclick="saveMetric('run')">+ ДОБАВИТЬ</button>
+  </div>
+  <div style="font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);margin-bottom:8px">📌 Лучший темп на интервальной тренировке</div>
+  <div class="mc-history" id="run-history"></div>
+</div>
+```
+
   </div>
 
   <!-- CHARTS -->
+
   <div class="charts-grid">
     <div class="chart-section">
       <div class="chart-title" style="color:var(--bike)">FTP · ВАТТЫ</div>
@@ -767,6 +763,7 @@ canvas.metric-chart{width:100%!important;height:180px!important}
   </div>
 
   <!-- COMBINED PROGRESS -->
+
   <div class="chart-section">
     <div class="chart-title">СВОДНЫЙ ПРОГРЕСС К ГОНКЕ</div>
     <div class="chart-sub">% выполнения каждой цели · обновляется при внесении данных</div>
@@ -791,15 +788,110 @@ canvas.metric-chart{width:100%!important;height:180px!important}
 </div>
 
 <!-- ══════════════ RESOURCES ══════════════ -->
+
 <div class="page" id="page-resources">
   <div style="font-family:'Bebas Neue',sans-serif;font-size:32px;letter-spacing:3px;margin-bottom:4px">РЕСУРСЫ</div>
-  <div style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);margin-bottom:16px">КНИГИ · ПОДКАСТЫ · ИНСТРУМЕНТЫ · СТЕК</div>
+  <div style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);margin-bottom:16px">КНИГИ · ПОДКАСТЫ · ИНСТРУМЕНТЫ · СТЕК · всё редактируемо</div>
+
   <div class="res-tabs">
-    <div class="res-tab active" onclick="switchResTab(this,'books')">📖 Книги (26)</div>
+    <div class="res-tab active" onclick="switchResTab(this,'books')">📖 Книги</div>
     <div class="res-tab" onclick="switchResTab(this,'podcasts')">🎧 Подкасты</div>
     <div class="res-tab" onclick="switchResTab(this,'tools')">🛠️ Инструменты</div>
     <div class="res-tab" onclick="switchResTab(this,'stack')">💊 Стек</div>
   </div>
+
+  <!-- BOOKS TAB - fully dynamic -->
+
+  <div class="res-tab-content active" id="restab-books">
+    <div style="background:var(--bg3);border:1px solid var(--bg4);padding:16px;margin-bottom:16px">
+      <div style="font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--accent);text-transform:uppercase;letter-spacing:2px;margin-bottom:12px">+ ДОБАВИТЬ КНИГУ</div>
+      <div style="display:grid;grid-template-columns:auto 1fr 1fr auto auto;gap:8px;align-items:center;flex-wrap:wrap">
+        <select id="book-cat" style="background:var(--bg4);border:1px solid var(--bg4);color:var(--white);font-family:'JetBrains Mono',monospace;font-size:11px;padding:9px 10px;outline:none">
+          <option value="career">💼 Карьера</option>
+          <option value="mind">🧠 Мышление</option>
+          <option value="mental">❤️ Ментал/Семья</option>
+          <option value="sport">🏃 Спорт</option>
+          <option value="other">📖 Другое</option>
+        </select>
+        <input id="book-title" placeholder="Название — Автор" style="background:var(--bg4);border:1px solid var(--bg4);color:var(--white);font-family:'Manrope',sans-serif;font-size:13px;padding:9px 12px;outline:none;min-width:0" onkeydown="if(event.key==='Enter')addBook()">
+        <input id="book-desc" placeholder="Краткое описание (опц.)" style="background:var(--bg4);border:1px solid var(--bg4);color:var(--white);font-family:'Manrope',sans-serif;font-size:12px;padding:9px 12px;outline:none;min-width:0" onkeydown="if(event.key==='Enter')addBook()">
+        <select id="book-status" style="background:var(--bg4);border:1px solid var(--bg4);color:var(--white);font-family:'JetBrains Mono',monospace;font-size:11px;padding:9px 10px;outline:none">
+          <option value="queue">В очереди</option>
+          <option value="reading">Читаю</option>
+          <option value="done">✓ Прочитал</option>
+          <option value="priority">⭐ Приоритет</option>
+        </select>
+        <button onclick="addBook()" style="background:var(--accent);color:var(--bg);border:none;font-family:'Bebas Neue',sans-serif;font-size:15px;padding:9px 18px;cursor:pointer;white-space:nowrap">+ ДОБАВИТЬ</button>
+      </div>
+    </div>
+    <div id="books-list"></div>
+  </div>
+
+  <!-- PODCASTS TAB - static but clean -->
+
+  <div class="res-tab-content" id="restab-podcasts">
+    <div style="background:var(--bg3);border:1px solid var(--bg4);padding:16px;margin-bottom:16px">
+      <div style="font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--accent);text-transform:uppercase;letter-spacing:2px;margin-bottom:12px">+ ДОБАВИТЬ ПОДКАСТ / ВИДЕО</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr auto;gap:8px">
+        <input id="pod-title" placeholder="Название подкаста" style="background:var(--bg4);border:1px solid var(--bg4);color:var(--white);font-family:'Manrope',sans-serif;font-size:13px;padding:9px 12px;outline:none" onkeydown="if(event.key==='Enter')addPodcast()">
+        <input id="pod-desc" placeholder="Описание (опц.)" style="background:var(--bg4);border:1px solid var(--bg4);color:var(--white);font-family:'Manrope',sans-serif;font-size:12px;padding:9px 12px;outline:none" onkeydown="if(event.key==='Enter')addPodcast()">
+        <button onclick="addPodcast()" style="background:var(--accent);color:var(--bg);border:none;font-family:'Bebas Neue',sans-serif;font-size:15px;padding:9px 18px;cursor:pointer">+ ДОБАВИТЬ</button>
+      </div>
+    </div>
+    <div id="podcasts-list"></div>
+  </div>
+
+  <div class="res-tab-content" id="restab-tools">
+    <div class="res-grid">
+      <div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--accent);margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--bg4)">ЗДОРОВЬЕ И СПОРТ</div>
+        <div class="res-item"><div class="res-icon">⌚</div><div><div class="res-name">Oura Ring Gen4</div><div class="res-desc">HRV, сон, восстановление. Точнее Garmin по ночному HRV. Необязателен — Fenix 6 даёт тренд.</div></div></div>
+        <div class="res-item"><div class="res-icon">⌚</div><div><div class="res-name">Garmin Fenix 6 Solar Titanium</div><div class="res-desc">Уже есть. HRV статус, Body Battery, мультиспорт. Этого достаточно.</div><span class="res-tag" style="background:rgba(0,232,122,0.1);color:var(--green)">✓ ЕСТЬ</span></div></div>
+        <div class="res-item"><div class="res-icon">📱</div><div><div class="res-name">TrainerRoad / Trainasone</div><div class="res-desc">AI-адаптивные планы под FTP. ERG-режим на умном тренажёре.</div></div></div>
+        <div class="res-item"><div class="res-icon">🚴</div><div><div class="res-name">Wahoo KICKR / Tacx Neo</div><div class="res-desc">Умный велотренажёр. Точные ватты для интервалов дома.</div></div></div>
+        <div class="res-item"><div class="res-icon">🏊</div><div><div class="res-name">Аэрошлем + обтягивающий триsuit</div><div class="res-desc">+1.5-2 км/ч без дополнительных ватт. Главная дешёвая скорость.</div><span class="res-tag" style="background:rgba(212,240,0,0.1);color:var(--accent)">ДО ГОНКИ</span></div></div>
+      </div>
+      <div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--accent);margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--bg4)">КАРЬЕРА</div>
+        <div class="res-item"><div class="res-icon">📊</div><div><div class="res-name">Notion — трекинг поиска</div><div class="res-desc">Компания / контакт / дата / статус / следующий шаг.</div></div></div>
+        <div class="res-item"><div class="res-icon">💼</div><div><div class="res-name">LinkedIn Premium Career</div><div class="res-desc">Кто смотрел профиль + InMail хедхантерам. На период поиска.</div></div></div>
+        <div class="res-item"><div class="res-icon">📚</div><div><div class="res-name">SmartReading / Blinkist</div><div class="res-desc">Саммари за 15 мин. Твой формат — если зацепило, углубляешься.</div><span class="res-tag" style="background:rgba(212,240,0,0.1);color:var(--accent)">ТВОЙ ФОРМАТ</span></div></div>
+      </div>
+      <div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--accent);margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--bg4)">МЕНТАЛЬНОЕ</div>
+        <div class="res-item"><div class="res-icon">📓</div><div><div class="res-name">Утренний журнал</div><div class="res-desc">3 вопроса: тревога / контроль / действие. 10 минут каждый день.</div><span class="res-tag" style="background:rgba(212,240,0,0.1);color:var(--accent)">ЕЖЕДНЕВНО</span></div></div>
+        <div class="res-item"><div class="res-icon">🤖</div><div><div class="res-name">Claude Projects (этот дашборд)</div><div class="res-desc">Коуч с памятью. Приходи с конкретными задачами — не в общем.</div></div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="res-tab-content" id="restab-stack">
+    <div style="background:rgba(255,68,68,0.05);border:1px solid rgba(255,68,68,0.2);padding:12px 16px;margin-bottom:20px;font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--red)">
+      ⚠️ ВСЁ НОВОЕ — СОГЛАСОВЫВАТЬ С ПСИХИАТРОМ. ЦЕПРАЛЕКС ИМЕЕТ ВЗАИМОДЕЙСТВИЯ.
+    </div>
+    <div class="res-grid">
+      <div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--green);margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--bg4)">БАЗОВЫЙ СТЕК · БЕЗОПАСНО</div>
+        <div class="res-item"><div class="res-icon">💊</div><div><div class="res-name">Магний глицинат 400мг</div><div class="res-desc">Сон + мышцы. Перед сном. Базовый №1.</div><span class="res-tag" style="background:rgba(0,232,122,0.1);color:var(--green)">НАЧНИ СЕЙЧАС</span></div></div>
+        <div class="res-item"><div class="res-icon">💊</div><div><div class="res-name">Омега-3 EPA/DHA 2-3г/день</div><div class="res-desc">Сердце, мозг, воспаление. Утром с едой.</div><span class="res-tag" style="background:rgba(0,232,122,0.1);color:var(--green)">НАЧНИ СЕЙЧАС</span></div></div>
+        <div class="res-item"><div class="res-icon">💊</div><div><div class="res-name">Витамин D3 + K2 · 4000 IU</div><div class="res-desc">Иммунитет, кости. Утром. Обязательный базис в России.</div><span class="res-tag" style="background:rgba(0,232,122,0.1);color:var(--green)">НАЧНИ СЕЙЧАС</span></div></div>
+        <div class="res-item"><div class="res-icon">💊</div><div><div class="res-name">Витамин C 500мг + Цинк 15мг</div><div class="res-desc">Иммунитет при объёмных нагрузках. После тренировки / вечером.</div></div></div>
+      </div>
+      <div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--orange);margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--bg4)">СПОРТИВНОЕ ПИТАНИЕ</div>
+        <div class="res-item"><div class="res-icon">⚡</div><div><div class="res-name">Углеводные гели на гонке</div><div class="res-desc">1 гель каждые 30-35 мин на велосипеде. SiS, Maurten. Протестируй ДО гонки!</div><span class="res-tag" style="background:rgba(255,140,0,0.1);color:var(--orange)">ОБЯЗАТЕЛЬНО ТЕСТ</span></div></div>
+        <div class="res-item"><div class="res-icon">💧</div><div><div class="res-name">Электролиты · натрий/калий</div><div class="res-desc">High5 Zero, SiS Go. Судороги = дефицит натрия.</div></div></div>
+        <div class="res-item"><div class="res-icon">☕</div><div><div class="res-name">Кофеин 200мг за 60мин до гонки</div><div class="res-desc">Доказанный эргогеник. Только если привычен к кофе.</div></div></div>
+      </div>
+      <div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--red);margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--bg4)">ТОЛЬКО С ПСИХИАТРОМ</div>
+        <div class="res-item"><div class="res-icon">💊</div><div><div class="res-name">Магний L-треонат</div><div class="res-desc">Когнитивная функция. Проникает через ГЭБ. Обсуди с врачом.</div><span class="res-tag" style="background:rgba(255,68,68,0.1);color:var(--red)">С ВРАЧОМ</span></div></div>
+        <div class="res-item"><div class="res-icon">💊</div><div><div class="res-name">Ашваганда KSM-66</div><div class="res-desc">Снижает кортизол. Взаимодействия с антидепрессантами.</div><span class="res-tag" style="background:rgba(255,68,68,0.1);color:var(--red)">С ВРАЧОМ</span></div></div>
+        <div class="res-item"><div class="res-icon">💊</div><div><div class="res-name">5-HTP</div><div class="res-desc">НЕЛЬЗЯ с цепралексом без врача — риск серотонинового синдрома.</div><span class="res-tag" style="background:rgba(255,68,68,0.2);color:var(--red)">⛔ ТОЛЬКО ВРАЧ</span></div></div>
+      </div>
+    </div>
+  </div>
+</div>
 
   <div class="res-tab-content active" id="restab-books">
     <div class="res-grid">
@@ -1245,6 +1337,136 @@ function renderHistory(){
 
 function toggleGoal(li){li.querySelector('.gi-box').classList.toggle('done');li.querySelector('.gi-text').classList.toggle('done')}
 
+// ═══ GOALS (DYNAMIC) ═══
+const CAT_META = {
+  sport:  { label:'🏁 Спорт',   color:'var(--blue)',   title:'ТРИАТЛОН' },
+  career: { label:'💼 Карьера', color:'var(--accent)', title:'VP ПЕРЕХОД' },
+  mental: { label:'🧠 Ментал',  color:'var(--green)',  title:'СИСТЕМА' },
+  family: { label:'❤️ Семья',   color:'var(--red)',    title:'ЧЕСТНОСТЬ' },
+  custom: { label:'⭐ Своё',    color:'var(--purple)', title:'МОИ ЦЕЛИ' }
+};
+const DEFAULT_GOALS = [
+  {id:'g1',cat:'sport',text:'FTP-тест: 20мин макс × 0.95',when:'АПРЕЛЬ · СРОЧНО',done:false},
+  {id:'g2',cat:'sport',text:'Финишировать олимпийский триатлон 21 июня',when:'21 ИЮНЯ 2026',done:false},
+  {id:'g3',cat:'sport',text:'Бег: выйти на 4:00/км после велосипеда',when:'К ГОНКЕ',done:false},
+  {id:'g4',cat:'sport',text:'Велосипед: 40км за 59-62мин (аэропозиция!)',when:'К ГОНКЕ',done:false},
+  {id:'g5',cat:'sport',text:'Плавание: 1500м в темпе 1:31-1:33',when:'К ГОНКЕ',done:false},
+  {id:'g6',cat:'sport',text:'Аэрошлем + триsuit — +1.5 км/ч без ватт',when:'ДО ГОНКИ',done:false},
+  {id:'g7',cat:'sport',text:'Зарегистрироваться на старт осень 2026',when:'ПОСЛЕ 21 ИЮНЯ',done:false},
+  {id:'g8',cat:'career',text:'Переписать резюме как продающий документ',when:'МАЙ 2026',done:false},
+  {id:'g9',cat:'career',text:'LinkedIn 100% + английская версия',when:'МАЙ 2026',done:false},
+  {id:'g10',cat:'career',text:'Питч за 90 секунд — отточить',when:'МАЙ 2026',done:false},
+  {id:'g11',cat:'career',text:'Список 5 целевых компаний с именами',when:'ИЮНЬ 2026',done:false},
+  {id:'g12',cat:'career',text:'Выйти на Ward Howell, Kontakt, Cornerstone',when:'ИЮЛЬ 2026',done:false},
+  {id:'g13',cat:'career',text:'2 кофе-нетворк в неделю стабильно',when:'АВГ-СЕН 2026',done:false},
+  {id:'g14',cat:'career',text:'Получить оффер VP уровня',when:'ОКТ-ДЕК 2026',done:false},
+  {id:'g15',cat:'mental',text:'Визит к психиатру — ревизия цепралекса',when:'АПРЕЛЬ · СРОЧНО',done:false},
+  {id:'g16',cat:'mental',text:'Найти КПТ-терапевта, 1×/2нед регулярно',when:'АПРЕЛЬ-МАЙ',done:false},
+  {id:'g17',cat:'mental',text:'Утренний журнал 10 мин — ежедневно',when:'ПОСТОЯННО',done:false},
+  {id:'g18',cat:'mental',text:'Сон минимум 7.5ч при текущих нагрузках',when:'ПОСТОЯННО',done:false},
+  {id:'g19',cat:'family',text:'Ким: 1 ритуал в неделю только вдвоём',when:'КАЖДУЮ НЕДЕЛЮ',done:false},
+  {id:'g20',cat:'family',text:'Прочитать Готтман до разговора с женой',when:'МАЙ-ИЮНЬ',done:false},
+  {id:'g21',cat:'family',text:'Честный разговор о следующих 5 годах',when:'ИЮЛЬ · ПОСЛЕ ГОНКИ',done:false},
+  {id:'g22',cat:'family',text:'Парный терапевт — минимум 1 попытка',when:'ИЮЛЬ-АВГ',done:false},
+];
+function loadGoals(){const s=load('goals_v2',null);if(!s){save('goals_v2',DEFAULT_GOALS);return DEFAULT_GOALS;}return s;}
+function renderGoals(){
+  const goals=loadGoals();const grid=document.getElementById('goals-grid');if(!grid)return;
+  const cats=['sport','career','mental','family','custom'];
+  const byCat={};cats.forEach(c=>byCat[c]=[]);
+  goals.forEach(g=>{(byCat[g.cat]||byCat['custom']).push(g)});
+  const total=goals.length,done=goals.filter(g=>g.done).length;
+  const st=document.getElementById('goals-stats');
+  if(st)st.textContent=`✓ ${done} / ${total} выполнено · ${Math.round(done/Math.max(total,1)*100)}%`;
+  grid.innerHTML=cats.filter(c=>byCat[c].length>0).map(cat=>{
+    const meta=CAT_META[cat],items=byCat[cat],catDone=items.filter(g=>g.done).length;
+    return`<div class="goal-card"><div class="goal-area" style="color:${meta.color}">${meta.label} · ${catDone}/${items.length}</div><div class="goal-title">${meta.title}</div><ul class="goal-list">${
+      items.map(g=>`<li class="goal-item" onclick="toggleGoalDyn('${g.id}')"><div class="gi-box${g.done?' done':''}"></div><div style="flex:1"><div class="gi-text${g.done?' done':''}">${g.text}</div><div class="gi-when">${g.when}</div></div><button onclick="event.stopPropagation();deleteGoal('${g.id}')" style="background:none;border:none;color:var(--muted2);cursor:pointer;font-size:12px;padding:0 4px;flex-shrink:0">✕</button></li>`).join('')
+    }</ul></div>`;
+  }).join('');
+}
+function toggleGoalDyn(id){const goals=loadGoals();const g=goals.find(x=>x.id===id);if(g)g.done=!g.done;save('goals_v2',goals);renderGoals();}
+function deleteGoal(id){save('goals_v2',loadGoals().filter(g=>g.id!==id));renderGoals();}
+function addGoal(){
+  const cat=document.getElementById('new-goal-cat').value;
+  const text=document.getElementById('new-goal-text').value.trim();
+  const when=document.getElementById('new-goal-when').value.trim();
+  if(!text){document.getElementById('new-goal-text').style.borderColor='var(--red)';setTimeout(()=>document.getElementById('new-goal-text').style.borderColor='',1000);return;}
+  const goals=loadGoals();goals.push({id:'g'+Date.now(),cat,text,when:when||'',done:false});
+  save('goals_v2',goals);document.getElementById('new-goal-text').value='';document.getElementById('new-goal-when').value='';renderGoals();
+}
+
+// ═══ BOOKS (DYNAMIC) ═══
+const DEFAULT_BOOKS=[
+  {id:'b1',cat:'career',title:'The First 90 Days — Уоткинс',desc:'Читай ДО оффера.',status:'priority'},
+  {id:'b2',cat:'career',title:'Играй на повышение — Ибарра',desc:'Working Identity. Точно в твою ситуацию.',status:'priority'},
+  {id:'b3',cat:'career',title:'Inspired — Марти Каган',desc:'Библия VP Product.',status:'queue'},
+  {id:'b4',cat:'career',title:'Trillion Dollar Coach — Кэмпбелл',desc:'Лидерство. Google, Apple.',status:'queue'},
+  {id:'b5',cat:'career',title:'Never Split the Difference — Крис Восс',desc:'Переговоры для оффера.',status:'queue'},
+  {id:'b6',cat:'career',title:'Good to Great — Коллинз',desc:'Переосмысли с позиции перехода.',status:'done'},
+  {id:'b7',cat:'career',title:'Пять пороков команды — Ленсиони',desc:'Перечитай перед новой командой.',status:'done'},
+  {id:'b8',cat:'mind',title:'Антихрупкость — Талеб',desc:'Как расти от стресса.',status:'priority'},
+  {id:'b9',cat:'mind',title:'Экзистенциальная психотерапия — Ялом',desc:'После Франкла — следующий уровень.',status:'queue'},
+  {id:'b10',cat:'mind',title:'Sapiens — Юваль Харари',desc:'Масштаб мышления.',status:'queue'},
+  {id:'b11',cat:'mind',title:'Вы конечно шутите, мистер Фейнман',desc:'После Хокинга — твой следующий.',status:'queue'},
+  {id:'b12',cat:'mind',title:'Думай медленно, решай быстро — Канеман',desc:'Нобелевский лауреат о мышлении.',status:'queue'},
+  {id:'b13',cat:'mind',title:'Сказать жизни Да — Франкл',desc:'Первоисточник смысловой психологии.',status:'done'},
+  {id:'b14',cat:'mind',title:'Шантарам — Робертс',desc:'Эпос о смысле и свободе.',status:'done'},
+  {id:'b15',cat:'mind',title:'Краткая история времени — Хокинг',desc:'Физика от механики до квантов.',status:'done'},
+  {id:'b16',cat:'mental',title:'7 принципов счастливого брака — Готтман',desc:'Основа для разговора с женой.',status:'priority'},
+  {id:'b17',cat:'mental',title:'Мозг освобождённый — Андерс Хансен',desc:'Почему триатлон — твоё лекарство.',status:'queue'},
+  {id:'b18',cat:'mental',title:'Когда тело говорит нет — Габор Матэ',desc:'Хронический стресс и болезни.',status:'queue'},
+  {id:'b19',cat:'sport',title:'Не сдавайся — Крис Маккормак',desc:'Чемпион Ironman. За один вечер.',status:'priority'},
+  {id:'b20',cat:'sport',title:'Born to Run — Кристофер Макдугалл',desc:'Меняет отношение к бегу.',status:'queue'},
+];
+const BOOK_STATUS_META={priority:{label:'⭐ Приоритет',color:'var(--accent)',bg:'rgba(212,240,0,0.1)'},reading:{label:'📖 Читаю',color:'var(--blue)',bg:'rgba(0,180,255,0.1)'},done:{label:'✓ Прочитал',color:'var(--green)',bg:'rgba(0,232,122,0.1)'},queue:{label:'В очереди',color:'var(--muted)',bg:'transparent'}};
+const BOOK_CAT_META={career:{label:'💼 Карьера',color:'var(--accent)'},mind:{label:'🧠 Мышление',color:'var(--blue)'},mental:{label:'❤️ Ментал/Семья',color:'var(--green)'},sport:{label:'🏃 Спорт',color:'var(--run)'},other:{label:'📖 Другое',color:'var(--muted)'}};
+function loadBooks(){const s=load('books_v2',null);if(!s){save('books_v2',DEFAULT_BOOKS);return DEFAULT_BOOKS;}return s;}
+function renderBooks(){
+  const books=loadBooks();const container=document.getElementById('books-list');if(!container)return;
+  const priority=books.filter(b=>b.status==='priority');
+  const reading=books.filter(b=>b.status==='reading');
+  const cats=['career','mind','mental','sport','other'];
+  const byCat={};cats.forEach(c=>byCat[c]=books.filter(b=>b.cat===c&&b.status!=='priority'&&b.status!=='reading'));
+  const ri=(b)=>{const sm=BOOK_STATUS_META[b.status]||BOOK_STATUS_META.queue;const cm=BOOK_CAT_META[b.cat]||BOOK_CAT_META.other;
+    return`<div class="res-item" style="align-items:center"><div class="res-icon">📖</div><div style="flex:1;min-width:0"><div class="res-name" style="${b.status==='done'?'text-decoration:line-through;color:var(--muted)':''}">${b.title}</div>${b.desc?`<div class="res-desc">${b.desc}</div>`:''}<div style="display:flex;gap:6px;margin-top:4px"><span style="font-family:'JetBrains Mono',monospace;font-size:8px;color:${cm.color}">${cm.label}</span><span class="res-tag" style="background:${sm.bg};color:${sm.color}">${sm.label}</span></div></div><select onchange="changeBookStatus('${b.id}',this.value)" style="background:var(--bg3);border:1px solid var(--bg4);color:var(--muted);font-family:'JetBrains Mono',monospace;font-size:9px;padding:4px 6px;outline:none;margin-left:8px;flex-shrink:0"><option value="queue"${b.status==='queue'?' selected':''}>Очередь</option><option value="reading"${b.status==='reading'?' selected':''}>Читаю</option><option value="done"${b.status==='done'?' selected':''}>✓ Прочитал</option><option value="priority"${b.status==='priority'?' selected':''}>⭐ Приоритет</option></select><button onclick="deleteBook('${b.id}')" style="background:none;border:none;color:var(--muted2);cursor:pointer;font-size:12px;padding:0 4px;margin-left:4px;flex-shrink:0">✕</button></div>`;};
+  let html='';
+  if(priority.length)html+=`<div style="font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--accent);text-transform:uppercase;margin:0 0 8px;padding-bottom:6px;border-bottom:1px solid var(--bg4)">⭐ ПРИОРИТЕТ</div>${priority.map(ri).join('')}`;
+  if(reading.length)html+=`<div style="font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--blue);text-transform:uppercase;margin:16px 0 8px;padding-bottom:6px;border-bottom:1px solid var(--bg4)">📖 ЧИТАЮ СЕЙЧАС</div>${reading.map(ri).join('')}`;
+  cats.forEach(cat=>{const items=byCat[cat];if(!items||!items.length)return;const cm=BOOK_CAT_META[cat];const done=items.filter(b=>b.status==='done').length;html+=`<div style="font-family:'JetBrains Mono',monospace;font-size:9px;color:${cm.color};text-transform:uppercase;margin:16px 0 8px;padding-bottom:6px;border-bottom:1px solid var(--bg4)">${cm.label} · ${done}/${items.length} прочитано</div>${items.map(ri).join('')}`;});
+  container.innerHTML=html||'<div style="color:var(--muted);font-size:12px">Список пуст.</div>';
+}
+function changeBookStatus(id,status){const books=loadBooks();const b=books.find(x=>x.id===id);if(b)b.status=status;save('books_v2',books);renderBooks();}
+function deleteBook(id){save('books_v2',loadBooks().filter(b=>b.id!==id));renderBooks();}
+function addBook(){
+  const title=document.getElementById('book-title').value.trim();
+  if(!title){document.getElementById('book-title').style.borderColor='var(--red)';setTimeout(()=>document.getElementById('book-title').style.borderColor='',1000);return;}
+  const books=loadBooks();
+  books.unshift({id:'b'+Date.now(),cat:document.getElementById('book-cat').value,title,desc:document.getElementById('book-desc').value.trim(),status:document.getElementById('book-status').value});
+  save('books_v2',books);document.getElementById('book-title').value='';document.getElementById('book-desc').value='';renderBooks();
+}
+
+// ═══ PODCASTS (DYNAMIC) ═══
+const DEFAULT_PODCASTS=[
+  {id:'p1',title:'Lex Fridman Podcast',desc:'Физики, философы, CEO. На длинные велотренировки.'},
+  {id:'p2',title:'Huberman Lab',desc:'Сон, стресс, дофамин. Нейронаука. ОБЯЗАТЕЛЬНО.'},
+  {id:'p3',title:'Triathlon Taren',desc:'Конкретно по делу. На беговые тренировки.'},
+  {id:'p4',title:"Lenny's Podcast",desc:'VP Product из топ-компаний.'},
+  {id:'p5',title:'Masters of Scale — Рид Хоффман',desc:'Как думают основатели компаний.'},
+  {id:'p6',title:'The Rich Roll Podcast',desc:'Смысл, спорт, трансформация.'},
+];
+function loadPodcasts(){const s=load('podcasts_v2',null);if(!s){save('podcasts_v2',DEFAULT_PODCASTS);return DEFAULT_PODCASTS;}return s;}
+function renderPodcasts(){
+  const pods=loadPodcasts();const c=document.getElementById('podcasts-list');if(!c)return;
+  c.innerHTML=pods.map(p=>`<div class="res-item" style="align-items:center"><div class="res-icon">🎧</div><div style="flex:1"><div class="res-name">${p.title}</div>${p.desc?`<div class="res-desc">${p.desc}</div>`:''}</div><button onclick="deletePodcast('${p.id}')" style="background:none;border:none;color:var(--muted2);cursor:pointer;font-size:12px;padding:0 4px;flex-shrink:0">✕</button></div>`).join('')||'<div style="color:var(--muted);font-size:12px">Список пуст.</div>';
+}
+function deletePodcast(id){save('podcasts_v2',loadPodcasts().filter(p=>p.id!==id));renderPodcasts();}
+function addPodcast(){
+  const title=document.getElementById('pod-title').value.trim();if(!title)return;
+  const pods=loadPodcasts();pods.unshift({id:'p'+Date.now(),title,desc:document.getElementById('pod-desc').value.trim()});
+  save('podcasts_v2',pods);document.getElementById('pod-title').value='';document.getElementById('pod-desc').value='';renderPodcasts();
+}
+
 // ═══ METRICS ═══
 
 // Parse pace string "4:15" → seconds
@@ -1525,9 +1747,11 @@ window.addEventListener('resize', initMobile);
 initMobile();
 
 buildHeatmap();buildTrainingPlan();buildWeekSelector();renderHistory();
+renderGoals();renderBooks();renderPodcasts();
 const lastData=load('weekly',{});
 const lastEntry=Object.values(lastData).sort((a,b)=>new Date(b.saved||0)-new Date(a.saved||0))[0];
 if(lastEntry){['sport','career','mental','family'].forEach(k=>{document.getElementById('h-'+k).textContent=lastEntry[k];document.getElementById('hb-'+k).style.width=(lastEntry[k]*10)+'%'})}
 </script>
+
 </body>
 </html>
