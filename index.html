@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 
 <html lang="ru">
@@ -491,6 +490,34 @@ border-bottom: 1px solid rgba(255,255,255,.04);
 .prog-track, .mc-bar-track, .stat-bar {
 background: rgba(255,255,255,.08) !important;
 }
+
+/* ═══ DRAG & DROP ═══ */
+.drag-handle{
+position:absolute;top:8px;left:6px;
+font-size:14px;color:var(–muted);cursor:grab;
+line-height:1;user-select:none;z-index:3;
+transition:color .15s;letter-spacing:-1px;
+}
+.drag-handle:active{cursor:grabbing}
+.day-cell:hover .drag-handle{color:var(–accent)}
+.day-cell[draggable=“true”]{padding-left:22px}
+.drag-src{opacity:.35 !important;border:2px dashed var(–accent) !important}
+.drag-over{
+background:rgba(0,212,170,.1) !important;
+border:2px dashed var(–accent) !important;
+box-shadow:0 0 0 2px rgba(0,212,170,.2) inset !important;
+}
+@media(max-width:768px){
+.drag-handle{font-size:16px;top:50%;transform:translateY(-50%);left:3px}
+.day-cell[draggable=“true”]{padding-left:24px}
+}
+
+/* ═══ SYNC INDICATOR ═══ */
+#sync-banner{
+font-family:‘JetBrains Mono’,monospace;
+font-size:10px;
+pointer-events:none;
+}
 </style>
 
 </head>
@@ -902,9 +929,87 @@ background: rgba(255,255,255,.08) !important;
 </div>
 
 <script>
-// ═══ CORE ═══
-const sv=(k,v)=>{try{localStorage.setItem('x4_'+k,JSON.stringify(v))}catch(e){}};
-const ld=(k,d)=>{try{const x=localStorage.getItem('x4_'+k);return x?JSON.parse(x):d}catch(e){return d}};
+// ═══ FIREBASE CONFIG ═══
+// Бесплатная БД Google. Данные синхронизируются на все устройства.
+const FB_URL = 'https://artem-dashboard-default-rtdb.firebaseio.com';
+const USER_ID = 'artem2026'; // фиксированный ID — все устройства читают один профиль
+
+// ─── Firebase REST helpers ───
+async function fbSet(path, value) {
+  try {
+    await fetch(`${FB_URL}/${USER_ID}/${path}.json`, {
+      method: 'PUT',
+      body: JSON.stringify(value),
+      headers: {'Content-Type': 'application/json'}
+    });
+  } catch(e) { /* offline — fall through to localStorage */ }
+}
+async function fbGet(path) {
+  try {
+    const r = await fetch(`${FB_URL}/${USER_ID}/${path}.json`);
+    if (!r.ok) return null;
+    return await r.json();
+  } catch(e) { return null; }
+}
+
+// ─── Hybrid storage: Firebase primary, localStorage fallback ───
+// Writes go to BOTH simultaneously for instant UI + cloud backup
+function sv(k, v) {
+  try { localStorage.setItem('x4_' + k, JSON.stringify(v)); } catch(e) {}
+  fbSet(k, v); // async, fire-and-forget
+}
+
+function ld(k, d) {
+  try {
+    const x = localStorage.getItem('x4_' + k);
+    return x ? JSON.parse(x) : d;
+  } catch(e) { return d; }
+}
+
+// ─── Cloud sync on page load: pull Firebase → overwrite localStorage ───
+async function syncFromCloud() {
+  const keys = ['weekly','done','ovr','gv3','bv3','pv3','m_ftp','m_swim','m_run'];
+  const dayTaskKeys = [];
+  // also load last 60 days of tasks
+  for (let i = 0; i < 60; i++) {
+    const d = new Date(); d.setDate(d.getDate() - i);
+    dayTaskKeys.push('tasks_' + d.toISOString().split('T')[0]);
+  }
+
+  const showBanner = (msg, ok) => {
+    let b = document.getElementById('sync-banner');
+    if (!b) { b = document.createElement('div'); b.id = 'sync-banner'; document.body.appendChild(b); }
+    b.style.cssText = `position:fixed;top:60px;right:16px;z-index:9999;padding:8px 14px;border-radius:8px;font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:600;transition:opacity .4s;background:${ok?'rgba(0,212,170,.15)':'rgba(248,113,113,.15)'};border:1px solid ${ok?'var(--accent)':'var(--red)'};color:${ok?'var(--accent)':'var(--red)'}`;
+    b.textContent = msg;
+    setTimeout(() => { b.style.opacity = '0'; setTimeout(() => b.remove(), 500); }, 2500);
+  };
+
+  try {
+    showBanner('☁️ Синхронизация...', true);
+    let synced = 0;
+    for (const k of [...keys, ...dayTaskKeys]) {
+      const cloudVal = await fbGet(k);
+      if (cloudVal !== null) {
+        try { localStorage.setItem('x4_' + k, JSON.stringify(cloudVal)); synced++; } catch(e) {}
+      }
+    }
+    showBanner(`✓ Синхронизировано (${synced} записей)`, true);
+    // Re-render after sync
+    buildHeatmap();
+    renderPulseHist();
+    renderGoals();
+    renderTasks();
+    buildWeekSel();
+    const lpd = ld('weekly', {});
+    const le = Object.values(lpd).sort((a, b) => new Date(b.saved || 0) - new Date(a.saved || 0))[0];
+    if (le) ['sport','career','mental','family'].forEach(k => {
+      const el = document.getElementById('h-' + k); const bar = document.getElementById('hb-' + k);
+      if (el) el.textContent = le[k]; if (bar) bar.style.width = (le[k] * 10) + '%';
+    });
+  } catch(e) {
+    showBanner('⚠️ Офлайн — данные локальные', false);
+  }
+}
 const fmtD=d=>d.toISOString().split('T')[0];
 const s2p=s=>{if(!s&&s!==0)return'—';return Math.floor(s/60)+':'+(s%60<10?'0':'')+Math.round(s%60)};
 const p2s=str=>{const p=String(str).trim().split(':');return p.length===2?+p[0]*60+ +p[1]:null};
@@ -1092,6 +1197,7 @@ const PLAN=[
 ];
 
 let editKey=null;
+let dragSrcKey=null, dragSrcData=null;
 
 function buildTraining(){
   const c=document.getElementById('training-plan');if(!c)return;c.innerHTML='';
@@ -1108,20 +1214,78 @@ function buildTraining(){
       const dg=document.createElement('div');dg.className='days-grid';
       wk.days.forEach(day=>{
         const key=day.d.replace(/ /g,'-');const isDone=done[key];const ov=ovr[key];
-        const cell=document.createElement('div');cell.className='day-cell'+(isDone?' done-cell':'');
+        const cell=document.createElement('div');
+        cell.className='day-cell'+(isDone?' done-cell':'');
+        cell.dataset.key=key;
+        cell.draggable=true;
         const ws=ov?ov.w:day.w;
         const pills=ws.map(w=>`<span class="w-pill wt-${w.t}">${w.x.replace(/\n/g,'<br>')}</span>`).join('');
-        cell.innerHTML=`<div class="day-nm">${day.n}</div><div class="day-dt">${day.d}</div>${pills}<div class="day-chk${isDone?' chk-done':''}" data-k="${key}">✓</div><button class="day-edit-btn" onclick="openWoModal('${key}','${day.d}',event)">✏️</button>`;
+        cell.innerHTML=`
+          <div class="drag-handle" title="Перетащи чтобы поменять местами">⠿</div>
+          <div class="day-nm">${day.n}</div>
+          <div class="day-dt">${day.d}</div>
+          ${pills}
+          <div class="day-chk${isDone?' chk-done':''}" data-k="${key}">✓</div>
+          <button class="day-edit-btn" onclick="openWoModal('${key}','${day.d}',event)">✏️</button>
+        `;
+        // checkmark
         cell.querySelector('.day-chk').onclick=ev=>{
           ev.stopPropagation();const s=ld('done',{});s[key]=!s[key];if(!s[key])delete s[key];sv('done',s);
           ev.target.classList.toggle('chk-done');cell.classList.toggle('done-cell');
         };
+        // ─── DRAG & DROP ───
+        cell.addEventListener('dragstart', ev => {
+          dragSrcKey = key;
+          dragSrcData = ld('ovr',{})[key] || { w: day.w };
+          cell.classList.add('drag-src');
+          ev.dataTransfer.effectAllowed = 'move';
+          ev.dataTransfer.setData('text/plain', key);
+        });
+        cell.addEventListener('dragend', () => {
+          cell.classList.remove('drag-src');
+          document.querySelectorAll('.drag-over').forEach(el => el.classList.remove('drag-over'));
+        });
+        cell.addEventListener('dragover', ev => {
+          ev.preventDefault();
+          ev.dataTransfer.dropEffect = 'move';
+          if (cell.dataset.key !== dragSrcKey) cell.classList.add('drag-over');
+        });
+        cell.addEventListener('dragleave', () => cell.classList.remove('drag-over'));
+        cell.addEventListener('drop', ev => {
+          ev.preventDefault();
+          cell.classList.remove('drag-over');
+          const dstKey = cell.dataset.key;
+          if (!dragSrcKey || dragSrcKey === dstKey) return;
+          // find default workouts for dst
+          let dstDefWo = null;
+          PLAN.forEach(p=>p.weeks.forEach(w=>w.days.forEach(d=>{
+            if(d.d.replace(/ /g,'-')===dstKey) dstDefWo = d.w;
+          })));
+          const ovrMap = ld('ovr',{});
+          const dstData = ovrMap[dstKey] || { w: dstDefWo || [] };
+          // swap
+          ovrMap[dragSrcKey] = { w: dstData.w };
+          ovrMap[dstKey] = { w: dragSrcData.w };
+          sv('ovr', ovrMap);
+          // toast
+          showToast(`↔ Тренировки ${dragSrcKey} и ${dstKey} поменяны местами`);
+          dragSrcKey = null; dragSrcData = null;
+          buildTraining();
+        });
         dg.appendChild(cell);
       });
       wb.appendChild(dg);body.appendChild(wb);
     });
     wrap.appendChild(hdr);wrap.appendChild(body);c.appendChild(wrap);
   });
+}
+
+function showToast(msg) {
+  let t = document.getElementById('toast');
+  if (!t) { t = document.createElement('div'); t.id = 'toast'; document.body.appendChild(t); }
+  t.style.cssText = 'position:fixed;bottom:90px;left:50%;transform:translateX(-50%);z-index:9998;padding:10px 18px;border-radius:20px;font-family:\'JetBrains Mono\',monospace;font-size:10px;font-weight:600;background:var(--accent);color:var(--bg);box-shadow:0 4px 20px rgba(0,0,0,.4);transition:opacity .4s;white-space:nowrap';
+  t.textContent = msg; t.style.opacity = '1';
+  setTimeout(() => { t.style.opacity = '0'; }, 2200);
 }
 
 function openWoModal(key,dateStr,ev){
@@ -1684,6 +1848,78 @@ if(window.innerWidth<=768){
   const hg=document.getElementById('hero-grid');
   if(hg)hg.style.gridTemplateColumns='1fr 1fr';
 }
+
+// ─── Cloud sync (after local render, non-blocking) ───
+setTimeout(syncFromCloud, 500);
+
+// ─── Touch drag & drop for iOS (HTML5 drag doesn't work on iOS Safari) ───
+(function addTouchDrag() {
+  let touchSrcEl = null, touchSrcKey = null, touchSrcWo = null;
+  let ghost = null;
+
+  function getKeyFromTouch(x, y) {
+    const el = document.elementFromPoint(x, y);
+    const cell = el?.closest('.day-cell');
+    return cell?.dataset?.key || null;
+  }
+
+  document.addEventListener('touchstart', ev => {
+    const handle = ev.target.closest('.drag-handle');
+    if (!handle) return;
+    const cell = handle.closest('.day-cell');
+    if (!cell) return;
+    touchSrcEl = cell;
+    touchSrcKey = cell.dataset.key;
+    const ovrMap = ld('ovr', {});
+    let defWo = null;
+    PLAN.forEach(p=>p.weeks.forEach(w=>w.days.forEach(d=>{
+      if(d.d.replace(/ /g,'-')===touchSrcKey) defWo=d.w;
+    })));
+    touchSrcWo = ovrMap[touchSrcKey] || { w: defWo || [] };
+    // create ghost
+    ghost = cell.cloneNode(true);
+    ghost.style.cssText = 'position:fixed;pointer-events:none;z-index:9999;opacity:.7;width:'+cell.offsetWidth+'px;border-radius:8px;background:#1c2a3c;border:2px solid var(--accent);box-shadow:0 8px 32px rgba(0,0,0,.6)';
+    document.body.appendChild(ghost);
+    cell.classList.add('drag-src');
+    ev.preventDefault();
+  }, {passive: false});
+
+  document.addEventListener('touchmove', ev => {
+    if (!touchSrcEl) return;
+    ev.preventDefault();
+    const t = ev.touches[0];
+    if (ghost) { ghost.style.left = (t.clientX - 60) + 'px'; ghost.style.top = (t.clientY - 40) + 'px'; }
+    document.querySelectorAll('.drag-over').forEach(el => el.classList.remove('drag-over'));
+    const dstKey = getKeyFromTouch(t.clientX, t.clientY);
+    if (dstKey && dstKey !== touchSrcKey) {
+      const dstEl = document.querySelector(`.day-cell[data-key="${dstKey}"]`);
+      if (dstEl) dstEl.classList.add('drag-over');
+    }
+  }, {passive: false});
+
+  document.addEventListener('touchend', ev => {
+    if (!touchSrcEl) return;
+    if (ghost) { ghost.remove(); ghost = null; }
+    touchSrcEl.classList.remove('drag-src');
+    document.querySelectorAll('.drag-over').forEach(el => el.classList.remove('drag-over'));
+    const t = ev.changedTouches[0];
+    const dstKey = getKeyFromTouch(t.clientX, t.clientY);
+    if (dstKey && dstKey !== touchSrcKey) {
+      let dstDefWo = null;
+      PLAN.forEach(p=>p.weeks.forEach(w=>w.days.forEach(d=>{
+        if(d.d.replace(/ /g,'-')===dstKey) dstDefWo=d.w;
+      })));
+      const ovrMap = ld('ovr', {});
+      const dstData = ovrMap[dstKey] || { w: dstDefWo || [] };
+      ovrMap[touchSrcKey] = { w: dstData.w };
+      ovrMap[dstKey] = { w: touchSrcWo.w };
+      sv('ovr', ovrMap);
+      showToast(`↔ Тренировки поменяны местами`);
+      buildTraining();
+    }
+    touchSrcEl = null; touchSrcKey = null; touchSrcWo = null;
+  });
+})();
 </script>
 
 </body>
