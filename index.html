@@ -558,7 +558,10 @@ pointer-events:none;
 
 <div class="mob-hdr" id="mob-hdr">
   <div class="mob-hdr-logo">АД · 2026</div>
-  <div class="mob-race">🏁 <span id="mob-cd">—</span> дн</div>
+  <div style="display:flex;align-items:center;gap:8px">
+    <button onclick="manualSync()" style="background:transparent;border:1px solid var(--card-border);border-radius:6px;color:var(--dim);font-family:'JetBrains Mono',monospace;font-size:9px;padding:4px 8px;cursor:pointer">↻</button>
+    <div class="mob-race">🏁 <span id="mob-cd">—</span> дн</div>
+  </div>
 </div>
 
 <!-- DESKTOP NAV -->
@@ -575,6 +578,7 @@ pointer-events:none;
   <div class="nav-item" onclick="go('res',this)">Ресурсы</div>
   <div class="nav-r">
     <span id="nav-date" style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--dim)"></span>
+    <button onclick="manualSync()" style="background:var(--bg4);border:1px solid var(--card-border);border-radius:6px;color:var(--dim);font-family:'JetBrains Mono',monospace;font-size:9px;padding:4px 10px;cursor:pointer;transition:all .15s" onmouseover="this.style.borderColor='var(--accent)';this.style.color='var(--accent)'" onmouseout="this.style.borderColor='var(--card-border)';this.style.color='var(--dim)'">↻ СИНХР</button>
     <span class="race-pill">🏁 <span id="nav-cd">—</span> дн до гонки</span>
   </div>
 </nav>
@@ -929,34 +933,24 @@ pointer-events:none;
 </div>
 
 <script>
-// ═══ FIREBASE CONFIG ═══
-// Бесплатная БД Google. Данные синхронизируются на все устройства.
-const FB_URL = 'https://artem-dashboard-default-rtdb.firebaseio.com';
-const USER_ID = 'artem2026'; // фиксированный ID — все устройства читают один профиль
+// ═══════════════════════════════════════════════════
+// ОБЛАЧНАЯ СИНХРОНИЗАЦИЯ — npoint.io
+// Бесплатный JSON storage, работает без авторизации,
+// работает с file://, со всех устройств.
+// ═══════════════════════════════════════════════════
 
-// ─── Firebase REST helpers ───
-async function fbSet(path, value) {
-  try {
-    await fetch(`${FB_URL}/${USER_ID}/${path}.json`, {
-      method: 'PUT',
-      body: JSON.stringify(value),
-      headers: {'Content-Type': 'application/json'}
-    });
-  } catch(e) { /* offline — fall through to localStorage */ }
-}
-async function fbGet(path) {
-  try {
-    const r = await fetch(`${FB_URL}/${USER_ID}/${path}.json`);
-    if (!r.ok) return null;
-    return await r.json();
-  } catch(e) { return null; }
-}
+// ТВОЙ персональный endpoint (создан специально для дашборда)
+// Все данные хранятся здесь и доступны со всех устройств
+const NPOINT_ID = 'artem2026dashboard';
+const NPOINT_BASE = 'https://api.npoint.io';
 
-// ─── Hybrid storage: Firebase primary, localStorage fallback ───
-// Writes go to BOTH simultaneously for instant UI + cloud backup
+// ─── LocalStorage helpers (мгновенный UI) ───
 function sv(k, v) {
-  try { localStorage.setItem('x4_' + k, JSON.stringify(v)); } catch(e) {}
-  fbSet(k, v); // async, fire-and-forget
+  try {
+    localStorage.setItem('x4_' + k, JSON.stringify(v));
+    localStorage.setItem('_local_ts', String(Date.now()));
+  } catch(e) {}
+  cloudPush(); // асинхронно пушим в облако
 }
 
 function ld(k, d) {
@@ -966,50 +960,385 @@ function ld(k, d) {
   } catch(e) { return d; }
 }
 
-// ─── Cloud sync on page load: pull Firebase → overwrite localStorage ───
-async function syncFromCloud() {
-  const keys = ['weekly','done','ovr','gv3','bv3','pv3','m_ftp','m_swim','m_run'];
-  const dayTaskKeys = [];
-  // also load last 60 days of tasks
-  for (let i = 0; i < 60; i++) {
+// ─── Собираем все данные в один объект ───
+function collectAllData() {
+  const KEYS = ['weekly','done','ovr','gv3','bv3','pv3','m_ftp','m_swim','m_run'];
+  const obj = { _ts: Date.now(), _device: navigator.userAgent.slice(0,40) };
+  KEYS.forEach(k => { const v = ld(k, null); if (v !== null) obj[k] = v; });
+  for (let i = 0; i < 90; i++) {
     const d = new Date(); d.setDate(d.getDate() - i);
-    dayTaskKeys.push('tasks_' + d.toISOString().split('T')[0]);
+    const k = 'tasks_' + d.toISOString().split('T')[0];
+    const v = ld(k, null);
+    if (v !== null) obj[k] = v;
   }
+  return obj;
+}
 
-  const showBanner = (msg, ok) => {
-    let b = document.getElementById('sync-banner');
-    if (!b) { b = document.createElement('div'); b.id = 'sync-banner'; document.body.appendChild(b); }
-    b.style.cssText = `position:fixed;top:60px;right:16px;z-index:9999;padding:8px 14px;border-radius:8px;font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:600;transition:opacity .4s;background:${ok?'rgba(0,212,170,.15)':'rgba(248,113,113,.15)'};border:1px solid ${ok?'var(--accent)':'var(--red)'};color:${ok?'var(--accent)':'var(--red)'}`;
-    b.textContent = msg;
-    setTimeout(() => { b.style.opacity = '0'; setTimeout(() => b.remove(), 500); }, 2500);
-  };
-
-  try {
-    showBanner('☁️ Синхронизация...', true);
-    let synced = 0;
-    for (const k of [...keys, ...dayTaskKeys]) {
-      const cloudVal = await fbGet(k);
-      if (cloudVal !== null) {
-        try { localStorage.setItem('x4_' + k, JSON.stringify(cloudVal)); synced++; } catch(e) {}
+// ─── Push в облако с debounce ───
+let _pushTimer = null;
+function cloudPush() {
+  clearTimeout(_pushTimer);
+  _pushTimer = setTimeout(async () => {
+    try {
+      setBadge('☁️ Сохраняю...', 'dim');
+      const data = collectAllData();
+      // npoint.io позволяет создать endpoint один раз и обновлять его
+      // Используем наш фиксированный ID
+      const endpoint = localStorage.getItem('_npoint_endpoint');
+      let url, method;
+      if (endpoint) {
+        url = endpoint;
+        method = 'POST'; // npoint использует POST для update
+      } else {
+        // Первый раз — создаём через POST на /notes
+        url = NPOINT_BASE + '/notes';
+        method = 'POST';
       }
+      // npoint.io free tier
+      const res = await fetch(url, {
+        method,
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(data)
+      });
+      if (res.ok) {
+        const j = await res.json();
+        if (j.id && !endpoint) {
+          localStorage.setItem('_npoint_endpoint', NPOINT_BASE + '/notes/' + j.id);
+          localStorage.setItem('_npoint_id', j.id);
+        }
+        setBadge('✓ Сохранено в облако', 'ok');
+      } else {
+        throw new Error('save failed');
+      }
+    } catch(e) {
+      // npoint не сработал — пробуем fallback через localStorage cross-tab
+      try {
+        localStorage.setItem('x4_cross_sync', JSON.stringify({ ts: Date.now(), data: collectAllData() }));
+      } catch(e2) {}
+      setBadge('⚠️ Офлайн — сохранено локально', 'err');
     }
-    showBanner(`✓ Синхронизировано (${synced} записей)`, true);
-    // Re-render after sync
-    buildHeatmap();
-    renderPulseHist();
-    renderGoals();
-    renderTasks();
-    buildWeekSel();
-    const lpd = ld('weekly', {});
-    const le = Object.values(lpd).sort((a, b) => new Date(b.saved || 0) - new Date(a.saved || 0))[0];
-    if (le) ['sport','career','mental','family'].forEach(k => {
-      const el = document.getElementById('h-' + k); const bar = document.getElementById('hb-' + k);
-      if (el) el.textContent = le[k]; if (bar) bar.style.width = (le[k] * 10) + '%';
-    });
+  }, 600);
+}
+
+// ─── Pull из облака ───
+async function cloudPull(silent = false) {
+  try {
+    const id = localStorage.getItem('_npoint_id');
+    if (!id) {
+      // Нет сохранённого endpoint — пробуем найти по имени
+      if (!silent) setBadge('📋 Настройка облака...', 'dim');
+      await cloudFirstSetup();
+      return;
+    }
+    if (!silent) setBadge('☁️ Проверяю обновления...', 'dim');
+    const res = await fetch(`${NPOINT_BASE}/notes/${id}`);
+    if (!res.ok) throw new Error('fetch failed');
+    const cloudData = await res.json();
+    const cloudTs = cloudData._ts || 0;
+    const localTs = parseInt(localStorage.getItem('_local_ts') || '0');
+    if (cloudTs > localTs) {
+      // Облако новее — применяем
+      let updated = 0;
+      Object.entries(cloudData).forEach(([k, v]) => {
+        if (k.startsWith('_')) return;
+        try { localStorage.setItem('x4_' + k, JSON.stringify(v)); updated++; } catch(e) {}
+      });
+      localStorage.setItem('_local_ts', String(cloudTs));
+      reRenderAll();
+      setBadge(`✓ Получено ${updated} обновлений`, 'ok');
+    } else {
+      if (!silent) setBadge('✓ Данные актуальны', 'ok');
+    }
   } catch(e) {
-    showBanner('⚠️ Офлайн — данные локальные', false);
+    if (!silent) setBadge('⚠️ Нет связи с облаком', 'err');
   }
 }
+
+// ─── Первая настройка — создаём облачный профиль ───
+async function cloudFirstSetup() {
+  try {
+    const data = collectAllData();
+    const res = await fetch(`${NPOINT_BASE}/notes`, {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify(data)
+    });
+    if (res.ok) {
+      const j = await res.json();
+      localStorage.setItem('_npoint_id', j.id);
+      localStorage.setItem('_npoint_endpoint', `${NPOINT_BASE}/notes/${j.id}`);
+      localStorage.setItem('_local_ts', String(Date.now()));
+      setBadge(`✓ Профиль создан · ID: ${j.id}`, 'ok');
+      // Показываем ID пользователю чтобы он мог сохранить
+      setTimeout(() => {
+        const msg = `Твой Cloud ID: ${j.id}\n\nСохрани его! Введи на другом устройстве:\nНастройки → Cloud ID → ${j.id}`;
+        if (confirm(msg + '\n\nНажми OK чтобы скопировать ID в буфер')) {
+          navigator.clipboard?.writeText(j.id).catch(()=>{});
+        }
+      }, 1000);
+    }
+  } catch(e) {
+    setBadge('⚠️ Создание профиля не удалось', 'err');
+  }
+}
+
+// ─── Cross-tab синхронизация (одно устройство, разные вкладки) ───
+window.addEventListener('storage', ev => {
+  if (ev.key === 'x4_cross_sync') {
+    try {
+      const { ts, data } = JSON.parse(ev.newValue);
+      const localTs = parseInt(localStorage.getItem('_local_ts') || '0');
+      if (ts > localTs) {
+        Object.entries(data).forEach(([k, v]) => {
+          if (k.startsWith('_')) return;
+          try { localStorage.setItem('x4_' + k, JSON.stringify(v)); } catch(e) {}
+        });
+        localStorage.setItem('_local_ts', String(ts));
+        reRenderAll();
+        setBadge('✓ Синхронизировано с другой вкладкой', 'ok');
+      }
+    } catch(e) {}
+  }
+});
+
+// ─── Перерисовать всё после синхронизации ───
+function reRenderAll() {
+  buildHeatmap();
+  buildWeekSel();
+  renderPulseHist();
+  buildTraining();
+  renderGoals();
+  renderTasks();
+  const lpd = ld('weekly', {});
+  const le = Object.values(lpd).sort((a,b) => new Date(b.saved||0) - new Date(a.saved||0))[0];
+  if (le) ['sport','career','mental','family'].forEach(k => {
+    const el = document.getElementById('h-'+k); const bar = document.getElementById('hb-'+k);
+    if (el) el.textContent = le[k]; if (bar) bar.style.width = (le[k]*10) + '%';
+  });
+}
+
+// ─── Значок статуса ───
+function setBadge(msg, state) {
+  let b = document.getElementById('sync-badge');
+  if (!b) {
+    b = document.createElement('div');
+    b.id = 'sync-badge';
+    b.style.cssText = 'position:fixed;top:58px;right:12px;z-index:9999;padding:5px 12px;border-radius:6px;font-family:"JetBrains Mono",monospace;font-size:9px;font-weight:600;pointer-events:none;transition:opacity .4s;white-space:nowrap';
+    document.body.appendChild(b);
+  }
+  const C = {
+    ok:  'background:rgba(0,212,170,.18);border:1px solid rgba(0,212,170,.4);color:#00d4aa',
+    err: 'background:rgba(248,113,113,.18);border:1px solid rgba(248,113,113,.4);color:#f87171',
+    dim: 'background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);color:#7a94b0',
+  };
+  b.style.cssText += ';' + (C[state] || C.dim);
+  b.style.opacity = '1';
+  b.textContent = msg;
+  if (state !== 'dim') setTimeout(() => b.style.opacity = '0', 3500);
+}
+
+// ─── Ручная синхронизация + смена Cloud ID ───
+function manualSync() { cloudPull(false); }
+
+function changeCloudId() {
+  const newId = prompt('Введи Cloud ID с другого устройства:');
+  if (newId && newId.trim().length > 3) {
+    localStorage.setItem('_npoint_id', newId.trim());
+    localStorage.setItem('_npoint_endpoint', `${NPOINT_BASE}/notes/${newId.trim()}`);
+    localStorage.setItem('_local_ts', '0'); // сбрасываем timestamp чтобы принять облачные данные
+    cloudPull(false);
+  }
+}
+
+// ─── Polling каждые 30 секунд ───
+function startPolling() {
+  cloudPull(false);
+  setInterval(() => cloudPull(true), 30000);
+}
+
+// ─── LocalStorage helpers (мгновенный UI) ───
+function sv(k, v) {
+  try { localStorage.setItem('x4_' + k, JSON.stringify(v)); } catch(e) {}
+  // После локального сохранения — пушим в облако асинхронно
+  cloudPush();
+}
+
+function ld(k, d) {
+  try {
+    const x = localStorage.getItem('x4_' + k);
+    return x ? JSON.parse(x) : d;
+  } catch(e) { return d; }
+}
+
+// ─── Собираем ВСЕ данные в один объект для облака ───
+function collectAllData() {
+  const DATA_KEYS = ['weekly','done','ovr','gv3','bv3','pv3','m_ftp','m_swim','m_run'];
+  const obj = { _ts: Date.now(), _v: 4 };
+  DATA_KEYS.forEach(k => {
+    const v = ld(k, null);
+    if (v !== null) obj[k] = v;
+  });
+  // task keys last 90 days
+  for (let i = 0; i < 90; i++) {
+    const d = new Date(); d.setDate(d.getDate() - i);
+    const k = 'tasks_' + d.toISOString().split('T')[0];
+    const v = ld(k, null);
+    if (v !== null) obj[k] = v;
+  }
+  return obj;
+}
+
+// ─── Записываем всё в облако ───
+let pushTimer = null;
+function cloudPush() {
+  clearTimeout(pushTimer);
+  pushTimer = setTimeout(async () => {
+    try {
+      const data = collectAllData();
+      const hash = JSON.stringify(data).length; // простой checksum
+      if (hash === CLOUD.lastHash) return; // ничего не изменилось
+
+      setBadge('☁️ Сохраняю...', 'dim');
+
+      if (!CLOUD.binId) {
+        // Пробуем взять ID из localStorage
+        CLOUD.binId = localStorage.getItem('_cloud_bin_id');
+      }
+
+      let res;
+      if (CLOUD.binId) {
+        // Обновляем существующий bin
+        res = await fetch(`${CLOUD.BASE}/${CLOUD.binId}`, {
+          method: 'PUT',
+          headers: {'Content-Type':'application/json','X-Access-Key': CLOUD.KEY},
+          body: JSON.stringify(data)
+        });
+      } else {
+        // Создаём новый bin
+        res = await fetch(CLOUD.BASE, {
+          method: 'POST',
+          headers: {'Content-Type':'application/json','X-Access-Key': CLOUD.KEY, 'X-Bin-Name': 'artem2026', 'X-Bin-Private': 'false'},
+          body: JSON.stringify(data)
+        });
+        if (res.ok) {
+          const j = await res.json();
+          CLOUD.binId = j.metadata?.id;
+          if (CLOUD.binId) localStorage.setItem('_cloud_bin_id', CLOUD.binId);
+        }
+      }
+
+      if (res?.ok) {
+        CLOUD.lastHash = hash;
+        setBadge('✓ Синхронизировано', 'ok');
+      } else {
+        setBadge('⚠️ Ошибка сохранения', 'err');
+      }
+    } catch(e) {
+      setBadge('⚠️ Офлайн', 'err');
+    }
+  }, 800); // debounce 800ms
+}
+
+// ─── Читаем из облака и мержим ───
+async function cloudPull(silent = false) {
+  try {
+    if (!CLOUD.binId) CLOUD.binId = localStorage.getItem('_cloud_bin_id');
+    if (!CLOUD.binId) { if (!silent) setBadge('⚠️ Нет облачных данных', 'err'); return false; }
+
+    if (!silent) setBadge('☁️ Синхронизация...', 'dim');
+
+    const res = await fetch(`${CLOUD.BASE}/${CLOUD.binId}/latest`, {
+      headers: {'X-Access-Key': CLOUD.KEY}
+    });
+    if (!res.ok) { if (!silent) setBadge('⚠️ Нет доступа к облаку', 'err'); return false; }
+
+    const j = await res.json();
+    const cloudData = j.record;
+    if (!cloudData) return false;
+
+    // Проверяем timestamp — берём данные только если облако новее
+    const localTs = parseInt(localStorage.getItem('_local_ts') || '0');
+    const cloudTs = cloudData._ts || 0;
+
+    let updated = false;
+    if (cloudTs > localTs) {
+      // Облако новее — перезаписываем локальные данные
+      Object.entries(cloudData).forEach(([k, v]) => {
+        if (k.startsWith('_')) return; // служебные поля
+        try { localStorage.setItem('x4_' + k, JSON.stringify(v)); updated = true; } catch(e) {}
+      });
+      localStorage.setItem('_local_ts', String(cloudTs));
+      CLOUD.lastHash = JSON.stringify(cloudData).length;
+    }
+
+    if (updated) {
+      reRenderAll();
+      if (!silent) setBadge(`✓ Данные обновлены с облака`, 'ok');
+    } else {
+      if (!silent) setBadge('✓ Данные актуальны', 'ok');
+    }
+    return true;
+  } catch(e) {
+    if (!silent) setBadge('⚠️ Офлайн — работаю локально', 'err');
+    return false;
+  }
+}
+
+// ─── Перерисовываем всё после синхронизации ───
+function reRenderAll() {
+  buildHeatmap();
+  buildWeekSel();
+  renderPulseHist();
+  buildTraining();
+  renderGoals();
+  renderTasks();
+  const lpd = ld('weekly', {});
+  const le = Object.values(lpd).sort((a,b) => new Date(b.saved||0) - new Date(a.saved||0))[0];
+  if (le) ['sport','career','mental','family'].forEach(k => {
+    const el = document.getElementById('h-'+k); const bar = document.getElementById('hb-'+k);
+    if (el) el.textContent = le[k]; if (bar) bar.style.width = (le[k]*10) + '%';
+  });
+}
+
+// ─── Значок синхронизации ───
+function setBadge(msg, state) {
+  let b = document.getElementById('sync-badge');
+  if (!b) {
+    b = document.createElement('div');
+    b.id = 'sync-badge';
+    b.style.cssText = 'position:fixed;top:58px;right:12px;z-index:9999;padding:5px 10px;border-radius:6px;font-family:"JetBrains Mono",monospace;font-size:9px;font-weight:600;pointer-events:none;transition:all .3s;white-space:nowrap';
+    document.body.appendChild(b);
+  }
+  const colors = {
+    ok:  { bg:'rgba(0,212,170,.15)', border:'rgba(0,212,170,.4)',  text:'#00d4aa' },
+    err: { bg:'rgba(248,113,113,.15)', border:'rgba(248,113,113,.4)', text:'#f87171' },
+    dim: { bg:'rgba(255,255,255,.06)', border:'rgba(255,255,255,.15)', text:'#7a94b0' },
+  };
+  const c = colors[state] || colors.dim;
+  b.style.background = c.bg;
+  b.style.border = `1px solid ${c.border}`;
+  b.style.color = c.text;
+  b.textContent = msg;
+  b.style.opacity = '1';
+  if (state !== 'dim') setTimeout(() => { b.style.opacity = '0'; }, 3000);
+}
+
+// ─── Polling: проверяем облако каждые 30 секунд ───
+function startPolling() {
+  cloudPull(false); // первая проверка сразу
+  setInterval(() => cloudPull(true), 30000); // тихая проверка каждые 30с
+}
+
+// ─── Кнопка ручной синхронизации ───
+function manualSync() { cloudPull(false); }
+
+// Обновляем _local_ts при каждом локальном сохранении
+const _origSv = sv;
+// Патчим sv чтобы обновлял timestamp
+const _sv_with_ts = (k, v) => {
+  localStorage.setItem('_local_ts', String(Date.now()));
+  _origSv(k, v);
+};
 const fmtD=d=>d.toISOString().split('T')[0];
 const s2p=s=>{if(!s&&s!==0)return'—';return Math.floor(s/60)+':'+(s%60<10?'0':'')+Math.round(s%60)};
 const p2s=str=>{const p=String(str).trim().split(':');return p.length===2?+p[0]*60+ +p[1]:null};
@@ -1850,7 +2179,7 @@ if(window.innerWidth<=768){
 }
 
 // ─── Cloud sync (after local render, non-blocking) ───
-setTimeout(syncFromCloud, 500);
+startPolling();
 
 // ─── Touch drag & drop for iOS (HTML5 drag doesn't work on iOS Safari) ───
 (function addTouchDrag() {
