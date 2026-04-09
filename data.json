@@ -1,0 +1,417 @@
+{
+  "_ts": 1775727415167,
+  "weekly": {
+    "2026-04-05": {
+      "sport": 8,
+      "career": 3,
+      "mental": 5,
+      "family": 5,
+      "worry": "До сих пор не решенный до конца вопрос с ДТП жрет очень много ресурсов внутри меня\nНе начал действий, связанных с карьерой",
+      "control": "Начать обновлять CV\nПрочитать первую книгу",
+      "action": "Потратил на семью 30 тыс - шторы, белье, полотенца, кухня",
+      "notes": "Бросить курить дает мегакрутой результат!\nClaude - гораздо круче ChatGPT",
+      "saved": "2026-04-07T12:47:01.411Z"
+    }
+  },
+  "gv3": [
+    {
+      "id": "s-sport",
+      "type": "sec",
+      "cat": "sport",
+      "title": "ТРИАТЛОН",
+      "c": "var(--swim)"
+    },
+    {
+      "id": "g1",
+      "type": "g",
+      "sid": "s-sport",
+      "text": "FTP-тест: 20мин макс × 0.95",
+      "when": "АПРЕЛЬ · СРОЧНО",
+      "done": true
+    },
+    {
+      "id": "g2",
+      "type": "g",
+      "sid": "s-sport",
+      "text": "Финишировать олимпийский триатлон 21 июня",
+      "when": "21 ИЮНЯ 2026",
+      "done": false
+    },
+    {
+      "id": "g3",
+      "type": "g",
+      "sid": "s-sport",
+      "text": "Бег: выйти на 4:00/км после велосипеда",
+      "when": "К ГОНКЕ",
+      "done": false
+    },
+    {
+      "id": "g4",
+      "type": "g",
+      "sid": "s-sport",
+      "text": "Велосипед: 40км за 59-62мин (аэропозиция!)",
+      "when": "К ГОНКЕ",
+      "done": false
+    },
+    {
+      "id": "g5",
+      "type": "g",
+      "sid": "s-sport",
+      "text": "Плавание: 1500м в темпе 1:31-1:33",
+      "when": "К ГОНКЕ",
+      "done": false
+    },
+    {
+      "id": "g6",
+      "type": "g",
+      "sid": "s-sport",
+      "text": "Аэрошлем + триsuit — +1.5 км/ч без ватт",
+      "when": "ДО ГОНКИ",
+      "done": false
+    },
+    {
+      "id": "g7",
+      "type": "g",
+      "sid": "s-sport",
+      "text": "Зарегистрироваться на старт осень 2026",
+      "when": "ПОСЛЕ 21 ИЮНЯ",
+      "done": false
+    },
+    {
+      "id": "s-career",
+      "type": "sec",
+      "cat": "career",
+      "title": "VP ПЕРЕХОД",
+      "c": "var(--accent)"
+    },
+    {
+      "id": "g8",
+      "type": "g",
+      "sid": "s-career",
+      "text": "Переписать резюме как продающий документ",
+      "when": "МАЙ 2026",
+      "done": false
+    },
+    {
+      "id": "g9",
+      "type": "g",
+      "sid": "s-career",
+      "text": "LinkedIn 100% + английская версия",
+      "when": "МАЙ 2026",
+      "done": false
+    },
+    {
+      "id": "g10",
+      "type": "g",
+      "sid": "s-career",
+      "text": "Питч за 90 секунд — отточить",
+      "when": "МАЙ 2026",
+      "done": false
+    },
+    {
+      "id": "g11",
+      "type": "g",
+      "sid": "s-career",
+      "text": "Список 5 целевых компаний с именами",
+      "when": "ИЮНЬ 2026",
+      "done": false
+    },
+    {
+      "id": "g12",
+      "type": "g",
+      "sid": "s-career",
+      "text": "Выйти на Ward Howell, Kontakt, Cornerstone",
+      "when": "ИЮЛЬ 2026",
+      "done": false
+    },
+    {
+      "id": "g13",
+      "type": "g",
+      "sid": "s-career",
+      "text": "2 кофе-нетворк в неделю стабильно",
+      "when": "АВГ-СЕН 2026",
+      "done": false
+    },
+    {
+      "id": "g14",
+      "type": "g",
+      "sid": "s-career",
+      "text": "Получить оффер VP уровня",
+      "when": "ОКТ-ДЕК 2026",
+      "done": false
+    },
+    {
+      "id": "s-mental",
+      "type": "sec",
+      "cat": "mental",
+      "title": "СИСТЕМА",
+      "c": "var(--run)"
+    },
+    {
+      "id": "g15",
+      "type": "g",
+      "sid": "s-mental",
+      "text": "Визит к психиатру — ревизия цепралекса",
+      "when": "АПРЕЛЬ · СРОЧНО",
+      "done": false
+    },
+    {
+      "id": "g16",
+      "type": "g",
+      "sid": "s-mental",
+      "text": "Найти КПТ-терапевта, 1×/2нед регулярно",
+      "when": "АПРЕЛЬ-МАЙ",
+      "done": false
+    },
+    {
+      "id": "g17",
+      "type": "g",
+      "sid": "s-mental",
+      "text": "Утренний журнал 10 мин — ежедневно",
+      "when": "ПОСТОЯННО",
+      "done": false
+    },
+    {
+      "id": "g18",
+      "type": "g",
+      "sid": "s-mental",
+      "text": "Сон минимум 7.5ч при текущих нагрузках",
+      "when": "ПОСТОЯННО",
+      "done": false
+    },
+    {
+      "id": "s-family",
+      "type": "sec",
+      "cat": "family",
+      "title": "ЧЕСТНОСТЬ",
+      "c": "var(--red)"
+    },
+    {
+      "id": "g19",
+      "type": "g",
+      "sid": "s-family",
+      "text": "Ким: 1 ритуал в неделю только вдвоём",
+      "when": "КАЖДУЮ НЕДЕЛЮ",
+      "done": false
+    },
+    {
+      "id": "g20",
+      "type": "g",
+      "sid": "s-family",
+      "text": "Прочитать Готтман до разговора с женой",
+      "when": "МАЙ-ИЮНЬ",
+      "done": false
+    },
+    {
+      "id": "g21",
+      "type": "g",
+      "sid": "s-family",
+      "text": "Честный разговор о следующих 5 годах",
+      "when": "ИЮЛЬ · ПОСЛЕ ГОНКИ",
+      "done": false
+    },
+    {
+      "id": "g22",
+      "type": "g",
+      "sid": "s-family",
+      "text": "Парный терапевт — минимум 1 попытка",
+      "when": "ИЮЛЬ-АВГ",
+      "done": false
+    }
+  ],
+  "bv3": [
+    {
+      "id": "b1",
+      "cat": "career",
+      "title": "The First 90 Days — Уоткинс",
+      "desc": "Читай ДО оффера.",
+      "status": "priority"
+    },
+    {
+      "id": "b2",
+      "cat": "career",
+      "title": "Играй на повышение — Ибарра",
+      "desc": "Working Identity. Точно в твою ситуацию.",
+      "status": "priority"
+    },
+    {
+      "id": "b3",
+      "cat": "career",
+      "title": "Inspired — Марти Каган",
+      "desc": "Библия VP Product.",
+      "status": "queue"
+    },
+    {
+      "id": "b4",
+      "cat": "career",
+      "title": "Trillion Dollar Coach — Кэмпбелл",
+      "desc": "Лидерство. Google, Apple.",
+      "status": "queue"
+    },
+    {
+      "id": "b5",
+      "cat": "career",
+      "title": "Never Split the Difference — Крис Восс",
+      "desc": "Переговоры для оффера.",
+      "status": "queue"
+    },
+    {
+      "id": "b6",
+      "cat": "career",
+      "title": "Good to Great — Коллинз",
+      "desc": "",
+      "status": "done"
+    },
+    {
+      "id": "b7",
+      "cat": "career",
+      "title": "Пять пороков команды — Ленсиони",
+      "desc": "",
+      "status": "done"
+    },
+    {
+      "id": "b8",
+      "cat": "mind",
+      "title": "Антихрупкость — Талеб",
+      "desc": "Как расти от стресса.",
+      "status": "priority"
+    },
+    {
+      "id": "b9",
+      "cat": "mind",
+      "title": "Экзистенциальная психотерапия — Ялом",
+      "desc": "После Франкла — следующий уровень.",
+      "status": "queue"
+    },
+    {
+      "id": "b10",
+      "cat": "mind",
+      "title": "Sapiens — Юваль Харари",
+      "desc": "Масштаб мышления.",
+      "status": "queue"
+    },
+    {
+      "id": "b11",
+      "cat": "mind",
+      "title": "Вы конечно шутите, мистер Фейнман",
+      "desc": "После Хокинга — твой следующий.",
+      "status": "queue"
+    },
+    {
+      "id": "b12",
+      "cat": "mind",
+      "title": "Думай медленно, решай быстро — Канеман",
+      "desc": "",
+      "status": "queue"
+    },
+    {
+      "id": "b13",
+      "cat": "mind",
+      "title": "Сказать жизни Да — Франкл",
+      "desc": "",
+      "status": "done"
+    },
+    {
+      "id": "b14",
+      "cat": "mind",
+      "title": "Шантарам — Робертс",
+      "desc": "",
+      "status": "done"
+    },
+    {
+      "id": "b15",
+      "cat": "mind",
+      "title": "Краткая история времени — Хокинг",
+      "desc": "",
+      "status": "done"
+    },
+    {
+      "id": "b16",
+      "cat": "mental",
+      "title": "7 принципов счастливого брака — Готтман",
+      "desc": "Основа для разговора с женой.",
+      "status": "priority"
+    },
+    {
+      "id": "b17",
+      "cat": "mental",
+      "title": "Мозг освобождённый — Андерс Хансен",
+      "desc": "Почему триатлон — твоё лекарство.",
+      "status": "queue"
+    },
+    {
+      "id": "b18",
+      "cat": "mental",
+      "title": "Когда тело говорит нет — Габор Матэ",
+      "desc": "",
+      "status": "queue"
+    },
+    {
+      "id": "b19",
+      "cat": "sport",
+      "title": "Не сдавайся — Крис Маккормак",
+      "desc": "Чемпион Ironman. За один вечер.",
+      "status": "priority"
+    },
+    {
+      "id": "b20",
+      "cat": "sport",
+      "title": "Born to Run — Кристофер Макдугалл",
+      "desc": "",
+      "status": "queue"
+    }
+  ],
+  "pv3": [
+    {
+      "id": "p1",
+      "title": "Lex Fridman Podcast",
+      "desc": "Физики, философы, CEO. На длинные велотренировки."
+    },
+    {
+      "id": "p2",
+      "title": "Huberman Lab",
+      "desc": "Сон, стресс, дофамин. Нейронаука. ОБЯЗАТЕЛЬНО."
+    },
+    {
+      "id": "p3",
+      "title": "Triathlon Taren",
+      "desc": "Конкретно. На беговые тренировки."
+    },
+    {
+      "id": "p4",
+      "title": "Lenny's Podcast",
+      "desc": "VP Product из топ-компаний."
+    },
+    {
+      "id": "p5",
+      "title": "Masters of Scale — Рид Хоффман",
+      "desc": "Как думают основатели компаний."
+    },
+    {
+      "id": "p6",
+      "title": "The Rich Roll Podcast",
+      "desc": "Смысл, спорт, трансформация."
+    }
+  ],
+  "m_ftp": [
+    {
+      "date": "2026-04-07",
+      "val": 264,
+      "label": "264"
+    }
+  ],
+  "m_swim": [
+    {
+      "date": "2026-04-07",
+      "val": 96,
+      "label": "1:36"
+    }
+  ],
+  "m_run": [
+    {
+      "date": "2026-04-07",
+      "val": 252,
+      "label": "4:12"
+    }
+  ]
+}
