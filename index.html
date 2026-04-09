@@ -977,17 +977,18 @@ const s2p = s => { if (!s && s !== 0) return '—'; return Math.floor(s/60) + ':
 const p2s = str => { const p = String(str).trim().split(':'); return p.length === 2 ? +p[0]*60 + +p[1] : null; };
 
 // ── GITHUB SYNC ──
-// Данные пишутся в файл data.json в твоём репозитории
-// Настройка: нажми ☁ в шапке и введи GitHub Token
+// Данные хранятся в data.json прямо в репозитории ardenisov-code/my_site
+// Нажми ☁ в шапке → введи GitHub Personal Access Token (права: repo)
 const GH = {
   owner: 'ardenisov-code',
-  repo: 'my_site',
-  file: 'data.json',
+  repo:  'my_site',
+  file:  'data.json',
   get token() { return localStorage.getItem('_gh_token') || ''; },
-  get sha() { return localStorage.getItem('_gh_sha') || ''; },
-  set sha(v) { localStorage.setItem('_gh_sha', v); }
+  get sha()   { return localStorage.getItem('_gh_sha')   || ''; },
+  set sha(v)  { localStorage.setItem('_gh_sha', v); }
 };
 
+// Собираем ВСЕ данные в один JSON
 function collectData() {
   const KEYS = ['weekly','done','ovr','gv3','bv3','pv3','m_ftp','m_swim','m_run'];
   const obj = { _ts: Date.now() };
@@ -1001,117 +1002,191 @@ function collectData() {
   return obj;
 }
 
-function applyData(cloudData) {
+// Применяем данные из облака к localStorage
+function applyData(remote) {
   let n = 0;
-  Object.entries(cloudData).forEach(([k, v]) => {
+  Object.entries(remote).forEach(([k, v]) => {
     if (k.startsWith('_')) return;
     try { localStorage.setItem('x4_' + k, JSON.stringify(v)); n++; } catch(e) {}
   });
-  if (cloudData._ts) localStorage.setItem('_ts', String(cloudData._ts));
+  if (remote._ts) localStorage.setItem('_ts', String(remote._ts));
   return n;
 }
 
-let _pushT = null;
+// Кодируем Unicode JSON в base64 (btoa не поддерживает Unicode напрямую)
+function toBase64(str) {
+  const bytes = new TextEncoder().encode(str);
+  let bin = '';
+  bytes.forEach(b => bin += String.fromCharCode(b));
+  return btoa(bin);
+}
+
+// Декодируем base64 обратно в строку
+function fromBase64(b64) {
+  const bin = atob(b64.replace(/\n/g, ''));
+  const bytes = new Uint8Array(bin.length);
+  for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+  return new TextDecoder().decode(bytes);
+}
+
+// Получаем SHA файла (нужно для update через GitHub API)
+async function ghGetSha() {
+  if (!GH.token) return '';
+  try {
+    const r = await fetch(
+      `https://api.github.com/repos/${GH.owner}/${GH.repo}/contents/${GH.file}`,
+      { headers: { 'Authorization': 'token ' + GH.token, 'Accept': 'application/vnd.github.v3+json' } }
+    );
+    if (r.status === 404) { GH.sha = ''; return ''; }
+    if (r.ok) { const j = await r.json(); GH.sha = j.sha || ''; return GH.sha; }
+  } catch(e) {}
+  return '';
+}
+
+// Записываем данные в GitHub
+let _pt = null;
 async function ghPush() {
   if (!GH.token) return;
-  clearTimeout(_pushT);
-  _pushT = setTimeout(async () => {
+  clearTimeout(_pt);
+  _pt = setTimeout(async () => {
     try {
       setBadge('☁️ Сохраняю...', 'dim');
-      const content = btoa(unescape(encodeURIComponent(JSON.stringify(collectData(), null, 2))));
-      const body = { message: 'dashboard sync ' + new Date().toISOString(), content };
+      // Если sha неизвестен — получаем (нужно для update)
+      if (!GH.sha) await ghGetSha();
+      const body = {
+        message: 'sync ' + new Date().toISOString().slice(0,19),
+        content: toBase64(JSON.stringify(collectData(), null, 2))
+      };
       if (GH.sha) body.sha = GH.sha;
-      const res = await fetch(
+      const r = await fetch(
         `https://api.github.com/repos/${GH.owner}/${GH.repo}/contents/${GH.file}`,
-        { method: 'PUT', headers: { Authorization: 'token ' + GH.token, 'Content-Type': 'application/json' }, body: JSON.stringify(body) }
+        { method:'PUT', headers:{'Authorization':'token '+GH.token,'Content-Type':'application/json','Accept':'application/vnd.github.v3+json'}, body:JSON.stringify(body) }
       );
-      if (res.ok) {
-        const j = await res.json();
-        GH.sha = j.content?.sha || '';
-        setBadge('✓ Сохранено', 'ok');
-      } else if (res.status === 409) {
-        // Conflict — получаем актуальный sha и повторяем
-        await ghGetSha();
-        ghPush();
+      if (r.ok) {
+        const j = await r.json(); GH.sha = j.content?.sha || '';
+        setBadge('✓ Сохранено в GitHub', 'ok');
+      } else if (r.status === 409) {
+        // Конфликт SHA — сбрасываем и повторяем
+        GH.sha = ''; clearTimeout(_pt);
+        _pt = setTimeout(() => ghPush(), 1500);
+      } else if (r.status === 401) {
+        localStorage.removeItem('_gh_token'); setBadge('⚠️ Токен недействителен — обнови', 'err');
       } else {
-        setBadge('⚠️ Ошибка ' + res.status, 'err');
+        setBadge('⚠️ Ошибка записи: ' + r.status, 'err');
       }
-    } catch(e) { setBadge('⚠️ Нет связи', 'err'); }
+    } catch(e) { setBadge('⚠️ Нет связи с GitHub', 'err'); }
   }, 800);
 }
 
-async function ghGetSha() {
-  try {
-    const res = await fetch(`https://api.github.com/repos/${GH.owner}/${GH.repo}/contents/${GH.file}`,
-      { headers: { Authorization: 'token ' + GH.token } });
-    if (res.ok) { const j = await res.json(); GH.sha = j.sha || ''; }
-  } catch(e) {}
+// Читаем данные из GitHub (авторизованно — через API)
+async function ghPullAuth(silent) {
+  const r = await fetch(
+    `https://api.github.com/repos/${GH.owner}/${GH.repo}/contents/${GH.file}`,
+    { headers:{'Authorization':'token '+GH.token,'Accept':'application/vnd.github.v3+json'} }
+  );
+  if (r.status === 404) {
+    // Файла нет → создаём с текущими данными
+    if (!silent) setBadge('☁️ Первый запуск — создаю data.json...', 'dim');
+    GH.sha = '';
+    await ghPush();
+    return true;
+  }
+  if (!r.ok) throw new Error('API ' + r.status);
+  const j = await r.json();
+  GH.sha = j.sha || '';
+  const remote = JSON.parse(fromBase64(j.content));
+  const remoteTs = remote._ts || 0;
+  const localTs  = parseInt(localStorage.getItem('_ts') || '0');
+  if (remoteTs > localTs) {
+    const n = applyData(remote); reRenderAll();
+    setBadge('✓ Получено ' + n + ' обновлений', 'ok');
+  } else {
+    if (!silent) setBadge('✓ Данные актуальны', 'ok');
+  }
+  return true;
 }
 
-async function ghPull(silent = false) {
-  if (!GH.token) { if (!silent) setupGH(); return; }
-  if (!silent) setBadge('☁️ Синхронизация...', 'dim');
-  try {
-    // GitHub raw content — не требует auth, работает публично
-    const url = `https://raw.githubusercontent.com/${GH.owner}/${GH.repo}/main/${GH.file}?t=${Date.now()}`;
-    const res = await fetch(url);
-    if (!res.ok) throw new Error(res.status);
-    const cloudData = await res.json();
-    const cloudTs = cloudData._ts || 0;
-    const localTs = parseInt(localStorage.getItem('_ts') || '0');
-    if (cloudTs > localTs) {
-      const n = applyData(cloudData);
-      reRenderAll();
-      setBadge(`✓ Обновлено (${n} записей)`, 'ok');
-    } else {
-      if (!silent) setBadge('✓ Данные актуальны', 'ok');
-    }
-    // Обновляем sha для следующего push
-    await ghGetSha();
-  } catch(e) {
-    if (!silent) setBadge('⚠️ Не удалось прочитать данные', 'err');
+// Читаем публично (без токена — для второго устройства)
+async function ghPullPublic(silent) {
+  const url = `https://raw.githubusercontent.com/${GH.owner}/${GH.repo}/main/${GH.file}?t=${Date.now()}`;
+  const r = await fetch(url);
+  if (r.status === 404) {
+    if (!silent) setBadge('ℹ️ Нет данных — введи токен на основном устройстве', 'dim');
+    return;
+  }
+  if (!r.ok) throw new Error('raw ' + r.status);
+  const remote = await r.json();
+  const remoteTs = remote._ts || 0;
+  const localTs  = parseInt(localStorage.getItem('_ts') || '0');
+  if (remoteTs > localTs) {
+    const n = applyData(remote); reRenderAll();
+    setBadge('✓ Синхронизировано (' + n + ' записей)', 'ok');
+  } else {
+    if (!silent) setBadge('✓ Данные актуальны', 'ok');
   }
 }
 
+// Главная функция синхронизации
+async function ghPull(silent = false) {
+  if (!silent) setBadge('☁️ Синхронизация...', 'dim');
+  try {
+    if (GH.token) {
+      await ghPullAuth(silent);
+    } else {
+      await ghPullPublic(silent);
+    }
+  } catch(e) {
+    console.warn('ghPull error:', e.message);
+    // Fallback: пробуем публично
+    try { await ghPullPublic(silent); }
+    catch(e2) { if (!silent) setBadge('⚠️ Нет доступа к данным', 'err'); }
+  }
+}
+
+// Модальное окно настройки токена
 function setupGH() {
-  const modal = document.createElement('div');
-  modal.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:9999;display:flex;align-items:center;justify-content:center;padding:20px';
-  modal.innerHTML = `
-    <div style="background:#1c2a3c;border:1px solid rgba(255,255,255,.15);border-radius:12px;padding:24px;max-width:460px;width:100%">
-      <div style="font-family:'Bebas Neue',sans-serif;font-size:22px;color:#00d4aa;margin-bottom:12px;letter-spacing:2px">☁️ НАСТРОЙКА СИНХРОНИЗАЦИИ</div>
-      <div style="font-size:12px;color:#b8cfe4;line-height:1.7;margin-bottom:16px">
-        Данные хранятся в твоём GitHub репозитории.<br>
-        Нужен <strong>Personal Access Token</strong> с правом <code>repo</code>.<br><br>
-        Получить: <a href="https://github.com/settings/tokens/new" target="_blank" style="color:#00d4aa">github.com/settings/tokens</a><br>
-        → Generate new token (classic) → отметь <strong>repo</strong> → Generate
-      </div>
-      <input id="gh-token-input" placeholder="ghp_xxxxxxxxxxxx" style="width:100%;background:#111e2d;border:1px solid rgba(255,255,255,.15);border-radius:6px;color:#f0f5fb;font-family:'JetBrains Mono',monospace;font-size:13px;padding:10px 12px;outline:none;margin-bottom:12px">
-      <div style="display:flex;gap:8px">
-        <button onclick="this.closest('div[style]').remove()" style="flex:1;background:#263347;color:#7a94b0;border:1px solid rgba(255,255,255,.1);border-radius:6px;font-family:'Bebas Neue',sans-serif;font-size:15px;padding:10px;cursor:pointer">ОТМЕНА</button>
-        <button onclick="saveGHToken()" style="flex:2;background:#00d4aa;color:#080c12;border:none;border-radius:6px;font-family:'Bebas Neue',sans-serif;font-size:15px;padding:10px;cursor:pointer;letter-spacing:1px">ПОДКЛЮЧИТЬ</button>
-      </div>
-    </div>`;
-  document.body.appendChild(modal);
+  document.getElementById('gh-modal')?.remove();
+  const m = document.createElement('div');
+  m.id = 'gh-modal';
+  m.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:9999;display:flex;align-items:center;justify-content:center;padding:20px';
+  const tok = GH.token;
+  m.innerHTML = `<div style="background:#1c2a3c;border:1px solid rgba(255,255,255,.15);border-radius:14px;padding:24px;max-width:460px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,.6)">
+    <div style="font-family:'Bebas Neue',sans-serif;font-size:24px;color:#00d4aa;margin-bottom:4px;letter-spacing:2px">☁️ GITHUB СИНХРОНИЗАЦИЯ</div>
+    <div style="font-family:'JetBrains Mono',monospace;font-size:9px;color:#7a94b0;margin-bottom:16px">ardenisov-code/my_site → data.json</div>
+    <div style="font-size:12px;color:#b8cfe4;line-height:1.8;margin-bottom:16px;background:rgba(0,0,0,.25);border-radius:8px;padding:12px">
+      Нужен <strong style="color:#f0f5fb">Personal Access Token</strong> с правом <code style="background:rgba(255,255,255,.1);padding:1px 5px;border-radius:3px">repo</code><br>
+      <a href="https://github.com/settings/tokens/new?scopes=repo&description=dashboard" target="_blank" style="color:#00d4aa">→ Создать на GitHub (откроется в новой вкладке)</a>
+    </div>
+    ${tok ? '<div style="font-family:\'JetBrains Mono\',monospace;font-size:9px;color:#4ade80;margin-bottom:8px">✓ Токен уже сохранён</div>' : ''}
+    <input id="gh-tok" placeholder="ghp_xxxxxxxxxxxxxxxx" value="${tok}"
+      style="width:100%;background:#111e2d;border:1px solid rgba(255,255,255,.15);border-radius:8px;color:#f0f5fb;font-family:'JetBrains Mono',monospace;font-size:12px;padding:12px 14px;outline:none;margin-bottom:14px"
+      onkeydown="if(event.key==='Enter')saveGHToken()">
+    <div style="display:flex;gap:8px">
+      <button onclick="document.getElementById('gh-modal').remove()" style="flex:1;background:#263347;color:#7a94b0;border:1px solid rgba(255,255,255,.1);border-radius:8px;font-family:'Bebas Neue',sans-serif;font-size:15px;padding:11px;cursor:pointer">ОТМЕНА</button>
+      <button onclick="saveGHToken()" style="flex:2;background:linear-gradient(135deg,#00d4aa,#009e80);color:#080c12;border:none;border-radius:8px;font-family:'Bebas Neue',sans-serif;font-size:15px;padding:11px;cursor:pointer;letter-spacing:1px">СОХРАНИТЬ И СИНХРОНИЗИРОВАТЬ</button>
+    </div>
+  </div>`;
+  document.body.appendChild(m);
+  setTimeout(() => { const i = document.getElementById('gh-tok'); if(i){i.focus();i.select();} }, 100);
 }
 
-function saveGHToken() {
-  const t = document.getElementById('gh-token-input')?.value?.trim();
-  if (!t || !t.startsWith('gh')) { alert('Неверный формат токена'); return; }
+async function saveGHToken() {
+  const inp = document.getElementById('gh-tok');
+  const t = inp?.value?.trim();
+  if (!t) { if(inp) inp.style.borderColor='#f87171'; return; }
   localStorage.setItem('_gh_token', t);
-  document.querySelector('[style*="inset:0"]')?.remove();
-  ghPull(false);
+  GH.sha = ''; // сбрасываем чтобы получить свежий
+  document.getElementById('gh-modal')?.remove();
+  setBadge('☁️ Подключаюсь...', 'dim');
+  await ghPull(false);
 }
 
-function manualSync() {
-  if (!GH.token) { setupGH(); return; }
-  ghPull(false);
-}
-
+function manualSync()  { GH.token ? ghPull(false) : setupGH(); }
 function changeCloudId() { setupGH(); }
 
 function startPolling() {
-  ghPull(false);
-  setInterval(() => ghPull(true), 30000);
+  setTimeout(() => ghPull(false), 1000);   // первая синхронизация через 1 сек
+  setInterval(() => ghPull(true), 30000);  // тихая проверка каждые 30 сек
 }
 
 // ── BADGE ──
