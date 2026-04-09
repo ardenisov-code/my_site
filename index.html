@@ -579,6 +579,7 @@ pointer-events:none;
   <div class="nav-r">
     <span id="nav-date" style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--dim)"></span>
     <button onclick="manualSync()" style="background:var(--bg4);border:1px solid var(--card-border);border-radius:6px;color:var(--dim);font-family:'JetBrains Mono',monospace;font-size:9px;padding:4px 10px;cursor:pointer;transition:all .15s" onmouseover="this.style.borderColor='var(--accent)';this.style.color='var(--accent)'" onmouseout="this.style.borderColor='var(--card-border)';this.style.color='var(--dim)'">↻ СИНХР</button>
+    <button onclick="changeCloudId()" style="background:var(--bg4);border:1px solid var(--card-border);border-radius:6px;color:var(--dim);font-family:'JetBrains Mono',monospace;font-size:9px;padding:4px 10px;cursor:pointer;transition:all .15s" onmouseover="this.style.borderColor='var(--swim)';this.style.color='var(--swim)'" onmouseout="this.style.borderColor='var(--card-border)';this.style.color='var(--dim)'" title="Подключить другое устройство">☁ ID</button>
     <span class="race-pill">🏁 <span id="nav-cd">—</span> дн до гонки</span>
   </div>
 </nav>
@@ -764,30 +765,35 @@ pointer-events:none;
 
 <!-- ════════ COACH ════════ -->
 
+<!-- ════════ COACH ════════ -->
+
 <div class="page" id="page-coach">
-  <div class="page-title">AI КОУЧ</div>
-  <div class="page-sub">ПЕРСОНАЛЬНЫЙ РАЗБОР · ОЦЕНКА НЕДЕЛИ · АНАЛИЗ ТРЕНИРОВКИ · КАРЬЕРНЫЙ ВОПРОС</div>
+  <div class="page-title">КОУЧ</div>
+  <div class="page-sub">УМНЫЙ АССИСТЕНТ НА ОСНОВЕ ТВОЕГО КОНТЕКСТА · БЕЗ ИНТЕРНЕТА</div>
 
   <div class="g2" style="gap:14px;align-items:start">
     <div>
       <div class="ai-wrap">
         <div class="ai-hdr">
           <div class="ai-ava">🧠</div>
-          <div><div class="ai-name">AI Коуч</div><div class="ai-status">на основе твоего контекста</div></div>
+          <div><div class="ai-name">Персональный Коуч</div><div class="ai-status">знает твой контекст · работает офлайн</div></div>
         </div>
         <div class="ai-quick">
-          <button class="ai-qb" onclick="quickAsk('Разбери мою неделю. Что главное сделать прямо сейчас?')">📊 Разбор недели</button>
-          <button class="ai-qb" onclick="quickAsk('Как улучшить темп бега до 4:00/км за оставшиеся недели? Конкретный план.')">🏃 Темп бега</button>
-          <button class="ai-qb" onclick="quickAsk('Что мне сделать на этой неделе по карьере? Конкретно.')">💼 Карьера</button>
-          <button class="ai-qb" onclick="quickAsk('Как правильно войти в гонку 21 июня? Темп, питание, тактика.')">🏁 Стратегия гонки</button>
-          <button class="ai-qb" onclick="quickAsk('Дай мне мотивационный заряд на тяжёлую тренировку.')">⚡ Мотивация</button>
+          <button class="ai-qb" onclick="coachAsk('week')">📊 Разбор недели</button>
+          <button class="ai-qb" onclick="coachAsk('run')">🏃 Темп бега</button>
+          <button class="ai-qb" onclick="coachAsk('bike')">🚴 Велосипед/FTP</button>
+          <button class="ai-qb" onclick="coachAsk('race')">🏁 Стратегия гонки</button>
+          <button class="ai-qb" onclick="coachAsk('career')">💼 Карьера</button>
+          <button class="ai-qb" onclick="coachAsk('mental')">🧠 Ментальное</button>
+          <button class="ai-qb" onclick="coachAsk('motive')">⚡ Мотивация</button>
+          <button class="ai-qb" onclick="coachAsk('swim')">🏊 Плавание</button>
         </div>
         <div class="ai-msgs" id="ai-msgs">
-          <div class="ai-msg bot">Привет, Артём. Я знаю твой контекст — триатлон 21 июня, VP-переход, всё что мы обсуждали. Спрашивай конкретно — отвечу конкретно. Что на повестке?</div>
+          <div class="ai-msg bot">Привет, Артём. Я знаю твой контекст — триатлон 21 июня, VP-переход, семья, ментальное. Нажми кнопку или задай вопрос своими словами.</div>
         </div>
         <div class="ai-foot">
-          <input class="ai-in" id="ai-in" placeholder="Задай вопрос..." onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendAI()}">
-          <button class="ai-send" id="ai-btn" onclick="sendAI()">ОТПРАВИТЬ</button>
+          <input class="ai-in" id="ai-in" placeholder="Напиши вопрос..." onkeydown="if(event.key==='Enter'){coachSend()}">
+          <button class="ai-send" onclick="coachSend()">ОТВЕТИТЬ</button>
         </div>
       </div>
     </div>
@@ -795,7 +801,7 @@ pointer-events:none;
 ```
 <div style="display:flex;flex-direction:column;gap:12px">
   <div class="card">
-    <div class="card-ttl">КОНТЕКСТ ДЛЯ КОУЧА</div>
+    <div class="card-ttl">ТВОЙ КОНТЕКСТ</div>
     <div style="font-size:12px;line-height:2;color:var(--text2)">
       🎯 <strong>Гонка:</strong> Олимпийский триатлон, 21 июня 2026<br>
       🚴 <strong>FTP:</strong> 260 Вт → цель 280 Вт<br>
@@ -806,22 +812,27 @@ pointer-events:none;
       ❤️ <strong>Семья:</strong> Ким 6 лет, разговор с женой → июль
     </div>
   </div>
+
   <div class="card">
-    <div class="card-ttl">БЫСТРАЯ ОЦЕНКА ТРЕНИРОВКИ</div>
-    <div class="jf-group"><span class="jf-lbl">Тренировка</span><input class="modal-in" id="wo-name" placeholder="Напр: Интервалы бег 6×1км" style="font-size:13px;background:var(--bg3)"></div>
-    <div class="g2" style="gap:8px;margin-top:8px">
-      <div class="jf-group"><span class="jf-lbl">Самочувствие 1-10</span><input class="modal-in" id="wo-feel" type="number" min="1" max="10" placeholder="8" style="font-size:13px;background:var(--bg3)"></div>
-      <div class="jf-group"><span class="jf-lbl">Результат</span><input class="modal-in" id="wo-result" placeholder="4:02/км" style="font-size:13px;background:var(--bg3)"></div>
+    <div class="card-ttl">ОЦЕНКА ТРЕНИРОВКИ</div>
+    <div class="jf-group"><span class="jf-lbl">Что делал</span>
+      <input class="modal-in" id="wo-name" placeholder="Напр: Интервалы бег 6×1км" style="font-size:13px">
     </div>
-    <button class="save-btn" style="margin-top:10px;font-size:14px;padding:9px 20px;width:100%" onclick="analyzeWo()">РАЗОБРАТЬ С КОУЧЕМ</button>
+    <div class="g2" style="gap:8px;margin-top:8px">
+      <div class="jf-group"><span class="jf-lbl">Самочувствие 1-10</span>
+        <input class="modal-in" id="wo-feel" type="number" min="1" max="10" placeholder="8" style="font-size:13px">
+      </div>
+      <div class="jf-group"><span class="jf-lbl">Результат</span>
+        <input class="modal-in" id="wo-result" placeholder="4:02/км" style="font-size:13px">
+      </div>
+    </div>
+    <button class="save-btn" style="margin-top:10px;font-size:14px;padding:9px 20px;width:100%" onclick="coachWorkout()">РАЗОБРАТЬ</button>
   </div>
 </div>
 ```
 
   </div>
 </div>
-
-<!-- ════════ METRICS ════════ -->
 
 <div class="page" id="page-metrics">
   <div class="page-title">СПОРТИВНЫЙ ПРОГРЕСС</div>
@@ -933,196 +944,181 @@ pointer-events:none;
 </div>
 
 <script>
-// ═══════════════════════════════════════════════════
-// ОБЛАЧНАЯ СИНХРОНИЗАЦИЯ — npoint.io
-// Бесплатный JSON storage, работает без авторизации,
-// работает с file://, со всех устройств.
-// ═══════════════════════════════════════════════════
+// ════════════════════════════════════════════════════
+// ARTEM COMMAND CENTER — CLEAN JS v5
+// GitHub Pages синхронизация через GitHub API
+// Встроенный коуч без внешних зависимостей
+// ════════════════════════════════════════════════════
 
-// ТВОЙ персональный endpoint (создан специально для дашборда)
-// Все данные хранятся здесь и доступны со всех устройств
-const NPOINT_ID = 'artem2026dashboard';
-const NPOINT_BASE = 'https://api.npoint.io';
-
-// ─── LocalStorage helpers (мгновенный UI) ───
+// ── STORAGE ──
 function sv(k, v) {
   try {
     localStorage.setItem('x4_' + k, JSON.stringify(v));
-    localStorage.setItem('_local_ts', String(Date.now()));
+    localStorage.setItem('_ts', String(Date.now()));
   } catch(e) {}
-  cloudPush(); // асинхронно пушим в облако
+  ghPush();
 }
-
 function ld(k, d) {
-  try {
-    const x = localStorage.getItem('x4_' + k);
-    return x ? JSON.parse(x) : d;
-  } catch(e) { return d; }
+  try { const x = localStorage.getItem('x4_' + k); return x ? JSON.parse(x) : d; }
+  catch(e) { return d; }
 }
 
-// ─── Собираем все данные в один объект ───
-function collectAllData() {
+// ── CONSTANTS ──
+const TODAY = new Date(); TODAY.setHours(0,0,0,0);
+const RACE = new Date('2026-06-21');
+const START = new Date('2026-04-07');
+const YEAR_END = new Date('2027-03-31');
+const TOTAL_RACE = Math.ceil((RACE - START) / 864e5);
+const TOTAL_YEAR = Math.ceil((YEAR_END - START) / 864e5);
+const PASSED_YEAR = Math.ceil((TODAY - START) / 864e5);
+const DAYS_RACE = Math.max(0, Math.ceil((RACE - TODAY) / 864e5));
+const fmtD = d => d.toISOString().split('T')[0];
+const s2p = s => { if (!s && s !== 0) return '—'; return Math.floor(s/60) + ':' + (s%60 < 10 ? '0' : '') + Math.round(s%60); };
+const p2s = str => { const p = String(str).trim().split(':'); return p.length === 2 ? +p[0]*60 + +p[1] : null; };
+
+// ── GITHUB SYNC ──
+// Данные пишутся в файл data.json в твоём репозитории
+// Настройка: нажми ☁ в шапке и введи GitHub Token
+const GH = {
+  owner: 'ardenisov-code',
+  repo: 'my_site',
+  file: 'data.json',
+  get token() { return localStorage.getItem('_gh_token') || ''; },
+  get sha() { return localStorage.getItem('_gh_sha') || ''; },
+  set sha(v) { localStorage.setItem('_gh_sha', v); }
+};
+
+function collectData() {
   const KEYS = ['weekly','done','ovr','gv3','bv3','pv3','m_ftp','m_swim','m_run'];
-  const obj = { _ts: Date.now(), _device: navigator.userAgent.slice(0,40) };
+  const obj = { _ts: Date.now() };
   KEYS.forEach(k => { const v = ld(k, null); if (v !== null) obj[k] = v; });
   for (let i = 0; i < 90; i++) {
     const d = new Date(); d.setDate(d.getDate() - i);
-    const k = 'tasks_' + d.toISOString().split('T')[0];
+    const k = 'tasks_' + fmtD(d);
     const v = ld(k, null);
     if (v !== null) obj[k] = v;
   }
   return obj;
 }
 
-// ─── Push в облако с debounce ───
-let _pushTimer = null;
-function cloudPush() {
-  clearTimeout(_pushTimer);
-  _pushTimer = setTimeout(async () => {
-    try {
-      setBadge('☁️ Сохраняю...', 'dim');
-      const data = collectAllData();
-      // npoint.io позволяет создать endpoint один раз и обновлять его
-      // Используем наш фиксированный ID
-      const endpoint = localStorage.getItem('_npoint_endpoint');
-      let url, method;
-      if (endpoint) {
-        url = endpoint;
-        method = 'POST'; // npoint использует POST для update
-      } else {
-        // Первый раз — создаём через POST на /notes
-        url = NPOINT_BASE + '/notes';
-        method = 'POST';
-      }
-      // npoint.io free tier
-      const res = await fetch(url, {
-        method,
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify(data)
-      });
-      if (res.ok) {
-        const j = await res.json();
-        if (j.id && !endpoint) {
-          localStorage.setItem('_npoint_endpoint', NPOINT_BASE + '/notes/' + j.id);
-          localStorage.setItem('_npoint_id', j.id);
-        }
-        setBadge('✓ Сохранено в облако', 'ok');
-      } else {
-        throw new Error('save failed');
-      }
-    } catch(e) {
-      // npoint не сработал — пробуем fallback через localStorage cross-tab
-      try {
-        localStorage.setItem('x4_cross_sync', JSON.stringify({ ts: Date.now(), data: collectAllData() }));
-      } catch(e2) {}
-      setBadge('⚠️ Офлайн — сохранено локально', 'err');
-    }
-  }, 600);
+function applyData(cloudData) {
+  let n = 0;
+  Object.entries(cloudData).forEach(([k, v]) => {
+    if (k.startsWith('_')) return;
+    try { localStorage.setItem('x4_' + k, JSON.stringify(v)); n++; } catch(e) {}
+  });
+  if (cloudData._ts) localStorage.setItem('_ts', String(cloudData._ts));
+  return n;
 }
 
-// ─── Pull из облака ───
-async function cloudPull(silent = false) {
+let _pushT = null;
+async function ghPush() {
+  if (!GH.token) return;
+  clearTimeout(_pushT);
+  _pushT = setTimeout(async () => {
+    try {
+      setBadge('☁️ Сохраняю...', 'dim');
+      const content = btoa(unescape(encodeURIComponent(JSON.stringify(collectData(), null, 2))));
+      const body = { message: 'dashboard sync ' + new Date().toISOString(), content };
+      if (GH.sha) body.sha = GH.sha;
+      const res = await fetch(
+        `https://api.github.com/repos/${GH.owner}/${GH.repo}/contents/${GH.file}`,
+        { method: 'PUT', headers: { Authorization: 'token ' + GH.token, 'Content-Type': 'application/json' }, body: JSON.stringify(body) }
+      );
+      if (res.ok) {
+        const j = await res.json();
+        GH.sha = j.content?.sha || '';
+        setBadge('✓ Сохранено', 'ok');
+      } else if (res.status === 409) {
+        // Conflict — получаем актуальный sha и повторяем
+        await ghGetSha();
+        ghPush();
+      } else {
+        setBadge('⚠️ Ошибка ' + res.status, 'err');
+      }
+    } catch(e) { setBadge('⚠️ Нет связи', 'err'); }
+  }, 800);
+}
+
+async function ghGetSha() {
   try {
-    const id = localStorage.getItem('_npoint_id');
-    if (!id) {
-      // Нет сохранённого endpoint — пробуем найти по имени
-      if (!silent) setBadge('📋 Настройка облака...', 'dim');
-      await cloudFirstSetup();
-      return;
-    }
-    if (!silent) setBadge('☁️ Проверяю обновления...', 'dim');
-    const res = await fetch(`${NPOINT_BASE}/notes/${id}`);
-    if (!res.ok) throw new Error('fetch failed');
+    const res = await fetch(`https://api.github.com/repos/${GH.owner}/${GH.repo}/contents/${GH.file}`,
+      { headers: { Authorization: 'token ' + GH.token } });
+    if (res.ok) { const j = await res.json(); GH.sha = j.sha || ''; }
+  } catch(e) {}
+}
+
+async function ghPull(silent = false) {
+  if (!GH.token) { if (!silent) setupGH(); return; }
+  if (!silent) setBadge('☁️ Синхронизация...', 'dim');
+  try {
+    // GitHub raw content — не требует auth, работает публично
+    const url = `https://raw.githubusercontent.com/${GH.owner}/${GH.repo}/main/${GH.file}?t=${Date.now()}`;
+    const res = await fetch(url);
+    if (!res.ok) throw new Error(res.status);
     const cloudData = await res.json();
     const cloudTs = cloudData._ts || 0;
-    const localTs = parseInt(localStorage.getItem('_local_ts') || '0');
+    const localTs = parseInt(localStorage.getItem('_ts') || '0');
     if (cloudTs > localTs) {
-      // Облако новее — применяем
-      let updated = 0;
-      Object.entries(cloudData).forEach(([k, v]) => {
-        if (k.startsWith('_')) return;
-        try { localStorage.setItem('x4_' + k, JSON.stringify(v)); updated++; } catch(e) {}
-      });
-      localStorage.setItem('_local_ts', String(cloudTs));
+      const n = applyData(cloudData);
       reRenderAll();
-      setBadge(`✓ Получено ${updated} обновлений`, 'ok');
+      setBadge(`✓ Обновлено (${n} записей)`, 'ok');
     } else {
       if (!silent) setBadge('✓ Данные актуальны', 'ok');
     }
+    // Обновляем sha для следующего push
+    await ghGetSha();
   } catch(e) {
-    if (!silent) setBadge('⚠️ Нет связи с облаком', 'err');
+    if (!silent) setBadge('⚠️ Не удалось прочитать данные', 'err');
   }
 }
 
-// ─── Первая настройка — создаём облачный профиль ───
-async function cloudFirstSetup() {
-  try {
-    const data = collectAllData();
-    const res = await fetch(`${NPOINT_BASE}/notes`, {
-      method: 'POST',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify(data)
-    });
-    if (res.ok) {
-      const j = await res.json();
-      localStorage.setItem('_npoint_id', j.id);
-      localStorage.setItem('_npoint_endpoint', `${NPOINT_BASE}/notes/${j.id}`);
-      localStorage.setItem('_local_ts', String(Date.now()));
-      setBadge(`✓ Профиль создан · ID: ${j.id}`, 'ok');
-      // Показываем ID пользователю чтобы он мог сохранить
-      setTimeout(() => {
-        const msg = `Твой Cloud ID: ${j.id}\n\nСохрани его! Введи на другом устройстве:\nНастройки → Cloud ID → ${j.id}`;
-        if (confirm(msg + '\n\nНажми OK чтобы скопировать ID в буфер')) {
-          navigator.clipboard?.writeText(j.id).catch(()=>{});
-        }
-      }, 1000);
-    }
-  } catch(e) {
-    setBadge('⚠️ Создание профиля не удалось', 'err');
-  }
+function setupGH() {
+  const modal = document.createElement('div');
+  modal.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:9999;display:flex;align-items:center;justify-content:center;padding:20px';
+  modal.innerHTML = `
+    <div style="background:#1c2a3c;border:1px solid rgba(255,255,255,.15);border-radius:12px;padding:24px;max-width:460px;width:100%">
+      <div style="font-family:'Bebas Neue',sans-serif;font-size:22px;color:#00d4aa;margin-bottom:12px;letter-spacing:2px">☁️ НАСТРОЙКА СИНХРОНИЗАЦИИ</div>
+      <div style="font-size:12px;color:#b8cfe4;line-height:1.7;margin-bottom:16px">
+        Данные хранятся в твоём GitHub репозитории.<br>
+        Нужен <strong>Personal Access Token</strong> с правом <code>repo</code>.<br><br>
+        Получить: <a href="https://github.com/settings/tokens/new" target="_blank" style="color:#00d4aa">github.com/settings/tokens</a><br>
+        → Generate new token (classic) → отметь <strong>repo</strong> → Generate
+      </div>
+      <input id="gh-token-input" placeholder="ghp_xxxxxxxxxxxx" style="width:100%;background:#111e2d;border:1px solid rgba(255,255,255,.15);border-radius:6px;color:#f0f5fb;font-family:'JetBrains Mono',monospace;font-size:13px;padding:10px 12px;outline:none;margin-bottom:12px">
+      <div style="display:flex;gap:8px">
+        <button onclick="this.closest('div[style]').remove()" style="flex:1;background:#263347;color:#7a94b0;border:1px solid rgba(255,255,255,.1);border-radius:6px;font-family:'Bebas Neue',sans-serif;font-size:15px;padding:10px;cursor:pointer">ОТМЕНА</button>
+        <button onclick="saveGHToken()" style="flex:2;background:#00d4aa;color:#080c12;border:none;border-radius:6px;font-family:'Bebas Neue',sans-serif;font-size:15px;padding:10px;cursor:pointer;letter-spacing:1px">ПОДКЛЮЧИТЬ</button>
+      </div>
+    </div>`;
+  document.body.appendChild(modal);
 }
 
-// ─── Cross-tab синхронизация (одно устройство, разные вкладки) ───
-window.addEventListener('storage', ev => {
-  if (ev.key === 'x4_cross_sync') {
-    try {
-      const { ts, data } = JSON.parse(ev.newValue);
-      const localTs = parseInt(localStorage.getItem('_local_ts') || '0');
-      if (ts > localTs) {
-        Object.entries(data).forEach(([k, v]) => {
-          if (k.startsWith('_')) return;
-          try { localStorage.setItem('x4_' + k, JSON.stringify(v)); } catch(e) {}
-        });
-        localStorage.setItem('_local_ts', String(ts));
-        reRenderAll();
-        setBadge('✓ Синхронизировано с другой вкладкой', 'ok');
-      }
-    } catch(e) {}
-  }
-});
-
-// ─── Перерисовать всё после синхронизации ───
-function reRenderAll() {
-  buildHeatmap();
-  buildWeekSel();
-  renderPulseHist();
-  buildTraining();
-  renderGoals();
-  renderTasks();
-  const lpd = ld('weekly', {});
-  const le = Object.values(lpd).sort((a,b) => new Date(b.saved||0) - new Date(a.saved||0))[0];
-  if (le) ['sport','career','mental','family'].forEach(k => {
-    const el = document.getElementById('h-'+k); const bar = document.getElementById('hb-'+k);
-    if (el) el.textContent = le[k]; if (bar) bar.style.width = (le[k]*10) + '%';
-  });
+function saveGHToken() {
+  const t = document.getElementById('gh-token-input')?.value?.trim();
+  if (!t || !t.startsWith('gh')) { alert('Неверный формат токена'); return; }
+  localStorage.setItem('_gh_token', t);
+  document.querySelector('[style*="inset:0"]')?.remove();
+  ghPull(false);
 }
 
-// ─── Значок статуса ───
+function manualSync() {
+  if (!GH.token) { setupGH(); return; }
+  ghPull(false);
+}
+
+function changeCloudId() { setupGH(); }
+
+function startPolling() {
+  ghPull(false);
+  setInterval(() => ghPull(true), 30000);
+}
+
+// ── BADGE ──
 function setBadge(msg, state) {
   let b = document.getElementById('sync-badge');
   if (!b) {
-    b = document.createElement('div');
-    b.id = 'sync-badge';
+    b = document.createElement('div'); b.id = 'sync-badge';
     b.style.cssText = 'position:fixed;top:58px;right:12px;z-index:9999;padding:5px 12px;border-radius:6px;font-family:"JetBrains Mono",monospace;font-size:9px;font-weight:600;pointer-events:none;transition:opacity .4s;white-space:nowrap';
     document.body.appendChild(b);
   }
@@ -1132,166 +1128,14 @@ function setBadge(msg, state) {
     dim: 'background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);color:#7a94b0',
   };
   b.style.cssText += ';' + (C[state] || C.dim);
-  b.style.opacity = '1';
-  b.textContent = msg;
+  b.style.opacity = '1'; b.textContent = msg;
   if (state !== 'dim') setTimeout(() => b.style.opacity = '0', 3500);
 }
 
-// ─── Ручная синхронизация + смена Cloud ID ───
-function manualSync() { cloudPull(false); }
-
-function changeCloudId() {
-  const newId = prompt('Введи Cloud ID с другого устройства:');
-  if (newId && newId.trim().length > 3) {
-    localStorage.setItem('_npoint_id', newId.trim());
-    localStorage.setItem('_npoint_endpoint', `${NPOINT_BASE}/notes/${newId.trim()}`);
-    localStorage.setItem('_local_ts', '0'); // сбрасываем timestamp чтобы принять облачные данные
-    cloudPull(false);
-  }
-}
-
-// ─── Polling каждые 30 секунд ───
-function startPolling() {
-  cloudPull(false);
-  setInterval(() => cloudPull(true), 30000);
-}
-
-// ─── LocalStorage helpers (мгновенный UI) ───
-function sv(k, v) {
-  try { localStorage.setItem('x4_' + k, JSON.stringify(v)); } catch(e) {}
-  // После локального сохранения — пушим в облако асинхронно
-  cloudPush();
-}
-
-function ld(k, d) {
-  try {
-    const x = localStorage.getItem('x4_' + k);
-    return x ? JSON.parse(x) : d;
-  } catch(e) { return d; }
-}
-
-// ─── Собираем ВСЕ данные в один объект для облака ───
-function collectAllData() {
-  const DATA_KEYS = ['weekly','done','ovr','gv3','bv3','pv3','m_ftp','m_swim','m_run'];
-  const obj = { _ts: Date.now(), _v: 4 };
-  DATA_KEYS.forEach(k => {
-    const v = ld(k, null);
-    if (v !== null) obj[k] = v;
-  });
-  // task keys last 90 days
-  for (let i = 0; i < 90; i++) {
-    const d = new Date(); d.setDate(d.getDate() - i);
-    const k = 'tasks_' + d.toISOString().split('T')[0];
-    const v = ld(k, null);
-    if (v !== null) obj[k] = v;
-  }
-  return obj;
-}
-
-// ─── Записываем всё в облако ───
-let pushTimer = null;
-function cloudPush() {
-  clearTimeout(pushTimer);
-  pushTimer = setTimeout(async () => {
-    try {
-      const data = collectAllData();
-      const hash = JSON.stringify(data).length; // простой checksum
-      if (hash === CLOUD.lastHash) return; // ничего не изменилось
-
-      setBadge('☁️ Сохраняю...', 'dim');
-
-      if (!CLOUD.binId) {
-        // Пробуем взять ID из localStorage
-        CLOUD.binId = localStorage.getItem('_cloud_bin_id');
-      }
-
-      let res;
-      if (CLOUD.binId) {
-        // Обновляем существующий bin
-        res = await fetch(`${CLOUD.BASE}/${CLOUD.binId}`, {
-          method: 'PUT',
-          headers: {'Content-Type':'application/json','X-Access-Key': CLOUD.KEY},
-          body: JSON.stringify(data)
-        });
-      } else {
-        // Создаём новый bin
-        res = await fetch(CLOUD.BASE, {
-          method: 'POST',
-          headers: {'Content-Type':'application/json','X-Access-Key': CLOUD.KEY, 'X-Bin-Name': 'artem2026', 'X-Bin-Private': 'false'},
-          body: JSON.stringify(data)
-        });
-        if (res.ok) {
-          const j = await res.json();
-          CLOUD.binId = j.metadata?.id;
-          if (CLOUD.binId) localStorage.setItem('_cloud_bin_id', CLOUD.binId);
-        }
-      }
-
-      if (res?.ok) {
-        CLOUD.lastHash = hash;
-        setBadge('✓ Синхронизировано', 'ok');
-      } else {
-        setBadge('⚠️ Ошибка сохранения', 'err');
-      }
-    } catch(e) {
-      setBadge('⚠️ Офлайн', 'err');
-    }
-  }, 800); // debounce 800ms
-}
-
-// ─── Читаем из облака и мержим ───
-async function cloudPull(silent = false) {
-  try {
-    if (!CLOUD.binId) CLOUD.binId = localStorage.getItem('_cloud_bin_id');
-    if (!CLOUD.binId) { if (!silent) setBadge('⚠️ Нет облачных данных', 'err'); return false; }
-
-    if (!silent) setBadge('☁️ Синхронизация...', 'dim');
-
-    const res = await fetch(`${CLOUD.BASE}/${CLOUD.binId}/latest`, {
-      headers: {'X-Access-Key': CLOUD.KEY}
-    });
-    if (!res.ok) { if (!silent) setBadge('⚠️ Нет доступа к облаку', 'err'); return false; }
-
-    const j = await res.json();
-    const cloudData = j.record;
-    if (!cloudData) return false;
-
-    // Проверяем timestamp — берём данные только если облако новее
-    const localTs = parseInt(localStorage.getItem('_local_ts') || '0');
-    const cloudTs = cloudData._ts || 0;
-
-    let updated = false;
-    if (cloudTs > localTs) {
-      // Облако новее — перезаписываем локальные данные
-      Object.entries(cloudData).forEach(([k, v]) => {
-        if (k.startsWith('_')) return; // служебные поля
-        try { localStorage.setItem('x4_' + k, JSON.stringify(v)); updated = true; } catch(e) {}
-      });
-      localStorage.setItem('_local_ts', String(cloudTs));
-      CLOUD.lastHash = JSON.stringify(cloudData).length;
-    }
-
-    if (updated) {
-      reRenderAll();
-      if (!silent) setBadge(`✓ Данные обновлены с облака`, 'ok');
-    } else {
-      if (!silent) setBadge('✓ Данные актуальны', 'ok');
-    }
-    return true;
-  } catch(e) {
-    if (!silent) setBadge('⚠️ Офлайн — работаю локально', 'err');
-    return false;
-  }
-}
-
-// ─── Перерисовываем всё после синхронизации ───
+// ── RERENDER ──
 function reRenderAll() {
-  buildHeatmap();
-  buildWeekSel();
-  renderPulseHist();
-  buildTraining();
-  renderGoals();
-  renderTasks();
+  buildHeatmap(); buildWeekSel(); renderPulseHist();
+  buildTraining(); renderGoals(); renderTasks();
   const lpd = ld('weekly', {});
   const le = Object.values(lpd).sort((a,b) => new Date(b.saved||0) - new Date(a.saved||0))[0];
   if (le) ['sport','career','mental','family'].forEach(k => {
@@ -1300,128 +1144,78 @@ function reRenderAll() {
   });
 }
 
-// ─── Значок синхронизации ───
-function setBadge(msg, state) {
-  let b = document.getElementById('sync-badge');
-  if (!b) {
-    b = document.createElement('div');
-    b.id = 'sync-badge';
-    b.style.cssText = 'position:fixed;top:58px;right:12px;z-index:9999;padding:5px 10px;border-radius:6px;font-family:"JetBrains Mono",monospace;font-size:9px;font-weight:600;pointer-events:none;transition:all .3s;white-space:nowrap';
-    document.body.appendChild(b);
+// ── NAV ──
+function go(id, el) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item, .mob-tab').forEach(n => n.classList.remove('active'));
+  document.getElementById('page-' + id).classList.add('active');
+  if (el) {
+    if (el.classList.contains('nav-item')) el.classList.add('active');
+    document.querySelectorAll('.mob-tab').forEach(t => { if (t.dataset.pg === id) t.classList.add('active'); });
   }
-  const colors = {
-    ok:  { bg:'rgba(0,212,170,.15)', border:'rgba(0,212,170,.4)',  text:'#00d4aa' },
-    err: { bg:'rgba(248,113,113,.15)', border:'rgba(248,113,113,.4)', text:'#f87171' },
-    dim: { bg:'rgba(255,255,255,.06)', border:'rgba(255,255,255,.15)', text:'#7a94b0' },
-  };
-  const c = colors[state] || colors.dim;
-  b.style.background = c.bg;
-  b.style.border = `1px solid ${c.border}`;
-  b.style.color = c.text;
-  b.textContent = msg;
-  b.style.opacity = '1';
-  if (state !== 'dim') setTimeout(() => { b.style.opacity = '0'; }, 3000);
+  if (id === 'metrics') buildMetrics();
+  if (id === 'goals') renderGoals();
+  if (id === 'res') { renderBooks(); renderPods(); }
+  if (id === 'tasks') renderTasks();
+  if (window.innerWidth <= 768) window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-// ─── Polling: проверяем облако каждые 30 секунд ───
-function startPolling() {
-  cloudPull(false); // первая проверка сразу
-  setInterval(() => cloudPull(true), 30000); // тихая проверка каждые 30с
-}
-
-// ─── Кнопка ручной синхронизации ───
-function manualSync() { cloudPull(false); }
-
-// Обновляем _local_ts при каждом локальном сохранении
-const _origSv = sv;
-// Патчим sv чтобы обновлял timestamp
-const _sv_with_ts = (k, v) => {
-  localStorage.setItem('_local_ts', String(Date.now()));
-  _origSv(k, v);
-};
-const fmtD=d=>d.toISOString().split('T')[0];
-const s2p=s=>{if(!s&&s!==0)return'—';return Math.floor(s/60)+':'+(s%60<10?'0':'')+Math.round(s%60)};
-const p2s=str=>{const p=String(str).trim().split(':');return p.length===2?+p[0]*60+ +p[1]:null};
-const TODAY=new Date();TODAY.setHours(0,0,0,0);
-const RACE=new Date('2026-06-21');
-const START=new Date('2026-04-07');
-const YEAR_END=new Date('2027-03-31');
-const TOTAL_RACE=Math.ceil((RACE-START)/864e5);
-const TOTAL_YEAR=Math.ceil((YEAR_END-START)/864e5);
-const PASSED_YEAR=Math.ceil((TODAY-START)/864e5);
-const DAYS_RACE=Math.max(0,Math.ceil((RACE-TODAY)/864e5));
-
-// ═══ NAV ═══
-function go(id,el){
-  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-  document.querySelectorAll('.nav-item,.mob-tab').forEach(n=>n.classList.remove('active'));
-  document.getElementById('page-'+id).classList.add('active');
-  if(el){
-    if(el.classList.contains('nav-item'))el.classList.add('active');
-    document.querySelectorAll('.mob-tab').forEach(t=>{if(t.dataset.pg===id)t.classList.add('active')});
-  }
-  if(id==='metrics')buildMetrics();
-  if(id==='goals')renderGoals();
-  if(id==='res'){renderBooks();renderPods()}
-  if(id==='tasks')renderTasks();
-  if(window.innerWidth<=768)window.scrollTo({top:0,behavior:'smooth'});
-}
-
-// ═══ DATES ═══
-(()=>{
-  document.getElementById('cd-days').textContent=DAYS_RACE;
-  document.getElementById('cd-wks').textContent=Math.ceil(DAYS_RACE/7);
-  document.getElementById('cd-yr').textContent=TOTAL_YEAR;
-  document.getElementById('nav-cd').textContent=DAYS_RACE;
-  document.getElementById('mob-cd').textContent=DAYS_RACE;
-  document.getElementById('nav-date').textContent=TODAY.toLocaleDateString('ru-RU',{day:'numeric',month:'short'});
-  const rp=Math.min(100,Math.round((TOTAL_RACE-DAYS_RACE)/TOTAL_RACE*100));
-  const yp=Math.min(100,Math.max(0,Math.round(PASSED_YEAR/TOTAL_YEAR*100)));
-  document.getElementById('pf-race').style.width=rp+'%';document.getElementById('pp-race').textContent=rp+'%';
-  document.getElementById('pf-year').style.width=yp+'%';document.getElementById('pp-year').textContent=yp+'%';
+// ── DATES ──
+(function() {
+  document.getElementById('cd-days').textContent = DAYS_RACE;
+  document.getElementById('cd-wks').textContent = Math.ceil(DAYS_RACE / 7);
+  document.getElementById('cd-yr').textContent = TOTAL_YEAR;
+  document.getElementById('nav-cd').textContent = DAYS_RACE;
+  document.getElementById('mob-cd').textContent = DAYS_RACE;
+  document.getElementById('nav-date').textContent = TODAY.toLocaleDateString('ru-RU', {day:'numeric', month:'short'});
+  const rp = Math.min(100, Math.round((TOTAL_RACE - DAYS_RACE) / TOTAL_RACE * 100));
+  const yp = Math.min(100, Math.max(0, Math.round(PASSED_YEAR / TOTAL_YEAR * 100)));
+  document.getElementById('pf-race').style.width = rp + '%'; document.getElementById('pp-race').textContent = rp + '%';
+  document.getElementById('pf-year').style.width = yp + '%'; document.getElementById('pp-year').textContent = yp + '%';
 })();
 
-// ═══ MOBILE ═══
-function initMob(){
-  const m=window.innerWidth<=768;
-  document.getElementById('mob-hdr').style.display=m?'flex':'none';
-  document.getElementById('mob-bar').style.display=m?'flex':'none';
+// ── MOBILE ──
+function initMob() {
+  const m = window.innerWidth <= 768;
+  document.getElementById('mob-hdr').style.display = m ? 'flex' : 'none';
+  document.getElementById('mob-bar').style.display = m ? 'flex' : 'none';
 }
-window.addEventListener('resize',initMob);initMob();
+window.addEventListener('resize', initMob); initMob();
 
-// ═══ HEATMAP ═══
-function buildHeatmap(){
-  const c=document.getElementById('heatmap');if(!c)return;c.innerHTML='';
-  const data=ld('weekly',{});const tt=document.getElementById('tt');
-  let cur=new Date(START);while(cur.getDay()!==0)cur.setDate(cur.getDate()-1);
-  while(cur<=YEAR_END){
-    const w=document.createElement('div');w.className='hm-w';
-    const key=fmtD(cur);const e=data[key];
-    const sc=e?Math.round((e.sport+e.career+e.mental+e.family)/4):0;
-    const fut=cur>TODAY;const isTd=cur.toDateString()===TODAY.toDateString();
-    const cell=document.createElement('div');
-    cell.className='hm-c '+(fut?'hm-future':'hs'+sc)+(isTd?' hm-today':'');
-    cell.title=cur.toLocaleDateString('ru-RU')+(e?' · '+sc+'/10':' · нет данных');
-    cell.onmouseenter=ev=>{tt.style.display='block';tt.textContent=cell.title};
-    cell.onmousemove=ev=>{tt.style.left=(ev.clientX+10)+'px';tt.style.top=(ev.clientY+10)+'px'};
-    cell.onmouseleave=()=>tt.style.display='none';
-    if(!fut)cell.onclick=()=>{go('pulse',document.querySelector('[data-pg="pulse"]'));setTimeout(()=>selWeek(key),100)};
-    w.appendChild(cell);c.appendChild(w);cur.setDate(cur.getDate()+7);
+// ── HEATMAP ──
+function buildHeatmap() {
+  const c = document.getElementById('heatmap'); if (!c) return; c.innerHTML = '';
+  const data = ld('weekly', {}); const tt = document.getElementById('tt');
+  let cur = new Date(START); while (cur.getDay() !== 0) cur.setDate(cur.getDate() - 1);
+  while (cur <= YEAR_END) {
+    const w = document.createElement('div'); w.className = 'hm-w';
+    const key = fmtD(cur); const e = data[key];
+    const sc = e ? Math.round((e.sport + e.career + e.mental + e.family) / 4) : 0;
+    const fut = cur > TODAY; const isTd = cur.toDateString() === TODAY.toDateString();
+    const cell = document.createElement('div');
+    cell.className = 'hm-c ' + (fut ? 'hm-future' : 'hs' + sc) + (isTd ? ' hm-today' : '');
+    cell.title = cur.toLocaleDateString('ru-RU') + (e ? ' · ' + sc + '/10' : ' · нет данных');
+    cell.onmouseenter = ev => { tt.style.display = 'block'; tt.textContent = cell.title; };
+    cell.onmousemove = ev => { tt.style.left = (ev.clientX + 10) + 'px'; tt.style.top = (ev.clientY + 10) + 'px'; };
+    cell.onmouseleave = () => tt.style.display = 'none';
+    if (!fut) cell.onclick = () => { go('pulse', document.querySelector('[data-pg="pulse"]')); setTimeout(() => selWeek(key), 100); };
+    w.appendChild(cell); c.appendChild(w);
+    cur.setDate(cur.getDate() + 7);
   }
 }
 
-// ═══ TRAINING PLAN ═══
-const PLAN=[
+// ── TRAINING PLAN ──
+const PLAN = [
   {ph:1,name:"БЛОК 1 — FTP И ОБЪЁМ ПЛАВАНИЯ",dates:"7–25 апреля",focus:"FTP-тест · Надпороговые интервалы · Объём плавания · Первый кирпич",weeks:[
     {num:1,ttl:"Вход в план",dates:"7–11 апр",days:[
-      {n:"ВТ",d:"7 апр",w:[{t:"swim",x:"🏊 Плавание — интервалы\n400м разм (1:50) · 10×100м по 1:32 (20сек отдых) · 200м замин\nИтого: 2200м"}]},
-      {n:"СР",d:"8 апр",w:[{t:"bike",x:"🚴 Велосипед — надпороговые\n15мин разм 150Вт · 5×8мин на 275–280Вт (106% FTP)\nОтдых 4мин на 160Вт · 15мин замин · ~95мин · ЧСС 170–174"}]},
-      {n:"ЧТ",d:"9 апр",w:[{t:"run",x:"🏃 Бег — пороговые повторы\n10мин активация поясницы · 2км разм\n4×1км по 3:58–4:00 (75сек отдых) · 2км замин\nИтого: 8км · ЧСС 165–170"}]},
-      {n:"ПТ",d:"10 апр",w:[{t:"swim",x:"🏊 Плавание — длинные отрезки\n300м разм · 4×400м по 6:08 (1:32/100м, 40сек отдых) · 200м замин\nИтого: 2100м"}]},
-      {n:"СБ",d:"11 апр",w:[{t:"bike",x:"🚴 Велосипед — длинная пороговая\n20мин разм 155Вт · 2×20мин на 255–260Вт (98% FTP, ЧСС~162)\nОтдых 8мин · 20мин замин · ~90мин"}]},
+      {n:"ВТ",d:"7 апр",w:[{t:"swim",x:"🏊 Плавание — интервалы\n400м разм · 10×100м по 1:32 (20сек) · 200м замин · 2200м"}]},
+      {n:"СР",d:"8 апр",w:[{t:"bike",x:"🚴 Велосипед — надпороговые\n15мин разм 150Вт · 5×8мин на 275–280Вт (106% FTP)\nОтдых 4мин 160Вт · 15мин замин · ~95мин · ЧСС 170–174"}]},
+      {n:"ЧТ",d:"9 апр",w:[{t:"run",x:"🏃 Бег — пороговые повторы\n10мин активация · 2км разм\n4×1км по 3:58–4:00 (75сек отдых) · 2км замин · 8км · ЧСС 165–170"}]},
+      {n:"ПТ",d:"10 апр",w:[{t:"swim",x:"🏊 Плавание — длинные отрезки\n300м разм · 4×400м по 6:08 (1:32/100м, 40сек) · 200м замин · 2100м"}]},
+      {n:"СБ",d:"11 апр",w:[{t:"bike",x:"🚴 Велосипед — длинная пороговая\n20мин разм 155Вт · 2×20мин 255–260Вт (98% FTP, ЧСС~162)\nОтдых 8мин · 20мин замин · ~90мин"}]},
     ]},
-    {num:2,ttl:"Кирпич #1 (ВС)",dates:"12–18 апр",days:[
-      {n:"ВС",d:"12 апр",w:[{t:"brick",x:"🔗 КИРПИЧ #1\nВело: 35мин на 245Вт / ЧСС~158 · T2: 90 секунд (тренируй раздевалку!)\nБег: 20мин по 4:10/км / ЧСС 168–172\nНоги будут чужими 4–5 мин — это нормально"}]},
+    {num:2,ttl:"Кирпич #1",dates:"12–18 апр",days:[
+      {n:"ВС",d:"12 апр",w:[{t:"brick",x:"🔗 КИРПИЧ #1\nВело: 35мин 245Вт / ЧСС~158 · T2: 90сек\nБег: 20мин 4:10/км / ЧСС 168–172 · Ноги будут чужими — норм"}]},
       {n:"ПН",d:"13 апр",w:[{t:"mob",x:"🧘 Восстановление · 20мин мобильность"}]},
       {n:"ВТ",d:"14 апр",w:[{t:"swim",x:"🏊 Плавание 2200м · 10×100м по 1:32"}]},
       {n:"СР",d:"15 апр",w:[{t:"bike",x:"🚴 Велосипед 5×8мин · 275–280Вт · 95мин"}]},
@@ -1430,7 +1224,7 @@ const PLAN=[
       {n:"СБ",d:"18 апр",w:[{t:"bike",x:"🚴 Вело 2×20мин · 255–260Вт · 90мин"}]},
     ]},
     {num:3,ttl:"Прогрессия · Кирпич #2",dates:"19–25 апр",days:[
-      {n:"ВС",d:"19 апр",w:[{t:"brick",x:"🔗 КИРПИЧ #2\nВело: 35мин на 248Вт · T2: 90сек\nБег: 22мин по 4:08/км"}]},
+      {n:"ВС",d:"19 апр",w:[{t:"brick",x:"🔗 КИРПИЧ #2\nВело: 35мин 248Вт · T2: 90сек · Бег: 22мин 4:08/км"}]},
       {n:"ПН",d:"20 апр",w:[{t:"mob",x:"🧘 Восстановление · мобильность"}]},
       {n:"ВТ",d:"21 апр",w:[{t:"swim",x:"🏊 Плавание 2200м · 10×100м по 1:31"}]},
       {n:"СР",d:"22 апр",w:[{t:"bike",x:"🚴 Велосипед 5×8мин · 278Вт · ЧСС 172–175"}]},
@@ -1441,45 +1235,45 @@ const PLAN=[
   ]},
   {ph:2,name:"БЛОК 2 — НАРАЩИВАНИЕ",dates:"26 апр – 16 мая",focus:"Вело 3×20мин 95% FTP · Бег 2×3км по 4:03 · Кирпичи каждое ВС",weeks:[
     {num:4,ttl:"Переход на 3×20мин",dates:"26 апр – 2 мая",days:[
-      {n:"ВС",d:"26 апр",w:[{t:"brick",x:"🔗 КИРПИЧ НЕД.4\nВело: 45мин / ЧСС~160 · T2: 90сек · Бег: 20мин по 4:05/км"}]},
+      {n:"ВС",d:"26 апр",w:[{t:"brick",x:"🔗 КИРПИЧ НЕД.4\nВело: 45мин / ЧСС~160 · T2: 90сек · Бег: 20мин 4:05/км"}]},
       {n:"ПН",d:"27 апр",w:[{t:"mob",x:"🧘 Восстановление"}]},
       {n:"ВТ",d:"28 апр",w:[{t:"swim",x:"🏊 Плавание 3×500м по 7:38 · ~2200м"}]},
-      {n:"СР",d:"29 апр",w:[{t:"bike",x:"🚴 Вело 3×20мин на 95% FTP (247Вт) · ЧСС~162"}]},
+      {n:"СР",d:"29 апр",w:[{t:"bike",x:"🚴 Вело 3×20мин 95% FTP (247Вт) · ЧСС~162"}]},
       {n:"ЧТ",d:"30 апр",w:[{t:"run",x:"🏃 Бег: 2×3км по 4:03/км · объём 20–22км нед"}]},
       {n:"ПТ",d:"1 мая",w:[{t:"swim",x:"🏊 Плавание 1500м контрольный заплыв"}]},
       {n:"СБ",d:"2 мая",w:[{t:"bike",x:"🚴 Вело 2×30мин 92% FTP · аэропозиция строго!"}]},
     ]},
     {num:5,ttl:"Кирпич нед.5: 50мин+25мин",dates:"3–9 мая",days:[
-      {n:"ВС",d:"3 мая",w:[{t:"brick",x:"🔗 КИРПИЧ НЕД.5\nВело: 50мин / ЧСС~160 · T2: 90сек · Бег: 25мин по 4:04/км"}]},
+      {n:"ВС",d:"3 мая",w:[{t:"brick",x:"🔗 КИРПИЧ НЕД.5\nВело: 50мин / ЧСС~160 · T2: 90сек · Бег: 25мин 4:04/км"}]},
       {n:"ПН",d:"4 мая",w:[{t:"mob",x:"🧘 Восстановление"}]},
       {n:"ВТ",d:"5 мая",w:[{t:"swim",x:"🏊 Плавание 3×500м · темп 1:31/100м"}]},
       {n:"СР",d:"6 мая",w:[{t:"bike",x:"🚴 Вело 3×20мин 95% FTP · аэропозиция строго"}]},
-      {n:"ЧТ",d:"7 мая",w:[{t:"run",x:"🏃 Бег 2×3км по 4:02/км · 6–7км по 4:02 свежих"}]},
+      {n:"ЧТ",d:"7 мая",w:[{t:"run",x:"🏃 Бег 2×3км по 4:02/км"}]},
       {n:"ПТ",d:"8 мая",w:[{t:"swim",x:"🏊 Плавание 3×500м · без остановок"}]},
-      {n:"СБ",d:"9 мая",w:[{t:"bike",x:"🚴 Вело 2×30мин 92% FTP · FTP должен расти до 272–275"}]},
+      {n:"СБ",d:"9 мая",w:[{t:"bike",x:"🚴 Вело 2×30мин 92% FTP · FTP до 272–275"}]},
     ]},
     {num:6,ttl:"Кирпич нед.6: 55мин+28мин",dates:"10–16 мая",days:[
-      {n:"ВС",d:"10 мая",w:[{t:"brick",x:"🔗 КИРПИЧ НЕД.6\nВело: 55мин / ЧСС~162 · T2: 90сек · Бег: 28мин по 4:02/км"}]},
+      {n:"ВС",d:"10 мая",w:[{t:"brick",x:"🔗 КИРПИЧ НЕД.6\nВело: 55мин / ЧСС~162 · T2: 90сек · Бег: 28мин 4:02/км"}]},
       {n:"ПН",d:"11 мая",w:[{t:"mob",x:"🧘 Восстановление"}]},
       {n:"ВТ",d:"12 мая",w:[{t:"swim",x:"🏊 Плавание 3×500м · гонка-темп"}]},
-      {n:"СР",d:"13 мая",w:[{t:"bike",x:"🚴 Вело 3×20мин · если FTP вырос — пересчитай зоны"}]},
+      {n:"СР",d:"13 мая",w:[{t:"bike",x:"🚴 Вело 3×20мин · пересчитай зоны если FTP вырос"}]},
       {n:"ЧТ",d:"14 мая",w:[{t:"run",x:"🏃 Бег 6–7км по 4:02/км · на свежих ногах"}]},
       {n:"ПТ",d:"15 мая",w:[{t:"swim",x:"🏊 Плавание 1500м контрольный заплыв"}]},
       {n:"СБ",d:"16 мая",w:[{t:"bike",x:"🚴 Вело 2×30мин 92% FTP · аэро"}]},
     ]},
   ]},
   {ph:3,name:"БЛОК 3 — ГОНОЧНАЯ СПЕЦИФИКА",dates:"17 мая – 7 июня",focus:"1500м→T1→40км→T2→5–7км · делаем трижды",weeks:[
-    {num:7,ttl:"Симуляция гонки #1",dates:"17–23 мая",days:[
-      {n:"ВС",d:"17 мая",w:[{t:"brick",x:"🔗 СИМУЛЯЦИЯ #1\n🏊 1500м темп 1:31–1:32 · T1: 90сек\n🚴 40км на максимуме (цель 58–62мин) · T2: 60сек\n🏃 5–7км по 4:00–4:05/км · ЭТО ПОЧТИ ПОЛНАЯ ГОНКА"}]},
-      {n:"ПН",d:"18 мая",w:[{t:"mob",x:"🧘 Восстановление · лёгко"}]},
+    {num:7,ttl:"Симуляция #1",dates:"17–23 мая",days:[
+      {n:"ВС",d:"17 мая",w:[{t:"brick",x:"🔗 СИМУЛЯЦИЯ #1\n🏊 1500м 1:31–1:32 · T1: 90сек\n🚴 40км (58–62мин) · T2: 60сек\n🏃 5–7км 4:00–4:05/км · ПОЧТИ ПОЛНАЯ ГОНКА"}]},
+      {n:"ПН",d:"18 мая",w:[{t:"mob",x:"🧘 Восстановление"}]},
       {n:"ВТ",d:"19 мая",w:[{t:"swim",x:"🏊 Плавание · техника · лёгкое"}]},
-      {n:"СР",d:"20 мая",w:[{t:"bike",x:"🚴 Вело 2×30мин 92% FTP · аэро строго"}]},
+      {n:"СР",d:"20 мая",w:[{t:"bike",x:"🚴 Вело 2×30мин 92% FTP · аэро"}]},
       {n:"ЧТ",d:"21 мая",w:[{t:"run",x:"🏃 Бег 6–7км по 4:02 · свежие ноги"}]},
       {n:"ПТ",d:"22 мая",w:[{t:"swim",x:"🏊 Плавание 1500м контрольный · темп 1:31?"}]},
       {n:"СБ",d:"23 мая",w:[{t:"bike",x:"🚴 Вело 2×30мин 92% FTP · аэро"}]},
     ]},
-    {num:8,ttl:"Симуляция гонки #2",dates:"24–30 мая",days:[
-      {n:"ВС",d:"24 мая",w:[{t:"brick",x:"🔗 СИМУЛЯЦИЯ #2\n🏊 1500м · цель 1:31 · T1: 90сек\n🚴 40км · быстрее прошлого · T2: 60сек\n🏃 6–7км по 4:00/км"}]},
+    {num:8,ttl:"Симуляция #2",dates:"24–30 мая",days:[
+      {n:"ВС",d:"24 мая",w:[{t:"brick",x:"🔗 СИМУЛЯЦИЯ #2\n🏊 1500м · цель 1:31 · T1: 90сек\n🚴 40км · быстрее прошлого · T2: 60сек\n🏃 6–7км 4:00/км"}]},
       {n:"ПН",d:"25 мая",w:[{t:"mob",x:"🧘 Восстановление"}]},
       {n:"ВТ",d:"26 мая",w:[{t:"swim",x:"🏊 Плавание · восстановительное"}]},
       {n:"СР",d:"27 мая",w:[{t:"bike",x:"🚴 Вело 2×30мин 92% FTP"}]},
@@ -1487,8 +1281,8 @@ const PLAN=[
       {n:"ПТ",d:"29 мая",w:[{t:"swim",x:"🏊 Плавание 1500м"}]},
       {n:"СБ",d:"30 мая",w:[{t:"bike",x:"🚴 Вело 2×30мин 92% FTP · последний длинный"}]},
     ]},
-    {num:9,ttl:"Симуляция гонки #3 — финальная",dates:"31 мая – 6 июн",days:[
-      {n:"ВС",d:"31 мая",w:[{t:"brick",x:"🔗 СИМУЛЯЦИЯ #3 — ФИНАЛЬНАЯ\n🏊 1500м · цель 1:30–1:31 · T1: 90сек\n🚴 40км · личный рекорд · T2: 60сек\n🏃 7км по 4:00/км · рви последние 2км"}]},
+    {num:9,ttl:"Симуляция #3 — финальная",dates:"31 мая – 6 июн",days:[
+      {n:"ВС",d:"31 мая",w:[{t:"brick",x:"🔗 СИМУЛЯЦИЯ #3 — ФИНАЛЬНАЯ\n🏊 1500м · цель 1:30–1:31 · T1: 90сек\n🚴 40км · личный рекорд · T2: 60сек\n🏃 7км 4:00/км · рви последние 2км"}]},
       {n:"ПН",d:"1 июн",w:[{t:"mob",x:"🧘 Восстановление"}]},
       {n:"ВТ",d:"2 июн",w:[{t:"swim",x:"🏊 Плавание лёгкое · техника"}]},
       {n:"СР",d:"3 июн",w:[{t:"bike",x:"🚴 Вело 2×20мин 95% FTP · держим остроту"}]},
@@ -1498,7 +1292,7 @@ const PLAN=[
     ]},
   ]},
   {ph:4,name:"БЛОК 4 — ПИК И ТЕЙПЕР",dates:"7–21 июня",focus:"Объём -45% · Интенсивность сохранить · Активация за 3 дня",weeks:[
-    {num:10,ttl:"Тейпер — неделя 11",dates:"7–13 июн",days:[
+    {num:10,ttl:"Тейпер",dates:"7–13 июн",days:[
       {n:"ВС",d:"7 июн",w:[{t:"mob",x:"Отдых · Визуализация гонки"}]},
       {n:"ПН",d:"8 июн",w:[{t:"swim",x:"🏊 Плавание 1200м · темп 1:30 · лёгко"}]},
       {n:"ВТ",d:"9 июн",w:[{t:"bike",x:"🚴 Вело 3×8мин на 270Вт — держим остроту"}]},
@@ -1509,413 +1303,357 @@ const PLAN=[
     ]},
     {num:11,ttl:"ГОНОЧНАЯ НЕДЕЛЯ",dates:"14–21 июн",days:[
       {n:"ВС",d:"14 июн",w:[{t:"mob",x:"Отдых · пульс недели · визуализация"}]},
-      {n:"ПН",d:"15 июн",w:[{t:"swim",x:"🏊 20мин плавание · всё легко"}]},
+      {n:"ПН",d:"15 июн",w:[{t:"swim",x:"🏊 20мин · всё легко"}]},
       {n:"ВТ",d:"16 июн",w:[{t:"run",x:"🏃 20мин вел + 15мин бег · всё легко"}]},
       {n:"СР",d:"17 июн",w:[{t:"mob",x:"Прогулка · собрать транзитную зону"}]},
-      {n:"ЧТ",d:"18 июн",w:[{t:"swim",x:"ДЕНЬ -3 · 20мин плав + 20мин вел + 15мин бег · легко"}]},
-      {n:"ПТ",d:"19 июн",w:[{t:"mob",x:"ДЕНЬ -2 · Прогулка · Карбозагрузка начало"}]},
+      {n:"ЧТ",d:"18 июн",w:[{t:"swim",x:"ДЕНЬ -3 · 20мин плав + 20мин вел + 15мин бег"}]},
+      {n:"ПТ",d:"19 июн",w:[{t:"mob",x:"ДЕНЬ -2 · Прогулка · Карбозагрузка"}]},
       {n:"СБ",d:"20 июн",w:[{t:"swim",x:"ДЕНЬ -1 · 10мин плав + 10мин вел + 10мин бег · активация · СПАТЬ РАНО"}]},
     ]},
     {num:12,ttl:"🏁 ГОНКА 21 ИЮНЯ",dates:"21 июня",days:[
-      {n:"ВС",d:"21 июн",w:[{t:"race",x:"🏁 ОЛИМПИЙСКИЙ ТРИАТЛОН\n🏊 1500м · не в 1-й волне · держи 1:31–1:33\n🚴 40км · 0–10км→265Вт · 10–35км→270–275Вт · финиш→всё\n🏃 10км · 1км 4:10 принудительно · 2й+→4:00 · посл.2км→РВИ\n\nТЫ ГОТОВ. ФИНИШИРУЙ."}]},
+      {n:"ВС",d:"21 июн",w:[{t:"race",x:"🏁 ОЛИМПИЙСКИЙ ТРИАТЛОН\n🏊 1500м · не в 1-й волне · 1:31–1:33\n🚴 0–10км→265Вт · 10–35км→270–275Вт · финиш→всё\n🏃 1км→4:10 принудительно · 2й+→4:00 · посл.2км→РВИ\n\nТЫ ГОТОВ. ФИНИШИРУЙ."}]},
       {n:"ПН",d:"22 июн",w:[{t:"mob",x:"🎉 Восстановление · Ты это сделал!"}]},
       {n:"ВТ",d:"23 июн",w:[{t:"mob",x:"Восстановление · лёгкая ходьба"}]},
-      {n:"СБ",d:"27 июн",w:[{t:"mob",x:"Первая лёгкая пробежка 15–20мин · ЗАРЕГИСТРИРУЙСЯ НА СЛЕДУЮЩИЙ СТАРТ"}]},
+      {n:"СБ",d:"27 июн",w:[{t:"mob",x:"Первая лёгкая пробежка · ЗАРЕГИСТРИРУЙСЯ НА СЛЕДУЮЩИЙ СТАРТ"}]},
     ]},
   ]},
 ];
 
-let editKey=null;
-let dragSrcKey=null, dragSrcData=null;
+let editKey = null, dragSrcKey = null, dragSrcWo = null;
 
-function buildTraining(){
-  const c=document.getElementById('training-plan');if(!c)return;c.innerHTML='';
-  const done=ld('done',{});const ovr=ld('ovr',{});
-  PLAN.forEach(ph=>{
-    const wrap=document.createElement('div');wrap.className='phase-wrap';
-    const hdr=document.createElement('div');hdr.className='phase-hdr';
-    hdr.innerHTML=`<div class="phase-num">0${ph.ph}</div><div class="phase-info"><div class="phase-name">${ph.name}</div><div class="phase-dates">${ph.dates}</div></div><div class="phase-focus">${ph.focus}</div><div class="phase-chev" id="pc${ph.ph}">▼</div>`;
-    const body=document.createElement('div');body.className='phase-body'+(ph.ph<=2?' open':'');body.id='pb'+ph.ph;
-    hdr.onclick=()=>{body.classList.toggle('open');document.getElementById('pc'+ph.ph).classList.toggle('open')};
-    ph.weeks.forEach(wk=>{
-      const wb=document.createElement('div');wb.className='week-block';
-      wb.innerHTML=`<div class="week-hdr"><div class="week-badge">НЕД ${wk.num}</div><div class="week-ttl">${wk.ttl} · ${wk.dates}</div></div>`;
-      const dg=document.createElement('div');dg.className='days-grid';
-      wk.days.forEach(day=>{
-        const key=day.d.replace(/ /g,'-');const isDone=done[key];const ov=ovr[key];
-        const cell=document.createElement('div');
-        cell.className='day-cell'+(isDone?' done-cell':'');
-        cell.dataset.key=key;
-        cell.draggable=true;
-        const ws=ov?ov.w:day.w;
-        const pills=ws.map(w=>`<span class="w-pill wt-${w.t}">${w.x.replace(/\n/g,'<br>')}</span>`).join('');
-        cell.innerHTML=`
-          <div class="drag-handle" title="Перетащи чтобы поменять местами">⠿</div>
-          <div class="day-nm">${day.n}</div>
-          <div class="day-dt">${day.d}</div>
-          ${pills}
-          <div class="day-chk${isDone?' chk-done':''}" data-k="${key}">✓</div>
-          <button class="day-edit-btn" onclick="openWoModal('${key}','${day.d}',event)">✏️</button>
-        `;
-        // checkmark
-        cell.querySelector('.day-chk').onclick=ev=>{
-          ev.stopPropagation();const s=ld('done',{});s[key]=!s[key];if(!s[key])delete s[key];sv('done',s);
-          ev.target.classList.toggle('chk-done');cell.classList.toggle('done-cell');
+function buildTraining() {
+  const c = document.getElementById('training-plan'); if (!c) return; c.innerHTML = '';
+  const done = ld('done', {}); const ovr = ld('ovr', {});
+  PLAN.forEach(ph => {
+    const wrap = document.createElement('div'); wrap.className = 'phase-wrap';
+    const hdr = document.createElement('div'); hdr.className = 'phase-hdr';
+    hdr.innerHTML = `<div class="phase-num">0${ph.ph}</div><div class="phase-info"><div class="phase-name">${ph.name}</div><div class="phase-dates">${ph.dates}</div></div><div class="phase-focus">${ph.focus}</div><div class="phase-chev" id="pc${ph.ph}">▼</div>`;
+    const body = document.createElement('div'); body.className = 'phase-body' + (ph.ph <= 2 ? ' open' : ''); body.id = 'pb' + ph.ph;
+    hdr.onclick = () => { body.classList.toggle('open'); document.getElementById('pc' + ph.ph).classList.toggle('open'); };
+    ph.weeks.forEach(wk => {
+      const wb = document.createElement('div'); wb.className = 'week-block';
+      wb.innerHTML = `<div class="week-hdr"><div class="week-badge">НЕД ${wk.num}</div><div class="week-ttl">${wk.ttl} · ${wk.dates}</div></div>`;
+      const dg = document.createElement('div'); dg.className = 'days-grid';
+      wk.days.forEach(day => {
+        const key = day.d.replace(/ /g, '-'); const isDone = done[key]; const ov = ovr[key];
+        const cell = document.createElement('div');
+        cell.className = 'day-cell' + (isDone ? ' done-cell' : ''); cell.dataset.key = key; cell.draggable = true;
+        const ws = ov ? ov.w : day.w;
+        const pills = ws.map(w => `<span class="w-pill wt-${w.t}">${w.x.replace(/\n/g, '<br>')}</span>`).join('');
+        cell.innerHTML = `<div class="drag-handle" title="Перетащи для переноса">⠿</div><div class="day-nm">${day.n}</div><div class="day-dt">${day.d}</div>${pills}<div class="day-chk${isDone ? ' chk-done' : ''}" data-k="${key}">✓</div><button class="day-edit-btn" onclick="openWoModal('${key}','${day.d}',event)">✏️</button>`;
+        cell.querySelector('.day-chk').onclick = ev => {
+          ev.stopPropagation(); const s = ld('done', {}); s[key] = !s[key]; if (!s[key]) delete s[key]; sv('done', s);
+          ev.target.classList.toggle('chk-done'); cell.classList.toggle('done-cell');
         };
-        // ─── DRAG & DROP ───
-        cell.addEventListener('dragstart', ev => {
-          dragSrcKey = key;
-          dragSrcData = ld('ovr',{})[key] || { w: day.w };
-          cell.classList.add('drag-src');
-          ev.dataTransfer.effectAllowed = 'move';
-          ev.dataTransfer.setData('text/plain', key);
-        });
-        cell.addEventListener('dragend', () => {
-          cell.classList.remove('drag-src');
-          document.querySelectorAll('.drag-over').forEach(el => el.classList.remove('drag-over'));
-        });
-        cell.addEventListener('dragover', ev => {
-          ev.preventDefault();
-          ev.dataTransfer.dropEffect = 'move';
-          if (cell.dataset.key !== dragSrcKey) cell.classList.add('drag-over');
-        });
+        // Drag
+        cell.addEventListener('dragstart', ev => { dragSrcKey = key; dragSrcWo = ld('ovr', {})[key] || { w: day.w }; cell.classList.add('drag-src'); ev.dataTransfer.effectAllowed = 'move'; });
+        cell.addEventListener('dragend', () => { cell.classList.remove('drag-src'); document.querySelectorAll('.drag-over').forEach(el => el.classList.remove('drag-over')); });
+        cell.addEventListener('dragover', ev => { ev.preventDefault(); if (cell.dataset.key !== dragSrcKey) cell.classList.add('drag-over'); });
         cell.addEventListener('dragleave', () => cell.classList.remove('drag-over'));
         cell.addEventListener('drop', ev => {
-          ev.preventDefault();
-          cell.classList.remove('drag-over');
-          const dstKey = cell.dataset.key;
-          if (!dragSrcKey || dragSrcKey === dstKey) return;
-          // find default workouts for dst
-          let dstDefWo = null;
-          PLAN.forEach(p=>p.weeks.forEach(w=>w.days.forEach(d=>{
-            if(d.d.replace(/ /g,'-')===dstKey) dstDefWo = d.w;
-          })));
-          const ovrMap = ld('ovr',{});
-          const dstData = ovrMap[dstKey] || { w: dstDefWo || [] };
-          // swap
-          ovrMap[dragSrcKey] = { w: dstData.w };
-          ovrMap[dstKey] = { w: dragSrcData.w };
-          sv('ovr', ovrMap);
-          // toast
-          showToast(`↔ Тренировки ${dragSrcKey} и ${dstKey} поменяны местами`);
-          dragSrcKey = null; dragSrcData = null;
-          buildTraining();
+          ev.preventDefault(); cell.classList.remove('drag-over');
+          const dstKey = cell.dataset.key; if (!dragSrcKey || dragSrcKey === dstKey) return;
+          let dstDefWo = null; PLAN.forEach(p => p.weeks.forEach(w => w.days.forEach(d => { if (d.d.replace(/ /g,'-') === dstKey) dstDefWo = d.w; })));
+          const ovrMap = ld('ovr', {}); const dstData = ovrMap[dstKey] || { w: dstDefWo || [] };
+          ovrMap[dragSrcKey] = { w: dstData.w }; ovrMap[dstKey] = { w: dragSrcWo.w };
+          sv('ovr', ovrMap); showToast('↔ Тренировки поменяны'); dragSrcKey = null; buildTraining();
         });
         dg.appendChild(cell);
       });
-      wb.appendChild(dg);body.appendChild(wb);
+      wb.appendChild(dg); body.appendChild(wb);
     });
-    wrap.appendChild(hdr);wrap.appendChild(body);c.appendChild(wrap);
+    wrap.appendChild(hdr); wrap.appendChild(body); c.appendChild(wrap);
   });
 }
 
 function showToast(msg) {
   let t = document.getElementById('toast');
   if (!t) { t = document.createElement('div'); t.id = 'toast'; document.body.appendChild(t); }
-  t.style.cssText = 'position:fixed;bottom:90px;left:50%;transform:translateX(-50%);z-index:9998;padding:10px 18px;border-radius:20px;font-family:\'JetBrains Mono\',monospace;font-size:10px;font-weight:600;background:var(--accent);color:var(--bg);box-shadow:0 4px 20px rgba(0,0,0,.4);transition:opacity .4s;white-space:nowrap';
-  t.textContent = msg; t.style.opacity = '1';
-  setTimeout(() => { t.style.opacity = '0'; }, 2200);
+  t.style.cssText = 'position:fixed;bottom:90px;left:50%;transform:translateX(-50%);z-index:9998;padding:10px 20px;border-radius:20px;font-family:\'JetBrains Mono\',monospace;font-size:10px;font-weight:600;background:var(--accent);color:var(--bg);box-shadow:0 4px 20px rgba(0,0,0,.4);white-space:nowrap';
+  t.textContent = msg; t.style.opacity = '1'; setTimeout(() => t.style.opacity = '0', 2200);
 }
 
-function openWoModal(key,dateStr,ev){
-  if(ev)ev.stopPropagation();
-  const ovr=ld('ovr',{});const ov=ovr[key];
-  let defDay=null;
-  PLAN.forEach(ph=>ph.weeks.forEach(wk=>wk.days.forEach(d=>{if(d.d.replace(/ /g,'-')===key)defDay=d})));
-  if(!defDay)return;
-  const ws=ov?ov.w:defDay.w;
-  document.getElementById('wo-date-show').value=dateStr;
-  document.getElementById('wo-type').value=ws[0]?.t||'rest';
-  document.getElementById('wo-text').value=ws[0]?.x?.replace(/<br>/g,'\n')||'';
-  document.getElementById('wo-newdate').value='';
-  editKey=key;
-  document.getElementById('modal-wo').classList.add('open');
+function openWoModal(key, dateStr, ev) {
+  if (ev) ev.stopPropagation();
+  const ovr = ld('ovr', {}); const ov = ovr[key];
+  let defDay = null; PLAN.forEach(ph => ph.weeks.forEach(wk => wk.days.forEach(d => { if (d.d.replace(/ /g,'-') === key) defDay = d; })));
+  if (!defDay) return;
+  const ws = ov ? ov.w : defDay.w;
+  document.getElementById('wo-date-show').value = dateStr;
+  document.getElementById('wo-type').value = ws[0]?.t || 'rest';
+  document.getElementById('wo-text').value = ws[0]?.x?.replace(/<br>/g, '\n') || '';
+  document.getElementById('wo-newdate').value = '';
+  editKey = key; document.getElementById('modal-wo').classList.add('open');
 }
 
-function saveWo(){
-  if(!editKey)return;
-  const type=document.getElementById('wo-type').value;
-  const text=document.getElementById('wo-text').value.trim();
-  const newdate=document.getElementById('wo-newdate').value;
-  const ovr=ld('ovr',{});
-  if(newdate){
-    // move: copy to new date, delete from old
-    ovr[newdate]={w:[{t:type,x:text}]};
-    ovr[editKey]={w:[{t:'rest',x:'😴 Перенесено на '+newdate}]};
-  } else {
-    ovr[editKey]={w:[{t:type,x:text}]};
-  }
-  sv('ovr',ovr);closeModal();buildTraining();
+function saveWo() {
+  if (!editKey) return;
+  const type = document.getElementById('wo-type').value;
+  const text = document.getElementById('wo-text').value.trim();
+  const newdate = document.getElementById('wo-newdate').value;
+  const ovr = ld('ovr', {});
+  if (newdate) { ovr[newdate] = { w: [{ t: type, x: text }] }; ovr[editKey] = { w: [{ t: 'rest', x: '😴 Перенесено на ' + newdate }] }; }
+  else { ovr[editKey] = { w: [{ t: type, x: text }] }; }
+  sv('ovr', ovr); closeModal(); buildTraining();
 }
 
-function deleteWo(){
-  if(!editKey)return;
-  const ovr=ld('ovr',{});
-  ovr[editKey]={w:[{t:'rest',x:'😴 Удалено / перенесено'}]};
-  sv('ovr',ovr);closeModal();buildTraining();
+function deleteWo() {
+  if (!editKey) return;
+  const ovr = ld('ovr', {}); ovr[editKey] = { w: [{ t: 'rest', x: '😴 Удалено / перенесено' }] };
+  sv('ovr', ovr); closeModal(); buildTraining();
 }
 
-function closeModal(){
-  document.getElementById('modal-wo').classList.remove('open');editKey=null;
-}
-document.getElementById('modal-wo').onclick=e=>{if(e.target===document.getElementById('modal-wo'))closeModal()};
+function closeModal() { document.getElementById('modal-wo').classList.remove('open'); editKey = null; }
+document.getElementById('modal-wo').onclick = e => { if (e.target === document.getElementById('modal-wo')) closeModal(); };
 
-// ═══ PULSE ═══
-let pscores={sport:7,career:7,mental:6,family:5};let selWkKey=null;
+// ── PULSE ──
+let pscores = { sport:7, career:7, mental:6, family:5 }; let selWkKey = null;
 
-function buildWeekSel(){
-  const c=document.getElementById('week-sel');if(!c)return;c.innerHTML='';
-  const data=ld('weekly',{});let cur=new Date(START);
-  while(cur.getDay()!==0)cur.setDate(cur.getDate()-1);
-  let wn=1;
-  while(cur<=YEAR_END){
-    const key=fmtD(cur);const has=!!data[key];
-    const isCur=cur<=TODAY&&new Date(cur.getTime()+6*864e5)>=TODAY;
-    const btn=document.createElement('div');
-    btn.className='ws-btn'+(has?' has-entry':'')+(isCur?' active':'');
-    btn.textContent='Нед '+wn;btn.title=cur.toLocaleDateString('ru-RU',{day:'numeric',month:'short'});
-    btn.onclick=()=>{document.querySelectorAll('.ws-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');selWeek(key,wn,cur.toLocaleDateString('ru-RU',{day:'numeric',month:'long'}))};
-    if(isCur&&!selWkKey)selWeek(key,wn,cur.toLocaleDateString('ru-RU',{day:'numeric',month:'long'}));
-    c.appendChild(btn);cur.setDate(cur.getDate()+7);wn++;
+function buildWeekSel() {
+  const c = document.getElementById('week-sel'); if (!c) return; c.innerHTML = '';
+  const data = ld('weekly', {}); let cur = new Date(START);
+  while (cur.getDay() !== 0) cur.setDate(cur.getDate() - 1);
+  let wn = 1;
+  while (cur <= YEAR_END) {
+    const key = fmtD(cur); const has = !!data[key];
+    const isCur = cur <= TODAY && new Date(cur.getTime() + 6 * 864e5) >= TODAY;
+    const btn = document.createElement('div');
+    btn.className = 'ws-btn' + (has ? ' has-entry' : '') + (isCur ? ' active' : '');
+    btn.textContent = 'Нед ' + wn; btn.title = cur.toLocaleDateString('ru-RU', { day:'numeric', month:'short' });
+    btn.onclick = () => { document.querySelectorAll('.ws-btn').forEach(b => b.classList.remove('active')); btn.classList.add('active'); selWeek(key, wn, cur.toLocaleDateString('ru-RU', { day:'numeric', month:'long' })); };
+    if (isCur && !selWkKey) selWeek(key, wn, cur.toLocaleDateString('ru-RU', { day:'numeric', month:'long' }));
+    c.appendChild(btn); cur.setDate(cur.getDate() + 7); wn++;
   }
 }
 
-function selWeek(key,wn,wd){
-  selWkKey=key;const data=ld('weekly',{});const e=data[key]||{};
-  pscores.sport=e.sport||7;pscores.career=e.career||7;pscores.mental=e.mental||6;pscores.family=e.family||5;
-  ['sport','career','mental','family'].forEach(k=>document.getElementById('sf-'+k).textContent=pscores[k]);
-  document.getElementById('jf-worry').value=e.worry||'';
-  document.getElementById('jf-control').value=e.control||'';
-  document.getElementById('jf-action').value=e.action||'';
-  document.getElementById('jf-notes').value=e.notes||'';
-  if(wn&&wd)document.getElementById('pulse-ttl').textContent=`НЕДЕЛЯ ${wn} · ${wd.toUpperCase()}`;
+function selWeek(key, wn, wd) {
+  selWkKey = key; const data = ld('weekly', {}); const e = data[key] || {};
+  pscores = { sport: e.sport||7, career: e.career||7, mental: e.mental||6, family: e.family||5 };
+  ['sport','career','mental','family'].forEach(k => document.getElementById('sf-' + k).textContent = pscores[k]);
+  document.getElementById('jf-worry').value = e.worry || '';
+  document.getElementById('jf-control').value = e.control || '';
+  document.getElementById('jf-action').value = e.action || '';
+  document.getElementById('jf-notes').value = e.notes || '';
+  if (wn && wd) document.getElementById('pulse-ttl').textContent = 'НЕДЕЛЯ ' + wn + ' · ' + wd.toUpperCase();
   renderPulseHist();
 }
 
-function adj(k,d){pscores[k]=Math.max(1,Math.min(10,pscores[k]+d));document.getElementById('sf-'+k).textContent=pscores[k]}
+function adj(k, d) { pscores[k] = Math.max(1, Math.min(10, pscores[k] + d)); document.getElementById('sf-' + k).textContent = pscores[k]; }
 
-function savePulse(){
-  if(!selWkKey)return;
-  const data=ld('weekly',{});
-  data[selWkKey]={sport:pscores.sport,career:pscores.career,mental:pscores.mental,family:pscores.family,
-    worry:document.getElementById('jf-worry').value,control:document.getElementById('jf-control').value,
-    action:document.getElementById('jf-action').value,notes:document.getElementById('jf-notes').value,
-    saved:new Date().toISOString()};
-  sv('weekly',data);
-  ['sport','career','mental','family'].forEach(k=>{
-    const el=document.getElementById('h-'+k);const b=document.getElementById('hb-'+k);
-    if(el)el.textContent=pscores[k];if(b)b.style.width=(pscores[k]*10)+'%';
+function savePulse() {
+  if (!selWkKey) return;
+  const data = ld('weekly', {});
+  data[selWkKey] = { sport: pscores.sport, career: pscores.career, mental: pscores.mental, family: pscores.family,
+    worry: document.getElementById('jf-worry').value, control: document.getElementById('jf-control').value,
+    action: document.getElementById('jf-action').value, notes: document.getElementById('jf-notes').value,
+    saved: new Date().toISOString() };
+  sv('weekly', data);
+  ['sport','career','mental','family'].forEach(k => {
+    const el = document.getElementById('h-' + k); const bar = document.getElementById('hb-' + k);
+    if (el) el.textContent = pscores[k]; if (bar) bar.style.width = (pscores[k] * 10) + '%';
   });
-  const st=document.getElementById('save-st');st.textContent='✓ Сохранено';st.style.opacity='1';setTimeout(()=>st.style.opacity='0',2500);
-  buildWeekSel();buildHeatmap();renderPulseHist();
+  const st = document.getElementById('save-st'); st.textContent = '✓ Сохранено'; st.style.opacity = '1'; setTimeout(() => st.style.opacity = '0', 2500);
+  buildWeekSel(); buildHeatmap(); renderPulseHist();
 }
 
-function renderPulseHist(){
-  const c=document.getElementById('pulse-hist');if(!c)return;
-  const data=ld('weekly',{});
-  const entries=Object.entries(data).sort((a,b)=>b[0].localeCompare(a[0]));
-  if(!entries.length){c.innerHTML='<div style="color:var(--dim);font-size:12px;padding:8px 0">Ещё нет записей.</div>';return}
-  c.innerHTML=entries.map(([key,e])=>{
-    const avg=((e.sport+e.career+e.mental+e.family)/4).toFixed(1);
-    const d=new Date(key);const ds=d.toLocaleDateString('ru-RU',{day:'numeric',month:'short'});
-    const ac=+avg>=7?'var(--accent)':+avg>=5?'var(--gold)':'var(--red)';
-    return`<div class="hist-card">
-      <div class="hist-hdr">
-        <div class="hist-avg" style="color:${ac}">${avg}</div>
-        <div><div class="hist-date">${ds}</div><div class="hist-badges">
-          <span class="hist-b" style="background:rgba(56,189,248,.1);color:var(--swim)">С${e.sport}</span>
-          <span class="hist-b" style="background:rgba(0,212,170,.1);color:var(--accent)">К${e.career}</span>
-          <span class="hist-b" style="background:rgba(74,222,128,.1);color:var(--run)">М${e.mental}</span>
-          <span class="hist-b" style="background:rgba(248,113,113,.1);color:var(--red)">С${e.family}</span>
-        </div></div>
-      </div>
+function renderPulseHist() {
+  const c = document.getElementById('pulse-hist'); if (!c) return;
+  const data = ld('weekly', {});
+  const entries = Object.entries(data).sort((a,b) => b[0].localeCompare(a[0]));
+  if (!entries.length) { c.innerHTML = '<div style="color:var(--dim);font-size:12px;padding:8px 0">Ещё нет записей.</div>'; return; }
+  c.innerHTML = entries.map(([key, e]) => {
+    const avg = ((e.sport + e.career + e.mental + e.family) / 4).toFixed(1);
+    const d = new Date(key); const ds = d.toLocaleDateString('ru-RU', { day:'numeric', month:'short' });
+    const ac = +avg >= 7 ? 'var(--accent)' : +avg >= 5 ? 'var(--gold)' : 'var(--red)';
+    return `<div class="hist-card">
+      <div class="hist-hdr"><div class="hist-avg" style="color:${ac}">${avg}</div>
+      <div><div class="hist-date">${ds}</div><div class="hist-badges">
+        <span class="hist-b" style="background:rgba(56,189,248,.1);color:var(--swim)">С${e.sport}</span>
+        <span class="hist-b" style="background:rgba(0,212,170,.1);color:var(--accent)">К${e.career}</span>
+        <span class="hist-b" style="background:rgba(74,222,128,.1);color:var(--run)">М${e.mental}</span>
+        <span class="hist-b" style="background:rgba(248,113,113,.1);color:var(--red)">С${e.family}</span>
+      </div></div></div>
       <div class="hist-fields">
-        ${e.worry?`<div class="hist-f"><div class="hist-f-lbl">🔴 Что тревожило</div><div class="hist-f-val">${e.worry}</div></div>`:''}
-        ${e.control?`<div class="hist-f"><div class="hist-f-lbl">🟢 В руках</div><div class="hist-f-val">${e.control}</div></div>`:''}
-        ${e.action?`<div class="hist-f" style="grid-column:1/-1"><div class="hist-f-lbl">⚡ Главное действие</div><div class="hist-f-val">${e.action}</div></div>`:''}
-        ${e.notes?`<div class="hist-f" style="grid-column:1/-1"><div class="hist-f-lbl">💡 Инсайты</div><div class="hist-f-val">${e.notes}</div></div>`:''}
-      </div>
-    </div>`;
+        ${e.worry ? `<div class="hist-f"><div class="hist-f-lbl">🔴 Тревожило</div><div class="hist-f-val">${e.worry}</div></div>` : ''}
+        ${e.control ? `<div class="hist-f"><div class="hist-f-lbl">🟢 В руках</div><div class="hist-f-val">${e.control}</div></div>` : ''}
+        ${e.action ? `<div class="hist-f" style="grid-column:1/-1"><div class="hist-f-lbl">⚡ Главное действие</div><div class="hist-f-val">${e.action}</div></div>` : ''}
+        ${e.notes ? `<div class="hist-f" style="grid-column:1/-1"><div class="hist-f-lbl">💡 Инсайты</div><div class="hist-f-val">${e.notes}</div></div>` : ''}
+      </div></div>`;
   }).join('');
 }
 
-// ═══ TASKS ═══
-const PRI_META={high:{lbl:'🔴 Важно',c:'var(--red)',bg:'rgba(248,113,113,.1)'},med:{lbl:'🟡 Обычно',c:'var(--gold)',bg:'rgba(251,191,36,.1)'},low:{lbl:'🟢 Позже',c:'var(--run)',bg:'rgba(74,222,128,.1)'}};
+// ── TASKS ──
+const PRI_META = { high:{lbl:'🔴 Важно',c:'var(--red)',bg:'rgba(248,113,113,.1)'}, med:{lbl:'🟡 Обычно',c:'var(--gold)',bg:'rgba(251,191,36,.1)'}, low:{lbl:'🟢 Позже',c:'var(--run)',bg:'rgba(74,222,128,.1)'} };
 
-function todayKey(){return fmtD(TODAY)}
-
-function renderTasks(){
-  const key=todayKey();
-  const tasks=ld('tasks_'+key,[]);
-  const total=tasks.length,done=tasks.filter(t=>t.done).length;
-  // date display
-  const dayNames=['Воскресенье','Понедельник','Вторник','Среда','Четверг','Пятница','Суббота'];
-  const monNames=['января','февраля','марта','апреля','мая','июня','июля','августа','сентября','октября','ноября','декабря'];
-  document.getElementById('task-date-big').textContent=dayNames[TODAY.getDay()]+', '+TODAY.getDate()+' '+monNames[TODAY.getMonth()];
-  document.getElementById('task-date-sub').textContent='ЗАДАЧИ НА СЕГОДНЯ';
-  document.getElementById('task-stats').textContent=total?`✓ ${done}/${total} выполнено · ${Math.round(done/total*100)||0}%`:'Список пуст';
-
-  const c=document.getElementById('task-list');c.innerHTML='';
-  if(!tasks.length){c.innerHTML='<div style="color:var(--dim);font-size:13px;padding:20px 0;text-align:center">Добавь первую задачу 👆</div>';return}
-
-  // sort: undone first, then high/med/low
-  const priOrd={high:0,med:1,low:2};
-  [...tasks].sort((a,b)=>(a.done===b.done)?(priOrd[a.pri]||1)-(priOrd[b.pri]||1):(a.done?1:-1)).forEach((task,vi)=>{
-    const realIdx=tasks.findIndex(t=>t.id===task.id);
-    const pm=PRI_META[task.pri]||PRI_META.med;
-    const div=document.createElement('div');div.className='task-item'+(task.done?' done':'');
-    div.innerHTML=`<div class="task-chk${task.done?' done':''}" onclick="toggleTask('${key}','${task.id}',event)"></div>
-      <div class="task-txt${task.done?' done':''}">${task.text}</div>
-      <span class="task-pri" style="background:${pm.bg};color:${pm.c}">${pm.lbl}</span>
-      <button class="task-del" onclick="delTask('${key}','${task.id}',event)">✕</button>`;
+function renderTasks() {
+  const key = fmtD(TODAY); const tasks = ld('tasks_' + key, []);
+  const total = tasks.length, doneN = tasks.filter(t => t.done).length;
+  const dn = ['Воскресенье','Понедельник','Вторник','Среда','Четверг','Пятница','Суббота'];
+  const mn = ['января','февраля','марта','апреля','мая','июня','июля','августа','сентября','октября','ноября','декабря'];
+  document.getElementById('task-date-big').textContent = dn[TODAY.getDay()] + ', ' + TODAY.getDate() + ' ' + mn[TODAY.getMonth()];
+  document.getElementById('task-stats').textContent = total ? `✓ ${doneN}/${total} · ${Math.round(doneN/total*100)||0}%` : 'Список пуст';
+  const c = document.getElementById('task-list'); c.innerHTML = '';
+  if (!tasks.length) { c.innerHTML = '<div style="color:var(--dim);font-size:13px;padding:20px 0;text-align:center">Добавь первую задачу 👆</div>'; return; }
+  const priOrd = { high:0, med:1, low:2 };
+  [...tasks].sort((a,b) => a.done === b.done ? (priOrd[a.pri]||1) - (priOrd[b.pri]||1) : a.done ? 1 : -1).forEach(task => {
+    const pm = PRI_META[task.pri] || PRI_META.med;
+    const div = document.createElement('div'); div.className = 'task-item' + (task.done ? ' done' : '');
+    div.innerHTML = `<div class="task-chk${task.done?' done':''}" onclick="toggleTask('${key}','${task.id}',event)"></div><div class="task-txt${task.done?' done':''}">${task.text}</div><span class="task-pri" style="background:${pm.bg};color:${pm.c}">${pm.lbl}</span><button class="task-del" onclick="delTask('${key}','${task.id}',event)">✕</button>`;
     c.appendChild(div);
   });
   renderTaskHist();
 }
 
-function addTask(){
-  const inp=document.getElementById('task-input');
-  const text=inp.value.trim();if(!text)return;
-  const key=todayKey();const tasks=ld('tasks_'+key,[]);
-  tasks.push({id:'t'+Date.now(),text,pri:document.getElementById('task-pri-sel').value,done:false,created:new Date().toISOString()});
-  sv('tasks_'+key,tasks);inp.value='';renderTasks();
+function addTask() {
+  const inp = document.getElementById('task-input'); const text = inp.value.trim(); if (!text) return;
+  const key = fmtD(TODAY); const tasks = ld('tasks_' + key, []);
+  tasks.push({ id: 't' + Date.now(), text, pri: document.getElementById('task-pri-sel').value, done: false });
+  sv('tasks_' + key, tasks); inp.value = ''; renderTasks();
 }
 
-function toggleTask(dayKey,id,ev){
-  if(ev)ev.stopPropagation();
-  const tasks=ld('tasks_'+dayKey,[]);const t=tasks.find(x=>x.id===id);if(t)t.done=!t.done;
-  sv('tasks_'+dayKey,tasks);renderTasks();
+function toggleTask(dayKey, id, ev) {
+  if (ev) ev.stopPropagation();
+  const tasks = ld('tasks_' + dayKey, []); const t = tasks.find(x => x.id === id); if (t) t.done = !t.done;
+  sv('tasks_' + dayKey, tasks); renderTasks();
 }
 
-function delTask(dayKey,id,ev){
-  if(ev)ev.stopPropagation();
-  sv('tasks_'+dayKey,ld('tasks_'+dayKey,[]).filter(t=>t.id!==id));renderTasks();
+function delTask(dayKey, id, ev) {
+  if (ev) ev.stopPropagation();
+  sv('tasks_' + dayKey, ld('tasks_' + dayKey, []).filter(t => t.id !== id)); renderTasks();
 }
 
-function renderTaskHist(){
-  const c=document.getElementById('task-hist');if(!c)return;
-  const todK=todayKey();
-  // find all keys with tasks
-  const histDays=[];
-  for(let i=1;i<=30;i++){
-    const d=new Date(TODAY);d.setDate(d.getDate()-i);
-    const k=fmtD(d);
-    const tasks=ld('tasks_'+k,[]);
-    if(tasks.length)histDays.push({date:d,key:k,tasks});
+function renderTaskHist() {
+  const c = document.getElementById('task-hist'); if (!c) return;
+  const days = [];
+  for (let i = 1; i <= 30; i++) {
+    const d = new Date(TODAY); d.setDate(d.getDate() - i);
+    const k = fmtD(d); const tasks = ld('tasks_' + k, []);
+    if (tasks.length) days.push({ date: d, tasks });
   }
-  if(!histDays.length){c.innerHTML='<div style="color:var(--dim);font-size:12px;padding:8px 0">Нет истории.</div>';return}
-  c.innerHTML=histDays.map(({date,key,tasks})=>{
-    const done=tasks.filter(t=>t.done).length;
-    const ds=date.toLocaleDateString('ru-RU',{day:'numeric',month:'short',weekday:'short'});
-    return`<div class="hist-day-hdr"><div class="hist-day-date">${ds}</div><div class="hist-day-stat">✓ ${done}/${tasks.length}</div></div>
-    <div class="hist-day-body">
-      ${tasks.map(t=>`<div class="hist-day-item"><span style="color:${t.done?'var(--run)':'var(--muted)'}">●</span><span style="${t.done?'text-decoration:line-through;color:var(--dim)':''}">${t.text}</span></div>`).join('')}
-    </div>`;
+  if (!days.length) { c.innerHTML = '<div style="color:var(--dim);font-size:12px;padding:8px 0">Нет истории.</div>'; return; }
+  c.innerHTML = days.map(({ date, tasks }) => {
+    const dn = tasks.filter(t => t.done).length;
+    const ds = date.toLocaleDateString('ru-RU', { day:'numeric', month:'short', weekday:'short' });
+    return `<div class="hist-day-hdr"><div class="hist-day-date">${ds}</div><div class="hist-day-stat">✓ ${dn}/${tasks.length}</div></div>
+    <div class="hist-day-body">${tasks.map(t => `<div class="hist-day-item"><span style="color:${t.done?'var(--run)':'var(--muted)'}">●</span><span style="${t.done?'text-decoration:line-through;color:var(--dim)':''}">${t.text}</span></div>`).join('')}</div>`;
   }).join('');
 }
 
-function toggleTaskHist(){
-  const c=document.getElementById('task-hist');const t=document.getElementById('task-hist-toggle');
-  const open=c.style.display!=='none';c.style.display=open?'none':'block';t.textContent=open?'▼':'▲';
-  if(!open)renderTaskHist();
+function toggleTaskHist() {
+  const c = document.getElementById('task-hist'); const t = document.getElementById('task-hist-toggle');
+  const open = c.style.display !== 'none'; c.style.display = open ? 'none' : 'block'; t.textContent = open ? '▼' : '▲';
+  if (!open) renderTaskHist();
 }
 
-// ═══ AI COACH (via Claude API in artifacts proxy) ═══
-const AI_SYS=`Ты — персональный коуч Артёма Денисова. Контекст:
-- 38 лет, Директор B2C Билайн, 1500+ чел, 15 лет опыта
-- Цель: VP Sales/Product, переезд в Москву  
-- Триатлон: старт 21 июня 2026 (олимпик). FTP 260→280Вт, плавание 1:35→1:30/100м, бег 4:15→4:00/км. ЧСС макс ~187. 5-6 трен/нед
-- Ментал: F41.2, цепралекс 10мг
-- Семья: жена 39, сын Ким 6 лет
-- Любит: Франкл, Хокинг, Шантарам, Талеб. Ценит конкретику и данные
-Отвечай конкретно, без воды, максимум 200 слов. Используй данные. Говори как требовательный но заботливый коуч.`;
-
-let aiHist=[];
-
-async function sendAI(){
-  const inp=document.getElementById('ai-in');
-  const msg=inp.value.trim();if(!msg)return;
-  inp.value='';
-  appendMsg(msg,'user');
-  const btn=document.getElementById('ai-btn');btn.disabled=true;
-  const thinkId='think-'+Date.now();
-  appendMsg('Думаю...','bot thinking',thinkId);
-  aiHist.push({role:'user',content:msg});
-  try{
-    const res=await fetch('https://api.anthropic.com/v1/messages',{
-      method:'POST',
-      headers:{'Content-Type':'application/json','anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
-      body:JSON.stringify({model:'claude-haiku-4-5-20251001',max_tokens:500,system:AI_SYS,messages:aiHist})
-    });
-    if(!res.ok){throw new Error('HTTP '+res.status)}
-    const data=await res.json();
-    const reply=data.content?.[0]?.text||'Не смог получить ответ.';
-    document.getElementById(thinkId)?.remove();
-    appendMsg(reply,'bot');
-    aiHist.push({role:'assistant',content:reply});
-    if(aiHist.length>20)aiHist=aiHist.slice(-20);
-  }catch(e){
-    document.getElementById(thinkId)?.remove();
-    // Fallback: local smart responses
-    const local=getLocalReply(msg);
-    appendMsg(local,'bot');
-    aiHist.push({role:'assistant',content:local});
+// ── BUILT-IN COACH (no API, context-aware) ──
+const COACH_ANSWERS = {
+  week: () => {
+    const data = ld('weekly', {}); const entries = Object.entries(data).sort((a,b) => b[0].localeCompare(a[0]));
+    if (!entries.length) return 'Нет данных о неделях. Зайди в раздел Пульс и заполни оценку — тогда смогу дать конкретный разбор.';
+    const [key, e] = entries[0]; const avg = ((e.sport+e.career+e.mental+e.family)/4).toFixed(1);
+    const weak = ['sport','career','mental','family'].sort((a,b) => e[a]-e[b])[0];
+    const wkName = {sport:'спорт',career:'карьера',mental:'ментальное',family:'семья'}[weak];
+    const d = new Date(key); const ds = d.toLocaleDateString('ru-RU',{day:'numeric',month:'short'});
+    return `Последняя запись: ${ds} · Средний пульс ${avg}/10.\n\nСлабое звено: ${wkName} (${e[weak]}/10). Именно туда нужно направить энергию на этой неделе.\n\n${e.action ? `Твоё главное действие было: "${e.action}". Выполнено?` : 'Главное действие не указано — это потеря фокуса.'}\n\n${+avg < 6 ? 'Пульс ниже нормы. Не пытайся закрыть всё сразу — выбери одно и сделай.' : 'Пульс нормальный. Держи темп, не расслабляйся.'}`;
+  },
+  run: () => {
+    const arr = ld('m_run', []); const lat = arr.length ? arr[arr.length-1] : null;
+    const cur = lat ? s2p(lat.val) : '4:15';
+    return `Текущий темп бега: ${cur}/км · Цель: 4:00/км к 21 июня.\n\nГлавное: твой лактатный порог уже выше 4:00 — ты это показал на тренировках (ЧСС 162-168 при 4:00). Значит можешь.\n\nЧто делать прямо сейчас:\n1. Кирпичные тренировки — бег ПОСЛЕ велосипеда. Это важнее бега на свежих ногах.\n2. 2×/неделю интервалы 4×1км на 3:57-4:00. Отдых 75 сек строго.\n3. Первый км на гонке — принудительно 4:10. Тело обманывает после вело.`;
+  },
+  bike: () => {
+    const arr = ld('m_ftp', []); const lat = arr.length ? arr[arr.length-1] : null;
+    const cur = lat ? lat.val + ' Вт' : '260 Вт';
+    return `FTP: ${cur} · Цель: 280 Вт.\n\nГлавный вывод: чтобы ехать 40км за 60 минут нужно 285-290Вт. При FTP 260 это 110% — невозможно на час.\n\nДва пути к 60 минутам:\n1. Поднять FTP до 272-275 (8 недель пороговых блоков) — реально\n2. Аэродинамика: аэрошлем +0.5-0.8 км/ч, триsuit +0.3-0.5, аэропозиция +0.5-1.0. Итого +1.5-2.5 км/ч без ватт\n\nТвой велосипед с аэро: 39 + 1.5 = 40.5 км/ч → 59:15. Это реально.`;
+  },
+  race: () => `Стратегия гонки 21 июня:\n\n🏊 Плавание: стартуй НЕ в первой волне. Держи 1:31-1:33/100м. Не рви на старте.\n\n🚴 Велосипед: первые 10км НЕ выше 265Вт — тело ещё переключается. Км 10-35: 270-275Вт. Последние 5км — всё что осталось.\n\n🏃 Бег: первый км ПРИНУДИТЕЛЬНО 4:10 — даже если кажется легко. Тело обманывает. Со 2-го выходишь на 4:00. Последние 2км — рви.\n\nПитание: 1 гель каждые 30-35 мин на велосипеде. Протестируй заранее.`,
+  career: () => `По карьере — конкретно.\n\nТвои активы которые продаются на VP уровне:\n• Лучшая EBITDA среди регионов (2022-2023)\n• Agile внедрён и раскатан на страну\n• Onboarding программа — NPS +22pp, принята CEO\n• 15 лет в одной компании с реальным ростом P&L\n\nЧто делать прямо сейчас (пока не начал активный поиск):\n1. Переписать резюме как продающий документ — не отчёт о достижениях\n2. Сформулировать питч за 90 секунд: кто ты, что принёс, куда идёшь\n3. LinkedIn 100% с правильными ключевыми словами\n\nПоиск запускать после гонки — июль. Хедхантеры: Ward Howell, Kontakt InterSearch, Cornerstone.`,
+  mental: () => `По ментальному — честно.\n\nF41.2 + 10-летняя история + острый стресс сейчас = система нужна, не пожарный режим.\n\nПервое что нужно сделать СЕЙЧАС:\n→ Визит к психиатру — ревизия цепралекса. 10мг при текущей нагрузке может быть мало.\n→ Найти КПТ-терапевта на регулярной основе 1×/2 недели. Не разово когда плохо.\n\nЧто реально помогает при твоём профиле:\n• Триатлон — это не просто спорт, это твоя биохимия. Продолжай.\n• Утренний журнал 10 мин: тревога / контроль / действие\n• Сон минимум 7.5ч — при нагрузках это приоритет №1`,
+  motive: () => {
+    const d = DAYS_RACE;
+    return `${d} дней назад ты не плавал километры, не ехал на велосипеде, не бегал в комплексе.\n\nСейчас ты готовишься к олимпийскому триатлону через ${d} дней. При нагрузке директора на 1500 человек. При семье. При личной ситуации которая требует сил.\n\nЭто не "занимаюсь спортом". Это системная трансформация личности за 4 месяца.\n\nФранкл говорил: смысл не ищут, его создают действием. Ты уже создаёшь. Иди тренироваться.`;
+  },
+  swim: () => {
+    const arr = ld('m_swim', []); const lat = arr.length ? arr[arr.length-1] : null;
+    const cur = lat ? s2p(lat.val) : '1:35';
+    return `Плавание: ${cur}/100м · Цель: 1:30-1:31.\n\nХорошая новость: ты не деградировал — просто не наращивал объём. База есть.\n\nДо 1:30 — это вопрос специфической работы:\n1. Пн: 10×100м по 1:32 с отдыхом 20сек строго — скоростная память\n2. Чт: 4×400м по 6:08 (1:32/100м) — выносливость на гонке-темпе\n3. Раз в 2 недели: контрольный заплыв 1500м — замеряй прогресс\n\nВ воде важнее техника чем объём. Если есть возможность — 1-2 занятия с тренером на технику гребка.`;
   }
-  btn.disabled=false;
+};
+
+let coachHistory = [];
+
+function coachAsk(type) {
+  const ans = COACH_ANSWERS[type] ? COACH_ANSWERS[type]() : 'Задай вопрос своими словами.';
+  addMsg(COACH_ANSWERS[type] ? ['week','run','bike','race','career','mental','motive','swim'].includes(type) ? getTypeLabel(type) : type : type, 'user');
+  setTimeout(() => addMsg(ans, 'bot'), 150);
 }
 
-function getLocalReply(q){
-  const ql=q.toLowerCase();
-  if(ql.includes('бег')||ql.includes('темп')){
-    return'По бегу: твой лактатный порог уже выше 4:00/км (показал ЧСС 162-168 при темпе 4:00). Главное — кирпичные тренировки: бег после велосипеда на 4:05-4:10. Это важнее чем бег на свежих ногах. Продолжай 6×1км по 3:58 дважды в неделю.';
-  }
-  if(ql.includes('карьер')||ql.includes('vp')||ql.includes('работ')){
-    return'По карьере: у тебя сильные активы — лучшая EBITDA среди регионов, Agile и Onboarding раскатаны на страну. Сейчас главное — переписать резюме как продающий документ (не отчёт), сделать LinkedIn 100%, сформулировать питч за 90 секунд. Старт активного поиска — июль, после гонки. Ward Howell, Kontakt, Cornerstone, Transearch.';
-  }
-  if(ql.includes('гонк')||ql.includes('старт')||ql.includes('стратег')){
-    return'Стратегия 21 июня: Плавание — не в первой волне, держи 1:31-1:33. Велосипед — первые 10км не выше 265Вт, тело ещё переключается. Км 10-35: 270-275Вт. Последние 5км — всё что осталось. Бег — первый км ПРИНУДИТЕЛЬНО 4:10, даже если кажется легко. Тело обманывает. Со 2-го выходишь на 4:00. Последние 2км — рви.';
-  }
-  if(ql.includes('мотив')||ql.includes('заряд')){
-    return'4 месяца назад ты не плавал, не ехал на велосипеде, не бегал в комплексе. Сейчас делаешь кирпичи. За 77 дней до первого олимпийского старта. При нагрузке директора на 1500 человек. Это не "занимаюсь спортом" — это трансформация личности. Иди тренироваться.';
-  }
-  if(ql.includes('недел')||ql.includes('разбор')){
-    return'Для разбора недели зайди в Пульс → заполни 4 оценки и 3 вопроса. После сохранения я смогу дать точный разбор на основе цифр. Сейчас без данных: главный приоритет — бег (кирпичи + интервалы). Всё остальное идёт нормально по плану.';
-  }
-  return'Конкретизируй вопрос. Что именно беспокоит — бег, велосипед, плавание, карьерный переход, или ментальное состояние? Буду отвечать по делу.';
+function getTypeLabel(type) {
+  const labels = {week:'Разбор недели',run:'Темп бега',bike:'Велосипед/FTP',race:'Стратегия гонки',career:'Карьера',mental:'Ментальное',motive:'Мотивация',swim:'Плавание'};
+  return labels[type] || type;
 }
 
-function appendMsg(text,cls,id){
-  const c=document.getElementById('ai-msgs');
-  const d=document.createElement('div');d.className='ai-msg '+cls;
-  if(id)d.id=id;
-  d.innerHTML=text.replace(/\n/g,'<br>').replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>');
-  c.appendChild(d);c.scrollTop=c.scrollHeight;
+function coachSend() {
+  const inp = document.getElementById('ai-in'); const q = inp.value.trim(); if (!q) return;
+  inp.value = ''; addMsg(q, 'user');
+  const ql = q.toLowerCase();
+  let ans;
+  if (ql.includes('бег') || ql.includes('темп') || ql.includes('4:00')) ans = COACH_ANSWERS.run();
+  else if (ql.includes('вел') || ql.includes('ftp') || ql.includes('ватт')) ans = COACH_ANSWERS.bike();
+  else if (ql.includes('плав') || ql.includes('1:30') || ql.includes('100м')) ans = COACH_ANSWERS.swim();
+  else if (ql.includes('гонк') || ql.includes('21 июн') || ql.includes('старт')) ans = COACH_ANSWERS.race();
+  else if (ql.includes('карьер') || ql.includes('vp') || ql.includes('работ') || ql.includes('резюм')) ans = COACH_ANSWERS.career();
+  else if (ql.includes('ментал') || ql.includes('депресс') || ql.includes('тревог') || ql.includes('цепрал')) ans = COACH_ANSWERS.mental();
+  else if (ql.includes('мотив') || ql.includes('устал') || ql.includes('не хочет')) ans = COACH_ANSWERS.motive();
+  else if (ql.includes('недел') || ql.includes('разбор') || ql.includes('пульс')) ans = COACH_ANSWERS.week();
+  else ans = 'Уточни вопрос. Я могу разобрать: бег, велосипед, плавание, стратегию гонки, карьеру, ментальное состояние или мотивацию. Нажми кнопку или напиши конкретнее.';
+  setTimeout(() => addMsg(ans, 'bot'), 200);
 }
 
-function quickAsk(q){document.getElementById('ai-in').value=q;sendAI()}
-
-async function analyzeWo(){
-  const name=document.getElementById('wo-name').value.trim();
-  const feel=document.getElementById('wo-feel').value;
-  const result=document.getElementById('wo-result').value.trim();
-  if(!name)return;
-  const q=`Разбери тренировку: ${name}. Самочувствие ${feel||'?'}/10. Результат: ${result||'не указан'}. Что хорошо, что улучшить, как влияет на подготовку к гонке?`;
-  go('coach',document.querySelector('[data-pg="coach"]'));
-  setTimeout(()=>{document.getElementById('ai-in').value=q;sendAI()},300);
+function addMsg(text, cls) {
+  const c = document.getElementById('ai-msgs');
+  const d = document.createElement('div'); d.className = 'ai-msg ' + cls;
+  d.innerHTML = text.replace(/\n/g, '<br>').replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+  c.appendChild(d); c.scrollTop = c.scrollHeight;
 }
 
-// ═══ METRICS ═══
-const MDEFS={ftp:{start:260,target:280,hib:true,unit:'Вт',c:'var(--bike)'},swim:{start:96,target:90,hib:false,unit:'/100м',c:'var(--swim)'},run:{start:255,target:240,hib:false,unit:'/км',c:'var(--run)'}};
-const charts={};
+function coachWorkout() {
+  const name = document.getElementById('wo-name').value.trim();
+  const feel = document.getElementById('wo-feel').value;
+  const result = document.getElementById('wo-result').value.trim();
+  if (!name) return;
+  go('coach', document.querySelector('[data-pg="coach"]'));
+  addMsg(`Разбери тренировку: ${name}. Самочувствие ${feel||'?'}/10. Результат: ${result||'не указан'}.`, 'user');
+  const f = parseInt(feel) || 7;
+  let ans = `Тренировка: ${name}.\n\n`;
+  if (f >= 8) ans += `Самочувствие ${f}/10 — отличное. `;
+  else if (f >= 6) ans += `Самочувствие ${f}/10 — нормальное. `;
+  else ans += `Самочувствие ${f}/10 — тяжело. Возможно перегруз или недовосстановление. `;
+  if (result) {
+    ans += `Результат ${result}. `;
+    if (result.includes('4:0') || result.includes('3:5')) ans += '\n\nТемп близко к цели — хорошая работа. Продолжай протокол.';
+    else if (result.includes('4:1') || result.includes('4:2')) ans += '\n\nТемп чуть выше цели. Это нормально — прогресс нелинеен.';
+  }
+  ans += `\n\nСледующий шаг: внеси результат в раздел Прогресс → Бег (или FTP) чтобы видеть динамику на графике.`;
+  setTimeout(() => addMsg(ans, 'bot'), 200);
+}
 
-function buildMetrics(){
-  const c=document.getElementById('metric-cards');if(!c||c.dataset.built)return;c.dataset.built='1';
-  const defs=[
-    {key:'ftp',ico:'🚴',ttl:'FTP',sub:'Функциональная пороговая мощность',hint:'Тест: 20мин макс × 0.95',type:'number',ph:'Введи FTP в Вт (напр: 268)'},
-    {key:'swim',ico:'🏊',ttl:'ПЛАВАНИЕ',sub:'Темп на 100 метров',hint:'Замеряй на 1500м контрольном заплыве',type:'text',ph:'1:32 (мин:сек на 100м)'},
-    {key:'run',ico:'🏃',ttl:'БЕГ',sub:'Темп на 10км (оценочный)',hint:'Лучший темп на интервальной тренировке',type:'text',ph:'4:08 (мин:сек на км)'},
+// ── METRICS ──
+const MDEFS = {
+  ftp:  { start:260, target:280, hib:true,  c:'var(--bike)' },
+  swim: { start:96,  target:90,  hib:false, c:'var(--swim)' },
+  run:  { start:255, target:240, hib:false, c:'var(--run)' }
+};
+const charts = {};
+
+function buildMetrics() {
+  const c = document.getElementById('metric-cards'); if (!c || c.dataset.built) return; c.dataset.built = '1';
+  const defs = [
+    {key:'ftp',  ico:'🚴', ttl:'FTP',      sub:'Функциональная пороговая мощность', hint:'Тест: 20мин максимум × 0.95', type:'number', ph:'268'},
+    {key:'swim', ico:'🏊', ttl:'ПЛАВАНИЕ', sub:'Темп на 100 метров',                hint:'Контрольный заплыв 1500м',     type:'text',   ph:'1:32'},
+    {key:'run',  ico:'🏃', ttl:'БЕГ',      sub:'Темп на 10км (оценочный)',          hint:'Лучший темп на интервалах',    type:'text',   ph:'4:08'},
   ];
-  c.innerHTML=defs.map(d=>`<div class="metric-card">
+  c.innerHTML = defs.map(d => `<div class="metric-card">
     <span class="mc-ico">${d.ico}</span>
     <div class="mc-ttl" style="color:${MDEFS[d.key].c}">${d.ttl}</div>
     <div class="mc-sub">${d.sub}</div>
@@ -1930,65 +1668,73 @@ function buildMetrics(){
   refreshMetrics();
 }
 
-function calcPct(key,val){const d=MDEFS[key];return d.hib?Math.min(100,Math.max(0,Math.round((val-d.start)/(d.target-d.start)*100))):Math.min(100,Math.max(0,Math.round((d.start-val)/(d.start-d.target)*100)))}
-function dispV(key,val){if(key==='ftp')return val+' Вт';return s2p(val)+(key==='swim'?'/100м':'/км')}
+function calcPct(key, val) { const d = MDEFS[key]; return d.hib ? Math.min(100,Math.max(0,Math.round((val-d.start)/(d.target-d.start)*100))) : Math.min(100,Math.max(0,Math.round((d.start-val)/(d.start-d.target)*100))); }
+function dispV(key, val) { if (key === 'ftp') return val + ' Вт'; return s2p(val) + (key === 'swim' ? '/100м' : '/км'); }
 
-function refreshMetrics(){
-  Object.keys(MDEFS).forEach(key=>{
-    const d=MDEFS[key];const arr=ld('m_'+key,[]);
-    const lat=arr.length?arr[arr.length-1].val:d.start;
-    const pct=calcPct(key,lat);
-    const disp=dispV(key,lat);
-    const els=['mc-c-','mc-t-','mc-b-','mc-p-','mc-l-','sum-'+key,'sum-'+key+'-v','sum-'+key+'-c'];
-    const eid=i=>document.getElementById(['mc-c-','mc-t-','mc-b-','mc-p-','mc-l-'][i]?['mc-c-','mc-t-','mc-b-','mc-p-','mc-l-'][i]+key:null);
-    const cur=document.getElementById('mc-c-'+key);if(cur)cur.textContent=disp;
-    const tgt=document.getElementById('mc-t-'+key);if(tgt)tgt.textContent='Цель: '+dispV(key,d.target);
-    const bar=document.getElementById('mc-b-'+key);if(bar)bar.style.width=pct+'%';
-    const pp=document.getElementById('mc-p-'+key);if(pp)pp.textContent=pct+'%';
-    const lbl=document.getElementById('mc-l-'+key);if(lbl)lbl.textContent=dispV(key,d.start)+'→'+dispV(key,d.target);
-    const sb=document.getElementById('sum-'+key);if(sb)sb.style.width=pct+'%';
-    const sv2=document.getElementById('sum-'+key+'-v');if(sv2)sv2.textContent=pct+'%';
-    const sc=document.getElementById('sum-'+key+'-c');if(sc)sc.textContent=disp;
-    if(key==='run'){document.getElementById('pf-run').style.width=pct+'%';document.getElementById('pp-run').textContent=pct+'%'}
-    renderMHist(key,arr);drawChart(key,arr,d);
+function refreshMetrics() {
+  Object.keys(MDEFS).forEach(key => {
+    const d = MDEFS[key]; const arr = ld('m_' + key, []);
+    const lat = arr.length ? arr[arr.length-1].val : d.start;
+    const pct = calcPct(key, lat); const disp = dispV(key, lat);
+    const set = (id, val, isWidth) => { const el = document.getElementById(id); if (el) { if (isWidth) el.style.width = val + '%'; else el.textContent = val; } };
+    set('mc-c-' + key, disp); set('mc-t-' + key, 'Цель: ' + dispV(key, d.target));
+    set('mc-b-' + key, pct, true); set('mc-p-' + key, pct + '%');
+    set('mc-l-' + key, dispV(key, d.start) + '→' + dispV(key, d.target));
+    set('sum-' + key, pct, true); set('sum-' + key + '-v', pct + '%'); set('sum-' + key + '-c', disp);
+    if (key === 'run') { set('pf-run', pct, true); set('pp-run', pct + '%'); }
+    renderMHist(key, arr); drawChart(key, arr, d);
   });
 }
 
-function renderMHist(key,arr){
-  const c=document.getElementById('mc-h-'+key);if(!c)return;
-  if(!arr.length){c.innerHTML='<div style="color:var(--muted);font-family:\'JetBrains Mono\',monospace;font-size:9px">Нет данных</div>';return}
-  c.innerHTML=[...arr].reverse().map((e,ri)=>{
-    const ri2=arr.length-1-ri;
-    const ds=new Date(e.date).toLocaleDateString('ru-RU',{day:'numeric',month:'short'});
-    return`<div class="mc-hi"><span style="color:var(--dim)">${ds}</span><span style="color:${MDEFS[key].c};font-family:'JetBrains Mono',monospace">${dispV(key,e.val)}</span><button class="mc-del" onclick="delM('${key}',${ri2})">✕</button></div>`;
+function renderMHist(key, arr) {
+  const c = document.getElementById('mc-h-' + key); if (!c) return;
+  if (!arr.length) { c.innerHTML = '<div style="color:var(--muted);font-family:\'JetBrains Mono\',monospace;font-size:9px">Нет данных</div>'; return; }
+  c.innerHTML = [...arr].reverse().map((e, ri) => {
+    const ri2 = arr.length - 1 - ri;
+    const ds = new Date(e.date).toLocaleDateString('ru-RU', {day:'numeric', month:'short'});
+    return `<div class="mc-hi"><span style="color:var(--dim)">${ds}</span><span style="color:${MDEFS[key].c};font-family:'JetBrains Mono',monospace">${dispV(key, e.val)}</span><button class="mc-del" onclick="delM('${key}',${ri2})">✕</button></div>`;
   }).join('');
 }
 
-function saveM(key){
-  const inp=document.getElementById('mc-in-'+key);const raw=inp.value.trim();if(!raw)return;
+function saveM(key) {
+  const inp = document.getElementById('mc-in-' + key); const raw = inp.value.trim(); if (!raw) return;
   let stored;
-  if(key==='ftp'){stored=parseInt(raw);if(isNaN(stored)||stored<150||stored>450){inp.style.borderColor='var(--red)';setTimeout(()=>inp.style.borderColor='',1000);return}}
-  else{stored=p2s(raw);if(!stored||stored<60||stored>600){inp.style.borderColor='var(--red)';setTimeout(()=>inp.style.borderColor='',1000);return}}
-  const arr=ld('m_'+key,[]);arr.push({date:fmtD(new Date()),val:stored,label:raw});sv('m_'+key,arr);
-  inp.value='';refreshMetrics();
-}
-function delM(key,idx){const arr=ld('m_'+key,[]);arr.splice(idx,1);sv('m_'+key,arr);refreshMetrics()}
-
-function drawChart(key,arr,def){
-  const canvas=document.getElementById('c-'+key);if(!canvas)return;
-  const clr=key==='ftp'?'#fb923c':key==='swim'?'#38bdf8':'#4ade80';
-  if(charts[key])charts[key].destroy();
-  const labels=['Старт',...arr.map(e=>new Date(e.date).toLocaleDateString('ru-RU',{day:'numeric',month:'short'})),'Гонка'];
-  const vals=[def.start,...arr.map(e=>e.val),null];
-  charts[key]=new Chart(canvas.getContext('2d'),{type:'line',data:{labels,datasets:[
-    {data:vals,borderColor:clr,backgroundColor:clr+'18',borderWidth:2,pointBackgroundColor:clr,pointRadius:3,fill:true,tension:.3,spanGaps:false},
-    {data:Array(labels.length).fill(def.target),borderColor:'#ffffff25',borderWidth:1,borderDash:[4,4],pointRadius:0,fill:false}
-  ]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{backgroundColor:'#1e2530',borderColor:'#2d3748',borderWidth:1,titleFont:{family:'JetBrains Mono',size:9},bodyFont:{family:'JetBrains Mono',size:9},callbacks:{label:ctx=>ctx.datasetIndex===1?'Цель: '+dispV(key,def.target):ctx.raw===null?'':dispV(key,ctx.raw)}}},scales:{x:{grid:{color:'#1e2530'},ticks:{color:'#5a6a7e',font:{family:'JetBrains Mono',size:8},maxRotation:40}},y:{reverse:key!=='ftp',grid:{color:'#1e2530'},ticks:{color:'#5a6a7e',font:{family:'JetBrains Mono',size:8},callback:v=>dispV(key,v)}}}}});
+  if (key === 'ftp') { stored = parseInt(raw); if (isNaN(stored) || stored < 150 || stored > 450) { inp.style.borderColor = 'var(--red)'; setTimeout(() => inp.style.borderColor = '', 1000); return; } }
+  else { stored = p2s(raw); if (!stored || stored < 60 || stored > 600) { inp.style.borderColor = 'var(--red)'; setTimeout(() => inp.style.borderColor = '', 1000); return; } }
+  const arr = ld('m_' + key, []); arr.push({ date: fmtD(new Date()), val: stored, label: raw });
+  sv('m_' + key, arr); inp.value = ''; refreshMetrics();
 }
 
-// ═══ GOALS ═══
-const CATM={sport:{ico:'🏁',c:'var(--swim)'},career:{ico:'💼',c:'var(--accent)'},mental:{ico:'🧠',c:'var(--run)'},family:{ico:'❤️',c:'var(--red)'},custom:{ico:'⭐',c:'var(--brick)'}};
-const DG=[
+function delM(key, idx) { const arr = ld('m_' + key, []); arr.splice(idx, 1); sv('m_' + key, arr); refreshMetrics(); }
+
+function drawChart(key, arr, def) {
+  const canvas = document.getElementById('c-' + key); if (!canvas) return;
+  const clr = key === 'ftp' ? '#fb923c' : key === 'swim' ? '#38bdf8' : '#4ade80';
+  if (charts[key]) charts[key].destroy();
+  const labels = ['Старт', ...arr.map(e => new Date(e.date).toLocaleDateString('ru-RU', {day:'numeric', month:'short'})), 'Гонка'];
+  const vals = [def.start, ...arr.map(e => e.val), null];
+  charts[key] = new Chart(canvas.getContext('2d'), {
+    type: 'line',
+    data: { labels, datasets: [
+      { data: vals, borderColor: clr, backgroundColor: clr + '18', borderWidth: 2, pointBackgroundColor: clr, pointRadius: 3, fill: true, tension: .3, spanGaps: false },
+      { data: Array(labels.length).fill(def.target), borderColor: '#ffffff22', borderWidth: 1, borderDash: [4,4], pointRadius: 0, fill: false }
+    ]},
+    options: { responsive:true, maintainAspectRatio:false,
+      plugins: { legend:{display:false}, tooltip:{ backgroundColor:'#1c2a3c', borderColor:'rgba(255,255,255,.15)', borderWidth:1,
+        titleFont:{family:'JetBrains Mono',size:9}, bodyFont:{family:'JetBrains Mono',size:9},
+        callbacks: { label: ctx => ctx.datasetIndex===1 ? 'Цель: '+dispV(key,def.target) : ctx.raw===null?'':dispV(key,ctx.raw) }
+      }},
+      scales: {
+        x: { grid:{color:'#1e2530'}, ticks:{color:'#5a6a7e',font:{family:'JetBrains Mono',size:8},maxRotation:40} },
+        y: { reverse: key!=='ftp', grid:{color:'#1e2530'}, ticks:{color:'#5a6a7e',font:{family:'JetBrains Mono',size:8}, callback:v=>dispV(key,v)} }
+      }
+    }
+  });
+}
+
+// ── GOALS ──
+const CATM = { sport:{ico:'🏁',c:'var(--swim)'}, career:{ico:'💼',c:'var(--accent)'}, mental:{ico:'🧠',c:'var(--run)'}, family:{ico:'❤️',c:'var(--red)'}, custom:{ico:'⭐',c:'var(--brick)'} };
+const DG = [
   {id:'s-sport',type:'sec',cat:'sport',title:'ТРИАТЛОН',c:'var(--swim)'},
   {id:'g1',type:'g',sid:'s-sport',text:'FTP-тест: 20мин макс × 0.95',when:'АПРЕЛЬ · СРОЧНО',done:false},
   {id:'g2',type:'g',sid:'s-sport',text:'Финишировать олимпийский триатлон 21 июня',when:'21 ИЮНЯ 2026',done:false},
@@ -2001,7 +1747,7 @@ const DG=[
   {id:'g8',type:'g',sid:'s-career',text:'Переписать резюме как продающий документ',when:'МАЙ 2026',done:false},
   {id:'g9',type:'g',sid:'s-career',text:'LinkedIn 100% + английская версия',when:'МАЙ 2026',done:false},
   {id:'g10',type:'g',sid:'s-career',text:'Питч за 90 секунд — отточить',when:'МАЙ 2026',done:false},
-  {id:'g11',type:'g',sid:'s-career',text:'Список 5 целевых компаний с именами',when:'ИЮНЬ 2026',done:false},
+  {id:'g11',type:'g',sid:'s-career',text:'Список 5 целевых компаний',when:'ИЮНЬ 2026',done:false},
   {id:'g12',type:'g',sid:'s-career',text:'Выйти на Ward Howell, Kontakt, Cornerstone',when:'ИЮЛЬ 2026',done:false},
   {id:'g13',type:'g',sid:'s-career',text:'2 кофе-нетворк в неделю стабильно',when:'АВГ-СЕН 2026',done:false},
   {id:'g14',type:'g',sid:'s-career',text:'Получить оффер VP уровня',when:'ОКТ-ДЕК 2026',done:false},
@@ -2017,146 +1763,161 @@ const DG=[
   {id:'g22',type:'g',sid:'s-family',text:'Парный терапевт — минимум 1 попытка',when:'ИЮЛЬ-АВГ',done:false},
 ];
 
-function loadGoals(){const s=ld('gv3',null);if(!s){sv('gv3',DG);return DG}return s}
-function renderGoals(){
-  const items=loadGoals();const grid=document.getElementById('goals-grid');if(!grid)return;
-  const secs=items.filter(x=>x.type==='sec');
-  const tot=items.filter(x=>x.type==='g').length;
-  const dn=items.filter(x=>x.type==='g'&&x.done).length;
-  const st=document.getElementById('goals-stats');
-  if(st)st.textContent=`✓ ${dn} / ${tot} выполнено · ${Math.round(dn/Math.max(tot,1)*100)}%`;
-  grid.innerHTML=secs.map(sec=>{
-    const goals=items.filter(x=>x.type==='g'&&x.sid===sec.id);
-    const sd=goals.filter(g=>g.done).length;
-    const cm=CATM[sec.cat]||CATM.custom;
-    return`<div class="goal-card">
+function loadGoals() { const s = ld('gv3', null); if (!s) { sv('gv3', DG); return DG; } return s; }
+function renderGoals() {
+  const items = loadGoals(); const grid = document.getElementById('goals-grid'); if (!grid) return;
+  const secs = items.filter(x => x.type === 'sec');
+  const tot = items.filter(x => x.type === 'g').length;
+  const dn = items.filter(x => x.type === 'g' && x.done).length;
+  const st = document.getElementById('goals-stats'); if (st) st.textContent = `✓ ${dn} / ${tot} выполнено · ${Math.round(dn/Math.max(tot,1)*100)}%`;
+  grid.innerHTML = secs.map(sec => {
+    const goals = items.filter(x => x.type === 'g' && x.sid === sec.id);
+    const sd = goals.filter(g => g.done).length;
+    const cm = CATM[sec.cat] || CATM.custom;
+    return `<div class="goal-card">
       <div class="goal-area" style="color:${sec.c}">${cm.ico} ${sec.cat?.toUpperCase()||'РАЗДЕЛ'} · ${sd}/${goals.length}
         <button onclick="delSec('${sec.id}')" style="background:none;border:none;color:var(--muted);cursor:pointer;font-size:11px">✕ раздел</button>
       </div>
       <div class="goal-ttl" style="color:${sec.c}">${sec.title}</div>
-      ${goals.map(g=>`<div class="gi" onclick="tglG('${g.id}')">
+      ${goals.map(g => `<div class="gi" onclick="tglG('${g.id}')">
         <div class="gi-chk${g.done?' done':''}"></div>
         <div style="flex:1"><div class="gi-txt${g.done?' done':''}">${g.text}</div><div class="gi-when">${g.when}</div></div>
         <button class="gi-del" onclick="event.stopPropagation();delG('${g.id}')">✕</button>
       </div>`).join('')}
       <div class="goal-add"><input class="mini-in" id="gi-t-${sec.id}" placeholder="Новая цель..." onkeydown="if(event.key==='Enter')addG('${sec.id}')"><button class="mini-btn p" onclick="addG('${sec.id}')">+</button></div>
-      <div class="goal-add-2"><input class="mini-in" id="gi-w-${sec.id}" placeholder="Срок (напр. МАЙ 2026)"></div>
+      <div style="margin-top:6px"><input class="mini-in" id="gi-w-${sec.id}" placeholder="Срок (напр. МАЙ 2026)"></div>
     </div>`;
   }).join('');
 }
 
-function tglG(id){const it=loadGoals();const g=it.find(x=>x.id===id);if(g)g.done=!g.done;sv('gv3',it);renderGoals()}
-function delG(id){sv('gv3',loadGoals().filter(x=>x.id!==id));renderGoals()}
-function delSec(sid){sv('gv3',loadGoals().filter(x=>!(x.id===sid||(x.type==='g'&&x.sid===sid))));renderGoals()}
-function addG(sid){
-  const te=document.getElementById('gi-t-'+sid);const we=document.getElementById('gi-w-'+sid);
-  const text=te.value.trim();if(!text)return;
-  const it=loadGoals();const si=it.findIndex(x=>x.id===sid);
-  const ng={id:'g'+Date.now(),type:'g',sid,text,when:we.value.trim()||'',done:false};
-  let ins=si+1;for(let i=si+1;i<it.length;i++){if(it[i].type==='sec')break;ins=i+1}
-  it.splice(ins,0,ng);sv('gv3',it);te.value='';we.value='';renderGoals();
+function tglG(id) { const it = loadGoals(); const g = it.find(x => x.id === id); if (g) g.done = !g.done; sv('gv3', it); renderGoals(); }
+function delG(id) { sv('gv3', loadGoals().filter(x => x.id !== id)); renderGoals(); }
+function delSec(sid) { sv('gv3', loadGoals().filter(x => !(x.id === sid || (x.type === 'g' && x.sid === sid)))); renderGoals(); }
+function addG(sid) {
+  const te = document.getElementById('gi-t-' + sid); const we = document.getElementById('gi-w-' + sid);
+  const text = te.value.trim(); if (!text) return;
+  const it = loadGoals(); const si = it.findIndex(x => x.id === sid);
+  const ng = { id: 'g' + Date.now(), type: 'g', sid, text, when: we.value.trim() || '', done: false };
+  let ins = si + 1; for (let i = si+1; i < it.length; i++) { if (it[i].type === 'sec') break; ins = i+1; }
+  it.splice(ins, 0, ng); sv('gv3', it); te.value = ''; we.value = ''; renderGoals();
 }
-function addSection(){
-  const n=document.getElementById('new-sec-name').value.trim();if(!n)return;
-  const it=loadGoals();
-  it.push({id:'s'+Date.now(),type:'sec',cat:'custom',title:n.toUpperCase(),c:'var(--brick)'});
-  sv('gv3',it);document.getElementById('new-sec-name').value='';renderGoals();
+function addSection() {
+  const n = document.getElementById('new-sec-name').value.trim(); if (!n) return;
+  const it = loadGoals(); it.push({ id: 's' + Date.now(), type: 'sec', cat: 'custom', title: n.toUpperCase(), c: 'var(--brick)' });
+  sv('gv3', it); document.getElementById('new-sec-name').value = ''; renderGoals();
 }
 
-// ═══ BOOKS ═══
-const DB=[
+// ── BOOKS ──
+const DB = [
   {id:'b1',cat:'career',title:'The First 90 Days — Уоткинс',desc:'Читай ДО оффера.',status:'priority'},
   {id:'b2',cat:'career',title:'Играй на повышение — Ибарра',desc:'Working Identity. Точно в твою ситуацию.',status:'priority'},
   {id:'b3',cat:'career',title:'Inspired — Марти Каган',desc:'Библия VP Product.',status:'queue'},
-  {id:'b4',cat:'career',title:'Trillion Dollar Coach — Кэмпбелл',desc:'Лидерство. Google, Apple.',status:'queue'},
-  {id:'b5',cat:'career',title:'Never Split the Difference — Крис Восс',desc:'Переговоры для оффера.',status:'queue'},
-  {id:'b6',cat:'career',title:'Good to Great — Коллинз',desc:'',status:'done'},
-  {id:'b7',cat:'career',title:'Пять пороков команды — Ленсиони',desc:'',status:'done'},
-  {id:'b8',cat:'mind',title:'Антихрупкость — Талеб',desc:'Как расти от стресса.',status:'priority'},
-  {id:'b9',cat:'mind',title:'Экзистенциальная психотерапия — Ялом',desc:'После Франкла — следующий уровень.',status:'queue'},
-  {id:'b10',cat:'mind',title:'Sapiens — Юваль Харари',desc:'Масштаб мышления.',status:'queue'},
-  {id:'b11',cat:'mind',title:'Вы конечно шутите, мистер Фейнман',desc:'После Хокинга — твой следующий.',status:'queue'},
-  {id:'b12',cat:'mind',title:'Думай медленно, решай быстро — Канеман',desc:'',status:'queue'},
-  {id:'b13',cat:'mind',title:'Сказать жизни Да — Франкл',desc:'',status:'done'},
-  {id:'b14',cat:'mind',title:'Шантарам — Робертс',desc:'',status:'done'},
-  {id:'b15',cat:'mind',title:'Краткая история времени — Хокинг',desc:'',status:'done'},
-  {id:'b16',cat:'mental',title:'7 принципов счастливого брака — Готтман',desc:'Основа для разговора с женой.',status:'priority'},
-  {id:'b17',cat:'mental',title:'Мозг освобождённый — Андерс Хансен',desc:'Почему триатлон — твоё лекарство.',status:'queue'},
-  {id:'b18',cat:'mental',title:'Когда тело говорит нет — Габор Матэ',desc:'',status:'queue'},
-  {id:'b19',cat:'sport',title:'Не сдавайся — Крис Маккормак',desc:'Чемпион Ironman. За один вечер.',status:'priority'},
-  {id:'b20',cat:'sport',title:'Born to Run — Кристофер Макдугалл',desc:'',status:'queue'},
+  {id:'b4',cat:'career',title:'Never Split the Difference — Крис Восс',desc:'Переговоры для оффера.',status:'queue'},
+  {id:'b5',cat:'career',title:'Good to Great — Коллинз',desc:'',status:'done'},
+  {id:'b6',cat:'career',title:'Пять пороков команды — Ленсиони',desc:'',status:'done'},
+  {id:'b7',cat:'mind',title:'Антихрупкость — Талеб',desc:'Как расти от стресса.',status:'priority'},
+  {id:'b8',cat:'mind',title:'Экзистенциальная психотерапия — Ялом',desc:'После Франкла — следующий уровень.',status:'queue'},
+  {id:'b9',cat:'mind',title:'Sapiens — Юваль Харари',desc:'Масштаб мышления.',status:'queue'},
+  {id:'b10',cat:'mind',title:'Вы конечно шутите, мистер Фейнман',desc:'После Хокинга — твой следующий.',status:'queue'},
+  {id:'b11',cat:'mind',title:'Сказать жизни Да — Франкл',desc:'',status:'done'},
+  {id:'b12',cat:'mind',title:'Шантарам — Робертс',desc:'',status:'done'},
+  {id:'b13',cat:'mind',title:'Краткая история времени — Хокинг',desc:'',status:'done'},
+  {id:'b14',cat:'mental',title:'7 принципов счастливого брака — Готтман',desc:'Основа для разговора с женой.',status:'priority'},
+  {id:'b15',cat:'mental',title:'Мозг освобождённый — Андерс Хансен',desc:'Почему триатлон — твоё лекарство.',status:'queue'},
+  {id:'b16',cat:'sport',title:'Не сдавайся — Крис Маккормак',desc:'Чемпион Ironman. За один вечер.',status:'priority'},
+  {id:'b17',cat:'sport',title:'Born to Run — Кристофер Макдугалл',desc:'Меняет отношение к бегу.',status:'queue'},
 ];
-const BSM={priority:{lbl:'⭐ Приоритет',c:'var(--accent)',bg:'rgba(0,212,170,.08)'},reading:{lbl:'📖 Читаю',c:'var(--swim)',bg:'rgba(56,189,248,.08)'},done:{lbl:'✓ Прочитал',c:'var(--run)',bg:'rgba(74,222,128,.08)'},queue:{lbl:'В очереди',c:'var(--dim)',bg:'transparent'}};
-const BCM={career:{lbl:'💼 Карьера',c:'var(--accent)'},mind:{lbl:'🧠 Мышление',c:'var(--swim)'},mental:{lbl:'❤️ Ментал',c:'var(--run)'},sport:{lbl:'🏃 Спорт',c:'var(--bike)'},other:{lbl:'📖 Другое',c:'var(--dim)'}};
-function ldBooks(){const s=ld('bv3',null);if(!s){sv('bv3',DB);return DB}return s}
-function renderBooks(){
-  const books=ldBooks();const c=document.getElementById('books-list');if(!c)return;
-  const pri=books.filter(b=>b.status==='priority');
-  const rdg=books.filter(b=>b.status==='reading');
-  const cats=['career','mind','mental','sport','other'];
-  const bc={};cats.forEach(cat=>bc[cat]=books.filter(b=>b.cat===cat&&b.status!=='priority'&&b.status!=='reading'));
-  const ri=b=>{const sm=BSM[b.status]||BSM.queue;const cm=BCM[b.cat]||BCM.other;
-    return`<div class="res-item" style="align-items:center">
-      <div class="res-ico">📖</div>
-      <div style="flex:1;min-width:0">
-        <div class="res-name" style="${b.status==='done'?'text-decoration:line-through;color:var(--dim)':''}">${b.title}</div>
-        ${b.desc?`<div class="res-desc">${b.desc}</div>`:''}
-        <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:4px">
-          <span style="font-family:'JetBrains Mono',monospace;font-size:8px;color:${cm.c}">${cm.lbl}</span>
-          <span class="res-tag" style="background:${sm.bg};color:${sm.c}">${sm.lbl}</span>
-        </div>
-      </div>
-      <select class="res-sel" onchange="chBook('${b.id}',this.value)">
-        <option value="queue"${b.status==='queue'?' selected':''}>Очередь</option>
-        <option value="reading"${b.status==='reading'?' selected':''}>Читаю</option>
-        <option value="done"${b.status==='done'?' selected':''}>✓ Прочитал</option>
-        <option value="priority"${b.status==='priority'?' selected':''}>⭐ Приоритет</option>
-      </select>
-      <button onclick="delBook('${b.id}')" style="background:none;border:none;color:var(--muted);cursor:pointer;font-size:12px;padding:0 4px;margin-left:4px;flex-shrink:0">✕</button>
-    </div>`;};
-  let html='';
-  if(pri.length)html+=`<div style="font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--accent);text-transform:uppercase;padding-bottom:8px;border-bottom:1px solid var(--bg4);margin-bottom:0">⭐ ПРИОРИТЕТ</div>${pri.map(ri).join('')}`;
-  if(rdg.length)html+=`<div style="font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--swim);text-transform:uppercase;padding:12px 0 8px;border-bottom:1px solid var(--bg4)">📖 ЧИТАЮ</div>${rdg.map(ri).join('')}`;
-  cats.forEach(cat=>{const it=bc[cat];if(!it?.length)return;const cm=BCM[cat];const dn=it.filter(b=>b.status==='done').length;html+=`<div style="font-family:'JetBrains Mono',monospace;font-size:9px;color:${cm.c};text-transform:uppercase;padding:12px 0 8px;border-bottom:1px solid var(--bg4)">${cm.lbl} · ${dn}/${it.length}</div>${it.map(ri).join('')}`});
-  c.innerHTML=html||'<div style="color:var(--dim);font-size:12px">Список пуст.</div>';
+const BSM = {priority:{lbl:'⭐ Приоритет',c:'var(--accent)',bg:'rgba(0,212,170,.08)'},reading:{lbl:'📖 Читаю',c:'var(--swim)',bg:'rgba(56,189,248,.08)'},done:{lbl:'✓ Прочитал',c:'var(--run)',bg:'rgba(74,222,128,.08)'},queue:{lbl:'В очереди',c:'var(--dim)',bg:'transparent'}};
+const BCM = {career:{lbl:'💼 Карьера',c:'var(--accent)'},mind:{lbl:'🧠 Мышление',c:'var(--swim)'},mental:{lbl:'❤️ Ментал',c:'var(--run)'},sport:{lbl:'🏃 Спорт',c:'var(--bike)'},other:{lbl:'📖 Другое',c:'var(--dim)'}};
+function ldBooks() { const s = ld('bv3', null); if (!s) { sv('bv3', DB); return DB; } return s; }
+function renderBooks() {
+  const books = ldBooks(); const c = document.getElementById('books-list'); if (!c) return;
+  const pri = books.filter(b => b.status === 'priority'); const rdg = books.filter(b => b.status === 'reading');
+  const cats = ['career','mind','mental','sport','other'];
+  const bc = {}; cats.forEach(cat => bc[cat] = books.filter(b => b.cat === cat && b.status !== 'priority' && b.status !== 'reading'));
+  const ri = b => { const sm = BSM[b.status]||BSM.queue; const cm = BCM[b.cat]||BCM.other;
+    return `<div class="res-item" style="align-items:center"><div class="res-ico">📖</div><div style="flex:1;min-width:0"><div class="res-name" style="${b.status==='done'?'text-decoration:line-through;color:var(--dim)':''}">${b.title}</div>${b.desc?`<div class="res-desc">${b.desc}</div>`:''}<div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:4px"><span style="font-family:'JetBrains Mono',monospace;font-size:8px;color:${cm.c}">${cm.lbl}</span><span class="res-tag" style="background:${sm.bg};color:${sm.c}">${sm.lbl}</span></div></div><select class="res-sel" onchange="chBook('${b.id}',this.value)"><option value="queue"${b.status==='queue'?' selected':''}>Очередь</option><option value="reading"${b.status==='reading'?' selected':''}>Читаю</option><option value="done"${b.status==='done'?' selected':''}>✓ Прочитал</option><option value="priority"${b.status==='priority'?' selected':''}>⭐ Приоритет</option></select><button onclick="delBook('${b.id}')" style="background:none;border:none;color:var(--muted);cursor:pointer;font-size:12px;padding:0 4px;margin-left:4px;flex-shrink:0">✕</button></div>`;
+  };
+  let html = '';
+  if (pri.length) html += `<div style="font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--accent);text-transform:uppercase;padding-bottom:8px;border-bottom:1px solid var(--bg4)">⭐ ПРИОРИТЕТ</div>${pri.map(ri).join('')}`;
+  if (rdg.length) html += `<div style="font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--swim);text-transform:uppercase;padding:12px 0 8px;border-bottom:1px solid var(--bg4)">📖 ЧИТАЮ</div>${rdg.map(ri).join('')}`;
+  cats.forEach(cat => { const it = bc[cat]; if (!it?.length) return; const cm = BCM[cat]; const dn = it.filter(b => b.status==='done').length; html += `<div style="font-family:'JetBrains Mono',monospace;font-size:9px;color:${cm.c};text-transform:uppercase;padding:12px 0 8px;border-bottom:1px solid var(--bg4)">${cm.lbl} · ${dn}/${it.length}</div>${it.map(ri).join('')}`; });
+  c.innerHTML = html || '<div style="color:var(--dim);font-size:12px">Список пуст.</div>';
 }
-function chBook(id,s){const b=ldBooks();const x=b.find(x=>x.id===id);if(x)x.status=s;sv('bv3',b);renderBooks()}
-function delBook(id){sv('bv3',ldBooks().filter(b=>b.id!==id));renderBooks()}
-function addBook(){
-  const t=document.getElementById('book-title').value.trim();if(!t)return;
-  const b=ldBooks();b.unshift({id:'b'+Date.now(),cat:document.getElementById('book-cat').value,title:t,desc:document.getElementById('book-desc').value.trim(),status:document.getElementById('book-status').value});
-  sv('bv3',b);document.getElementById('book-title').value='';document.getElementById('book-desc').value='';renderBooks();
+function chBook(id, s) { const b = ldBooks(); const x = b.find(x => x.id===id); if (x) x.status=s; sv('bv3', b); renderBooks(); }
+function delBook(id) { sv('bv3', ldBooks().filter(b => b.id!==id)); renderBooks(); }
+function addBook() {
+  const title = document.getElementById('book-title').value.trim(); if (!title) return;
+  const b = ldBooks(); b.unshift({id:'b'+Date.now(),cat:document.getElementById('book-cat').value,title,desc:document.getElementById('book-desc').value.trim(),status:document.getElementById('book-status').value});
+  sv('bv3', b); document.getElementById('book-title').value=''; document.getElementById('book-desc').value=''; renderBooks();
 }
 
-// ═══ PODCASTS ═══
-const DPP=[
+// ── PODCASTS ──
+const DPP = [
   {id:'p1',title:'Lex Fridman Podcast',desc:'Физики, философы, CEO. На длинные велотренировки.'},
   {id:'p2',title:'Huberman Lab',desc:'Сон, стресс, дофамин. Нейронаука. ОБЯЗАТЕЛЬНО.'},
-  {id:'p3',title:'Triathlon Taren',desc:'Конкретно. На беговые тренировки.'},
+  {id:'p3',title:'Triathlon Taren',desc:'Конкретно по делу. На беговые тренировки.'},
   {id:'p4',title:"Lenny's Podcast",desc:'VP Product из топ-компаний.'},
   {id:'p5',title:'Masters of Scale — Рид Хоффман',desc:'Как думают основатели компаний.'},
   {id:'p6',title:'The Rich Roll Podcast',desc:'Смысл, спорт, трансформация.'},
 ];
-function ldPods(){const s=ld('pv3',null);if(!s){sv('pv3',DPP);return DPP}return s}
-function renderPods(){
-  const c=document.getElementById('pods-list');if(!c)return;
-  const pods=ldPods();
-  c.innerHTML=pods.map(p=>`<div class="res-item" style="align-items:center"><div class="res-ico">🎧</div><div style="flex:1"><div class="res-name">${p.title}</div>${p.desc?`<div class="res-desc">${p.desc}</div>`:''}</div><button onclick="delPod('${p.id}')" style="background:none;border:none;color:var(--muted);cursor:pointer;font-size:12px;padding:0 4px;flex-shrink:0">✕</button></div>`).join('')||'<div style="color:var(--dim);font-size:12px">Список пуст.</div>';
+function ldPods() { const s = ld('pv3', null); if (!s) { sv('pv3', DPP); return DPP; } return s; }
+function renderPods() {
+  const c = document.getElementById('pods-list'); if (!c) return;
+  c.innerHTML = ldPods().map(p => `<div class="res-item" style="align-items:center"><div class="res-ico">🎧</div><div style="flex:1"><div class="res-name">${p.title}</div>${p.desc?`<div class="res-desc">${p.desc}</div>`:''}</div><button onclick="delPod('${p.id}')" style="background:none;border:none;color:var(--muted);cursor:pointer;font-size:12px;padding:0 4px;flex-shrink:0">✕</button></div>`).join('') || '<div style="color:var(--dim);font-size:12px">Список пуст.</div>';
 }
-function delPod(id){sv('pv3',ldPods().filter(p=>p.id!==id));renderPods()}
-function addPod(){
-  const t=document.getElementById('pod-title').value.trim();if(!t)return;
-  const pods=ldPods();pods.unshift({id:'p'+Date.now(),title:t,desc:document.getElementById('pod-desc').value.trim()});
-  sv('pv3',pods);document.getElementById('pod-title').value='';document.getElementById('pod-desc').value='';renderPods();
-}
-
-function switchRes(el,id){
-  document.querySelectorAll('.res-tab').forEach(t=>t.classList.remove('active'));
-  document.querySelectorAll('.res-tc').forEach(t=>t.classList.remove('active'));
-  el.classList.add('active');document.getElementById('restab-'+id).classList.add('active');
+function delPod(id) { sv('pv3', ldPods().filter(p => p.id!==id)); renderPods(); }
+function addPod() {
+  const title = document.getElementById('pod-title').value.trim(); if (!title) return;
+  const pods = ldPods(); pods.unshift({id:'p'+Date.now(),title,desc:document.getElementById('pod-desc').value.trim()});
+  sv('pv3', pods); document.getElementById('pod-title').value=''; document.getElementById('pod-desc').value=''; renderPods();
 }
 
-// ═══ INIT ═══
+function switchRes(el, id) {
+  document.querySelectorAll('.res-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.res-tc').forEach(t => t.classList.remove('active'));
+  el.classList.add('active'); document.getElementById('restab-' + id).classList.add('active');
+}
+
+// ── TOUCH DRAG (iOS) ──
+(function() {
+  let src = null, srcKey = null, srcWo = null, ghost = null;
+  const getCell = (x, y) => document.elementFromPoint(x, y)?.closest('.day-cell');
+  document.addEventListener('touchstart', ev => {
+    if (!ev.target.closest('.drag-handle')) return;
+    const cell = ev.target.closest('.day-cell'); if (!cell) return;
+    src = cell; srcKey = cell.dataset.key;
+    let defWo = null; PLAN.forEach(p=>p.weeks.forEach(w=>w.days.forEach(d=>{if(d.d.replace(/ /g,'-')===srcKey)defWo=d.w;})));
+    srcWo = ld('ovr',{})[srcKey] || {w: defWo || []};
+    ghost = cell.cloneNode(true);
+    ghost.style.cssText = `position:fixed;pointer-events:none;z-index:9999;opacity:.7;width:${cell.offsetWidth}px;border-radius:8px;background:#1c2a3c;border:2px solid var(--accent)`;
+    document.body.appendChild(ghost); cell.classList.add('drag-src'); ev.preventDefault();
+  }, {passive:false});
+  document.addEventListener('touchmove', ev => {
+    if (!src) return; ev.preventDefault();
+    const t = ev.touches[0];
+    if (ghost) { ghost.style.left = (t.clientX-60)+'px'; ghost.style.top = (t.clientY-40)+'px'; }
+    document.querySelectorAll('.drag-over').forEach(el=>el.classList.remove('drag-over'));
+    const dst = getCell(t.clientX, t.clientY);
+    if (dst && dst.dataset.key !== srcKey) dst.classList.add('drag-over');
+  }, {passive:false});
+  document.addEventListener('touchend', ev => {
+    if (!src) return;
+    ghost?.remove(); ghost = null; src.classList.remove('drag-src');
+    document.querySelectorAll('.drag-over').forEach(el=>el.classList.remove('drag-over'));
+    const t = ev.changedTouches[0]; const dst = getCell(t.clientX, t.clientY);
+    if (dst && dst.dataset.key !== srcKey) {
+      const dstKey = dst.dataset.key; let dstDefWo = null;
+      PLAN.forEach(p=>p.weeks.forEach(w=>w.days.forEach(d=>{if(d.d.replace(/ /g,'-')===dstKey)dstDefWo=d.w;})));
+      const ovrMap = ld('ovr',{}); const dstData = ovrMap[dstKey]||{w:dstDefWo||[]};
+      ovrMap[srcKey]={w:dstData.w}; ovrMap[dstKey]={w:srcWo.w};
+      sv('ovr',ovrMap); showToast('↔ Тренировки поменяны'); buildTraining();
+    }
+    src=null; srcKey=null; srcWo=null;
+  });
+})();
+
+// ── INIT ──
 buildHeatmap();
 buildTraining();
 buildWeekSel();
@@ -2164,91 +1925,21 @@ renderPulseHist();
 renderGoals();
 renderTasks();
 
-// Load last pulse
-const lpd=ld('weekly',{});
-const le=Object.values(lpd).sort((a,b)=>new Date(b.saved||0)-new Date(a.saved||0))[0];
-if(le){['sport','career','mental','family'].forEach(k=>{
-  const el=document.getElementById('h-'+k);const b=document.getElementById('hb-'+k);
-  if(el)el.textContent=le[k];if(b)b.style.width=(le[k]*10)+'%';
-})}
-
-// Mobile hero: on mobile make 2-column
-if(window.innerWidth<=768){
-  const hg=document.getElementById('hero-grid');
-  if(hg)hg.style.gridTemplateColumns='1fr 1fr';
+if (window.innerWidth <= 768) {
+  const hg = document.getElementById('hero-grid');
+  if (hg) hg.style.gridTemplateColumns = '1fr 1fr';
 }
 
-// ─── Cloud sync (after local render, non-blocking) ───
-startPolling();
+// Load last saved pulse into hero
+const lpd = ld('weekly', {});
+const le = Object.values(lpd).sort((a,b) => new Date(b.saved||0) - new Date(a.saved||0))[0];
+if (le) ['sport','career','mental','family'].forEach(k => {
+  const el = document.getElementById('h-'+k); const bar = document.getElementById('hb-'+k);
+  if (el) el.textContent = le[k]; if (bar) bar.style.width = (le[k]*10) + '%';
+});
 
-// ─── Touch drag & drop for iOS (HTML5 drag doesn't work on iOS Safari) ───
-(function addTouchDrag() {
-  let touchSrcEl = null, touchSrcKey = null, touchSrcWo = null;
-  let ghost = null;
-
-  function getKeyFromTouch(x, y) {
-    const el = document.elementFromPoint(x, y);
-    const cell = el?.closest('.day-cell');
-    return cell?.dataset?.key || null;
-  }
-
-  document.addEventListener('touchstart', ev => {
-    const handle = ev.target.closest('.drag-handle');
-    if (!handle) return;
-    const cell = handle.closest('.day-cell');
-    if (!cell) return;
-    touchSrcEl = cell;
-    touchSrcKey = cell.dataset.key;
-    const ovrMap = ld('ovr', {});
-    let defWo = null;
-    PLAN.forEach(p=>p.weeks.forEach(w=>w.days.forEach(d=>{
-      if(d.d.replace(/ /g,'-')===touchSrcKey) defWo=d.w;
-    })));
-    touchSrcWo = ovrMap[touchSrcKey] || { w: defWo || [] };
-    // create ghost
-    ghost = cell.cloneNode(true);
-    ghost.style.cssText = 'position:fixed;pointer-events:none;z-index:9999;opacity:.7;width:'+cell.offsetWidth+'px;border-radius:8px;background:#1c2a3c;border:2px solid var(--accent);box-shadow:0 8px 32px rgba(0,0,0,.6)';
-    document.body.appendChild(ghost);
-    cell.classList.add('drag-src');
-    ev.preventDefault();
-  }, {passive: false});
-
-  document.addEventListener('touchmove', ev => {
-    if (!touchSrcEl) return;
-    ev.preventDefault();
-    const t = ev.touches[0];
-    if (ghost) { ghost.style.left = (t.clientX - 60) + 'px'; ghost.style.top = (t.clientY - 40) + 'px'; }
-    document.querySelectorAll('.drag-over').forEach(el => el.classList.remove('drag-over'));
-    const dstKey = getKeyFromTouch(t.clientX, t.clientY);
-    if (dstKey && dstKey !== touchSrcKey) {
-      const dstEl = document.querySelector(`.day-cell[data-key="${dstKey}"]`);
-      if (dstEl) dstEl.classList.add('drag-over');
-    }
-  }, {passive: false});
-
-  document.addEventListener('touchend', ev => {
-    if (!touchSrcEl) return;
-    if (ghost) { ghost.remove(); ghost = null; }
-    touchSrcEl.classList.remove('drag-src');
-    document.querySelectorAll('.drag-over').forEach(el => el.classList.remove('drag-over'));
-    const t = ev.changedTouches[0];
-    const dstKey = getKeyFromTouch(t.clientX, t.clientY);
-    if (dstKey && dstKey !== touchSrcKey) {
-      let dstDefWo = null;
-      PLAN.forEach(p=>p.weeks.forEach(w=>w.days.forEach(d=>{
-        if(d.d.replace(/ /g,'-')===dstKey) dstDefWo=d.w;
-      })));
-      const ovrMap = ld('ovr', {});
-      const dstData = ovrMap[dstKey] || { w: dstDefWo || [] };
-      ovrMap[touchSrcKey] = { w: dstData.w };
-      ovrMap[dstKey] = { w: touchSrcWo.w };
-      sv('ovr', ovrMap);
-      showToast(`↔ Тренировки поменяны местами`);
-      buildTraining();
-    }
-    touchSrcEl = null; touchSrcKey = null; touchSrcWo = null;
-  });
-})();
+// Start GitHub sync (non-blocking)
+setTimeout(startPolling, 600);
 </script>
 
 </body>
