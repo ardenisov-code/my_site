@@ -403,6 +403,18 @@ body{padding-bottom:88px}
 .ai-msg{max-width:90%}
 .goal-add{grid-template-columns:1fr;gap:6px}
 }
+
+/* ═══ COACH MOBILE ═══ */
+@media(max-width:768px){
+#page-coach > div[style*=“grid-template-columns”]{
+grid-template-columns:1fr !important;
+}
+.ai-wrap{height:420px !important}
+#page-coach .ai-quick{
+display:flex;flex-wrap:wrap;gap:5px;
+}
+#page-coach .ai-qb{font-size:9px;padding:5px 8px}
+}
 @media(max-width:480px){
 .scores-row{grid-template-columns:1fr 1fr}
 .cd-strip{gap:12px;padding:14px}
@@ -776,7 +788,7 @@ pointer-events:none;
     <button onclick="setupClaudeKey()" style="background:var(--accent);color:var(--bg);border:none;border-radius:8px;font-family:'Bebas Neue',sans-serif;font-size:16px;letter-spacing:1px;padding:10px 20px;cursor:pointer;white-space:nowrap">ВВЕСТИ КЛЮЧ</button>
   </div>
 
-  <div style="display:grid;grid-template-columns:1fr 320px;gap:14px;align-items:start">
+  <div style="display:grid;grid-template-columns:1fr 300px;gap:14px;align-items:start">
     <div class="ai-wrap" style="height:560px">
       <div class="ai-hdr">
         <div class="ai-ava" style="background:linear-gradient(135deg,#7c3aed,#4f46e5);font-size:18px">✦</div>
