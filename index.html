@@ -33,7 +33,7 @@ body{
   background-image:
     radial-gradient(ellipse at 15% 0%, rgba(0,212,170,.07) 0%, transparent 55%),
     radial-gradient(ellipse at 85% 100%, rgba(56,189,248,.05) 0%, transparent 55%);
-  color:var(--text);font-family:'Inter',sans-serif;min-height:100vh;overflow-x:hidden;padding-bottom:76px;-webkit-font-smoothing:antialiased
+  color:var(--text);font-family:'Inter',sans-serif;min-height:100vh;overflow-x:hidden;padding-bottom:88px;-webkit-font-smoothing:antialiased
 }
 
 /* ═══ NAV DESKTOP ═══ */
@@ -51,14 +51,14 @@ body{
 .mob-race{font-family:‘JetBrains Mono’,monospace;font-size:10px;background:var(–accent);color:var(–bg);padding:5px 12px;border-radius:20px;font-weight:700}
 
 /* ═══ MOBILE TAB BAR ═══ */
-.mob-bar{display:none;position:fixed;bottom:0;left:0;right:0;z-index:300;background:rgba(10,14,20,.99);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border-top:1px solid var(–card-border);height:64px;padding-bottom:env(safe-area-inset-bottom,0);overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+.mob-bar{display:none;position:fixed;bottom:0;left:0;right:0;z-index:300;background:rgba(10,14,20,.99);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border-top:1px solid var(–card-border);height:82px;padding-bottom:env(safe-area-inset-bottom,0);overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch;scrollbar-width:none}
 .mob-bar::-webkit-scrollbar{display:none}
 .mob-bar-inner{display:flex;min-width:max-content;height:100%;padding:0 4px}
-.mob-tab{flex:0 0 70px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;cursor:pointer;padding-top:6px;transition:opacity .15s;-webkit-tap-highlight-color:transparent}
+.mob-tab{flex:0 0 76px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;cursor:pointer;padding-top:8px;transition:opacity .15s;-webkit-tap-highlight-color:transparent}
 .mob-tab:active{opacity:.6}
-.mob-tab-ico{font-size:20px;line-height:1;transition:transform .2s}
+.mob-tab-ico{font-size:24px;line-height:1;transition:transform .2s}
 .mob-tab.active .mob-tab-ico{transform:scale(1.15)}
-.mob-tab-lbl{font-family:‘JetBrains Mono’,monospace;font-size:8px;color:var(–muted);transition:color .15s;text-transform:uppercase;letter-spacing:.3px}
+.mob-tab-lbl{font-family:‘JetBrains Mono’,monospace;font-size:9px;color:var(–dim);transition:color .15s;text-transform:uppercase;letter-spacing:.3px}
 .mob-tab.active .mob-tab-lbl{color:var(–accent)}
 
 /* ═══ PAGES ═══ */
@@ -282,7 +282,6 @@ box-shadow:var(–sh);
 .hist-day-body{padding:4px 0 8px}
 .hist-day-item{font-size:12px;color:var(–dim);padding:3px 0;display:flex;align-items:center;gap:8px}
 
-/* ═══ COACH ═══ */
 .ai-wrap{background:var(–card);border:1px solid var(–card-border);border-radius:var(–r);overflow:hidden;display:flex;flex-direction:column;height:480px;box-shadow:var(–sh)}
 .ai-hdr{padding:14px 18px;border-bottom:1px solid var(–card-border);background:var(–card-hi);display:flex;align-items:center;gap:12px}
 .ai-ava{width:36px;height:36px;border-radius:50%;background:var(–accent);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
@@ -385,7 +384,7 @@ box-shadow:var(–sh);
 @media(max-width:768px){
 .nav{display:none}
 .mob-hdr,.mob-bar{display:flex}
-body{padding-bottom:72px}
+body{padding-bottom:88px}
 .page{padding:12px}
 .g2,.g3,.g4{grid-template-columns:1fr}
 .hrz-grid{grid-template-columns:repeat(3,1fr)}
@@ -572,7 +571,7 @@ pointer-events:none;
   <div class="nav-item" onclick="go('train',this)">Тренировки</div>
   <div class="nav-item" onclick="go('pulse',this)">Пульс</div>
   <div class="nav-item" onclick="go('tasks',this)">Задачи</div>
-  <div class="nav-item" onclick="go('coach',this)">AI Коуч</div>
+  <div class="nav-item" onclick="go('coach',this)">Коуч</div>
   <div class="nav-item" onclick="go('metrics',this)">Прогресс</div>
   <div class="nav-item" onclick="go('goals',this)">Цели</div>
   <div class="nav-item" onclick="go('res',this)">Ресурсы</div>
@@ -592,7 +591,7 @@ pointer-events:none;
     <div class="mob-tab" onclick="go('train',this)" data-pg="train"><div class="mob-tab-ico">🏁</div><div class="mob-tab-lbl">План</div></div>
     <div class="mob-tab" onclick="go('pulse',this)" data-pg="pulse"><div class="mob-tab-ico">📝</div><div class="mob-tab-lbl">Пульс</div></div>
     <div class="mob-tab" onclick="go('tasks',this)" data-pg="tasks"><div class="mob-tab-ico">✅</div><div class="mob-tab-lbl">Задачи</div></div>
-    <div class="mob-tab" onclick="go('coach',this)" data-pg="coach"><div class="mob-tab-ico">🤖</div><div class="mob-tab-lbl">Коуч</div></div>
+    <div class="mob-tab" onclick="go('coach',this)" data-pg="coach"><div class="mob-tab-ico">🧠</div><div class="mob-tab-lbl">Коуч</div></div>
     <div class="mob-tab" onclick="go('metrics',this)" data-pg="metrics"><div class="mob-tab-ico">📈</div><div class="mob-tab-lbl">Прогресс</div></div>
     <div class="mob-tab" onclick="go('goals',this)" data-pg="goals"><div class="mob-tab-ico">🎯</div><div class="mob-tab-lbl">Цели</div></div>
     <div class="mob-tab" onclick="go('res',this)" data-pg="res"><div class="mob-tab-ico">📚</div><div class="mob-tab-lbl">Ресурсы</div></div>
@@ -765,68 +764,87 @@ pointer-events:none;
 
 <!-- ════════ COACH ════════ -->
 
-<!-- ════════ COACH ════════ -->
-
 <div class="page" id="page-coach">
-  <div class="page-title">КОУЧ</div>
-  <div class="page-sub">УМНЫЙ АССИСТЕНТ НА ОСНОВЕ ТВОЕГО КОНТЕКСТА · БЕЗ ИНТЕРНЕТА</div>
+  <div class="page-title">CLAUDE · КОУЧ</div>
+  <div class="page-sub">ПРЯМОЕ ПОДКЛЮЧЕНИЕ К CLAUDE · ЗНАЕТ ТВОЙ КОНТЕКСТ · НУЖЕН API-КЛЮЧ</div>
 
-  <div class="g2" style="gap:14px;align-items:start">
+  <div id="coach-setup-banner" style="background:rgba(0,212,170,.08);border:1px solid rgba(0,212,170,.25);border-radius:var(--r);padding:14px 18px;margin-bottom:14px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px">
     <div>
-      <div class="ai-wrap">
-        <div class="ai-hdr">
-          <div class="ai-ava">🧠</div>
-          <div><div class="ai-name">Персональный Коуч</div><div class="ai-status">знает твой контекст · работает офлайн</div></div>
+      <div style="font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:1px;color:var(--accent)">Нужен API-ключ Anthropic</div>
+      <div style="font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--dim);margin-top:3px">получи на console.anthropic.com · хранится только у тебя в браузере</div>
+    </div>
+    <button onclick="setupClaudeKey()" style="background:var(--accent);color:var(--bg);border:none;border-radius:8px;font-family:'Bebas Neue',sans-serif;font-size:16px;letter-spacing:1px;padding:10px 20px;cursor:pointer;white-space:nowrap">ВВЕСТИ КЛЮЧ</button>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 320px;gap:14px;align-items:start">
+    <div class="ai-wrap" style="height:560px">
+      <div class="ai-hdr">
+        <div class="ai-ava" style="background:linear-gradient(135deg,#7c3aed,#4f46e5);font-size:18px">✦</div>
+        <div style="flex:1">
+          <div class="ai-name">Claude · Персональный коуч</div>
+          <div class="ai-status" id="coach-status">инициализация...</div>
         </div>
-        <div class="ai-quick">
-          <button class="ai-qb" onclick="coachAsk('week')">📊 Разбор недели</button>
-          <button class="ai-qb" onclick="coachAsk('run')">🏃 Темп бега</button>
-          <button class="ai-qb" onclick="coachAsk('bike')">🚴 Велосипед/FTP</button>
-          <button class="ai-qb" onclick="coachAsk('race')">🏁 Стратегия гонки</button>
-          <button class="ai-qb" onclick="coachAsk('career')">💼 Карьера</button>
-          <button class="ai-qb" onclick="coachAsk('mental')">🧠 Ментальное</button>
-          <button class="ai-qb" onclick="coachAsk('motive')">⚡ Мотивация</button>
-          <button class="ai-qb" onclick="coachAsk('swim')">🏊 Плавание</button>
+        <button onclick="setupClaudeKey()" style="background:var(--bg4);border:1px solid var(--card-border);border-radius:6px;color:var(--dim);font-family:'JetBrains Mono',monospace;font-size:8px;padding:4px 8px;cursor:pointer;white-space:nowrap">🔑 КЛЮЧ</button>
+      </div>
+      <div class="ai-quick">
+        <button class="ai-qb" onclick="claudeAsk('Разбери мою последнюю неделю — оценки пульса, тренировки, что главное улучшить?')">📊 Разбор недели</button>
+        <button class="ai-qb" onclick="claudeAsk('Как улучшить темп бега с 4:10 до 4:00/км к 21 июня? Конкретный план.')">🏃 Темп бега</button>
+        <button class="ai-qb" onclick="claudeAsk('Разбери мою велоподготовку — FTP 264Вт, что делать для роста?')">🚴 Велосипед</button>
+        <button class="ai-qb" onclick="claudeAsk('Стратегия гонки 21 июня — темп по этапам, питание, тактика.')">🏁 Стратегия гонки</button>
+        <button class="ai-qb" onclick="claudeAsk('Что сделать по карьере прямо сейчас для VP-перехода?')">💼 Карьера</button>
+        <button class="ai-qb" onclick="claudeAsk('Как управлять тревогой и сохранять энергию при такой нагрузке?')">🧠 Ментальное</button>
+        <button class="ai-qb" onclick="claudeAsk('Дай мощный мотивационный заряд — осталось меньше 3 месяцев до гонки.')">⚡ Мотивация</button>
+      </div>
+      <div class="ai-msgs" id="ai-msgs">
+        <div class="ai-msg bot" style="border-left:3px solid #7c3aed">
+          Привет, Артём. Я Claude — подключён напрямую к Anthropic API.<br><br>
+          Знаю твой контекст: триатлон 21 июня, FTP 264Вт, бег 4:10/км, VP-переход, семья, ментальное. Нажми кнопку или задай вопрос.
         </div>
-        <div class="ai-msgs" id="ai-msgs">
-          <div class="ai-msg bot">Привет, Артём. Я знаю твой контекст — триатлон 21 июня, VP-переход, семья, ментальное. Нажми кнопку или задай вопрос своими словами.</div>
-        </div>
-        <div class="ai-foot">
-          <input class="ai-in" id="ai-in" placeholder="Напиши вопрос..." onkeydown="if(event.key==='Enter'){coachSend()}">
-          <button class="ai-send" onclick="coachSend()">ОТВЕТИТЬ</button>
-        </div>
+      </div>
+      <div class="ai-foot">
+        <input class="ai-in" id="ai-in" placeholder="Задай вопрос Клоду..." onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();claudeSend()}">
+        <button class="ai-send" id="ai-send-btn" onclick="claudeSend()">ОТПРАВИТЬ</button>
       </div>
     </div>
 
 ```
 <div style="display:flex;flex-direction:column;gap:12px">
   <div class="card">
-    <div class="card-ttl">ТВОЙ КОНТЕКСТ</div>
+    <div class="card-ttl">МОЙ КОНТЕКСТ</div>
     <div style="font-size:12px;line-height:2;color:var(--text2)">
-      🎯 <strong>Гонка:</strong> Олимпийский триатлон, 21 июня 2026<br>
+      🎯 <strong>Гонка:</strong> 21 июня 2026<br>
       🚴 <strong>FTP:</strong> 264 Вт → цель 280 Вт<br>
-      🏊 <strong>Плавание:</strong> 1:35/100м → цель 1:30<br>
-      🏃 <strong>Бег:</strong> 4:10/км → цель 4:00/км<br>
-      💼 <strong>Карьера:</strong> VP переход, Билайн → федерал<br>
-      🧠 <strong>Ментал:</strong> F41.2, Цепралекс 10мг<br>
-      ❤️ <strong>Семья:</strong> Ким 6 лет, разговор с женой → июль
+      🏊 <strong>Плавание:</strong> 1:35 → цель 1:30/100м<br>
+      🏃 <strong>Бег:</strong> 4:10 → цель 4:00/км<br>
+      💼 <strong>Карьера:</strong> VP, Билайн → федерал<br>
+      🧠 <strong>Ментал:</strong> F41.2, Цепралекс<br>
+      ❤️ <strong>Семья:</strong> Ким 6 лет
     </div>
   </div>
-
   <div class="card">
-    <div class="card-ttl">ОЦЕНКА ТРЕНИРОВКИ</div>
-    <div class="jf-group"><span class="jf-lbl">Что делал</span>
-      <input class="modal-in" id="wo-name" placeholder="Напр: Интервалы бег 6×1км" style="font-size:13px">
+    <div class="card-ttl">КАК ПОЛУЧИТЬ КЛЮЧ</div>
+    <div style="font-size:12px;line-height:1.9;color:var(--dim)">
+      1. <span style="color:var(--accent)">console.anthropic.com</span><br>
+      2. Settings → API Keys → Create Key<br>
+      3. Скопируй ключ <code style="color:var(--text2);background:var(--bg4);padding:0 4px;border-radius:3px">sk-ant-...</code><br>
+      4. Нажми 🔑 КЛЮЧ и вставь<br><br>
+      <span style="color:var(--muted)">~$0.01 за разговор. Ключ хранится только у тебя.</span>
     </div>
-    <div class="g2" style="gap:8px;margin-top:8px">
+  </div>
+  <div class="card">
+    <div class="card-ttl">ОЦЕНИТЬ ТРЕНИРОВКУ</div>
+    <div class="jf-group"><span class="jf-lbl">Что делал</span>
+      <input class="modal-in" id="wo-name" placeholder="Напр: Кирпич 45мин+25мин бег" style="font-size:13px">
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px">
       <div class="jf-group"><span class="jf-lbl">Самочувствие 1-10</span>
         <input class="modal-in" id="wo-feel" type="number" min="1" max="10" placeholder="8" style="font-size:13px">
       </div>
       <div class="jf-group"><span class="jf-lbl">Результат</span>
-        <input class="modal-in" id="wo-result" placeholder="4:02/км" style="font-size:13px">
+        <input class="modal-in" id="wo-result" placeholder="4:08/км" style="font-size:13px">
       </div>
     </div>
-    <button class="save-btn" style="margin-top:10px;font-size:14px;padding:9px 20px;width:100%" onclick="coachWorkout()">РАЗОБРАТЬ</button>
+    <button class="save-btn" style="margin-top:10px;font-size:14px;padding:9px 20px;width:100%" onclick="claudeWorkout()">РАЗОБРАТЬ С КЛОДОМ</button>
   </div>
 </div>
 ```
@@ -1631,99 +1649,6 @@ function toggleTaskHist() {
   if (!open) renderTaskHist();
 }
 
-// ── BUILT-IN COACH (no API, context-aware) ──
-const COACH_ANSWERS = {
-  week: () => {
-    const data = ld('weekly', {}); const entries = Object.entries(data).sort((a,b) => b[0].localeCompare(a[0]));
-    if (!entries.length) return 'Нет данных о неделях. Зайди в раздел Пульс и заполни оценку — тогда смогу дать конкретный разбор.';
-    const [key, e] = entries[0]; const avg = ((e.sport+e.career+e.mental+e.family)/4).toFixed(1);
-    const weak = ['sport','career','mental','family'].sort((a,b) => e[a]-e[b])[0];
-    const wkName = {sport:'спорт',career:'карьера',mental:'ментальное',family:'семья'}[weak];
-    const d = new Date(key); const ds = d.toLocaleDateString('ru-RU',{day:'numeric',month:'short'});
-    return `Последняя запись: ${ds} · Средний пульс ${avg}/10.\n\nСлабое звено: ${wkName} (${e[weak]}/10). Именно туда нужно направить энергию на этой неделе.\n\n${e.action ? `Твоё главное действие было: "${e.action}". Выполнено?` : 'Главное действие не указано — это потеря фокуса.'}\n\n${+avg < 6 ? 'Пульс ниже нормы. Не пытайся закрыть всё сразу — выбери одно и сделай.' : 'Пульс нормальный. Держи темп, не расслабляйся.'}`;
-  },
-  run: () => {
-    const arr = ld('m_run', []); const lat = arr.length ? arr[arr.length-1] : null;
-    const cur = lat ? s2p(lat.val) : '4:15';
-    return `Текущий темп бега: ${cur}/км · Цель: 4:00/км к 21 июня.\n\nГлавное: твой лактатный порог уже выше 4:00 — ты это показал на тренировках (ЧСС 162-168 при 4:00). Значит можешь.\n\nЧто делать прямо сейчас:\n1. Кирпичные тренировки — бег ПОСЛЕ велосипеда. Это важнее бега на свежих ногах.\n2. 2×/неделю интервалы 4×1км на 3:57-4:00. Отдых 75 сек строго.\n3. Первый км на гонке — принудительно 4:10. Тело обманывает после вело.`;
-  },
-  bike: () => {
-    const arr = ld('m_ftp', []); const lat = arr.length ? arr[arr.length-1] : null;
-    const cur = lat ? lat.val + ' Вт' : '260 Вт';
-    return `FTP: ${cur} · Цель: 280 Вт.\n\nГлавный вывод: чтобы ехать 40км за 60 минут нужно 285-290Вт. При FTP 260 это 110% — невозможно на час.\n\nДва пути к 60 минутам:\n1. Поднять FTP до 272-275 (8 недель пороговых блоков) — реально\n2. Аэродинамика: аэрошлем +0.5-0.8 км/ч, триsuit +0.3-0.5, аэропозиция +0.5-1.0. Итого +1.5-2.5 км/ч без ватт\n\nТвой велосипед с аэро: 39 + 1.5 = 40.5 км/ч → 59:15. Это реально.`;
-  },
-  race: () => `Стратегия гонки 21 июня:\n\n🏊 Плавание: стартуй НЕ в первой волне. Держи 1:31-1:33/100м. Не рви на старте.\n\n🚴 Велосипед: первые 10км НЕ выше 265Вт — тело ещё переключается. Км 10-35: 270-275Вт. Последние 5км — всё что осталось.\n\n🏃 Бег: первый км ПРИНУДИТЕЛЬНО 4:10 — даже если кажется легко. Тело обманывает. Со 2-го выходишь на 4:00. Последние 2км — рви.\n\nПитание: 1 гель каждые 30-35 мин на велосипеде. Протестируй заранее.`,
-  career: () => `По карьере — конкретно.\n\nТвои активы которые продаются на VP уровне:\n• Лучшая EBITDA среди регионов (2022-2023)\n• Agile внедрён и раскатан на страну\n• Onboarding программа — NPS +22pp, принята CEO\n• 15 лет в одной компании с реальным ростом P&L\n\nЧто делать прямо сейчас (пока не начал активный поиск):\n1. Переписать резюме как продающий документ — не отчёт о достижениях\n2. Сформулировать питч за 90 секунд: кто ты, что принёс, куда идёшь\n3. LinkedIn 100% с правильными ключевыми словами\n\nПоиск запускать после гонки — июль. Хедхантеры: Ward Howell, Kontakt InterSearch, Cornerstone.`,
-  mental: () => `По ментальному — честно.\n\nF41.2 + 10-летняя история + острый стресс сейчас = система нужна, не пожарный режим.\n\nПервое что нужно сделать СЕЙЧАС:\n→ Визит к психиатру — ревизия цепралекса. 10мг при текущей нагрузке может быть мало.\n→ Найти КПТ-терапевта на регулярной основе 1×/2 недели. Не разово когда плохо.\n\nЧто реально помогает при твоём профиле:\n• Триатлон — это не просто спорт, это твоя биохимия. Продолжай.\n• Утренний журнал 10 мин: тревога / контроль / действие\n• Сон минимум 7.5ч — при нагрузках это приоритет №1`,
-  motive: () => {
-    const d = DAYS_RACE;
-    return `${d} дней назад ты не плавал километры, не ехал на велосипеде, не бегал в комплексе.\n\nСейчас ты готовишься к олимпийскому триатлону через ${d} дней. При нагрузке директора на 1500 человек. При семье. При личной ситуации которая требует сил.\n\nЭто не "занимаюсь спортом". Это системная трансформация личности за 4 месяца.\n\nФранкл говорил: смысл не ищут, его создают действием. Ты уже создаёшь. Иди тренироваться.`;
-  },
-  swim: () => {
-    const arr = ld('m_swim', []); const lat = arr.length ? arr[arr.length-1] : null;
-    const cur = lat ? s2p(lat.val) : '1:35';
-    return `Плавание: ${cur}/100м · Цель: 1:30-1:31.\n\nХорошая новость: ты не деградировал — просто не наращивал объём. База есть.\n\nДо 1:30 — это вопрос специфической работы:\n1. Пн: 10×100м по 1:32 с отдыхом 20сек строго — скоростная память\n2. Чт: 4×400м по 6:08 (1:32/100м) — выносливость на гонке-темпе\n3. Раз в 2 недели: контрольный заплыв 1500м — замеряй прогресс\n\nВ воде важнее техника чем объём. Если есть возможность — 1-2 занятия с тренером на технику гребка.`;
-  }
-};
-
-let coachHistory = [];
-
-function coachAsk(type) {
-  const ans = COACH_ANSWERS[type] ? COACH_ANSWERS[type]() : 'Задай вопрос своими словами.';
-  addMsg(COACH_ANSWERS[type] ? ['week','run','bike','race','career','mental','motive','swim'].includes(type) ? getTypeLabel(type) : type : type, 'user');
-  setTimeout(() => addMsg(ans, 'bot'), 150);
-}
-
-function getTypeLabel(type) {
-  const labels = {week:'Разбор недели',run:'Темп бега',bike:'Велосипед/FTP',race:'Стратегия гонки',career:'Карьера',mental:'Ментальное',motive:'Мотивация',swim:'Плавание'};
-  return labels[type] || type;
-}
-
-function coachSend() {
-  const inp = document.getElementById('ai-in'); const q = inp.value.trim(); if (!q) return;
-  inp.value = ''; addMsg(q, 'user');
-  const ql = q.toLowerCase();
-  let ans;
-  if (ql.includes('бег') || ql.includes('темп') || ql.includes('4:00')) ans = COACH_ANSWERS.run();
-  else if (ql.includes('вел') || ql.includes('ftp') || ql.includes('ватт')) ans = COACH_ANSWERS.bike();
-  else if (ql.includes('плав') || ql.includes('1:30') || ql.includes('100м')) ans = COACH_ANSWERS.swim();
-  else if (ql.includes('гонк') || ql.includes('21 июн') || ql.includes('старт')) ans = COACH_ANSWERS.race();
-  else if (ql.includes('карьер') || ql.includes('vp') || ql.includes('работ') || ql.includes('резюм')) ans = COACH_ANSWERS.career();
-  else if (ql.includes('ментал') || ql.includes('депресс') || ql.includes('тревог') || ql.includes('цепрал')) ans = COACH_ANSWERS.mental();
-  else if (ql.includes('мотив') || ql.includes('устал') || ql.includes('не хочет')) ans = COACH_ANSWERS.motive();
-  else if (ql.includes('недел') || ql.includes('разбор') || ql.includes('пульс')) ans = COACH_ANSWERS.week();
-  else ans = 'Уточни вопрос. Я могу разобрать: бег, велосипед, плавание, стратегию гонки, карьеру, ментальное состояние или мотивацию. Нажми кнопку или напиши конкретнее.';
-  setTimeout(() => addMsg(ans, 'bot'), 200);
-}
-
-function addMsg(text, cls) {
-  const c = document.getElementById('ai-msgs');
-  const d = document.createElement('div'); d.className = 'ai-msg ' + cls;
-  d.innerHTML = text.replace(/\n/g, '<br>').replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
-  c.appendChild(d); c.scrollTop = c.scrollHeight;
-}
-
-function coachWorkout() {
-  const name = document.getElementById('wo-name').value.trim();
-  const feel = document.getElementById('wo-feel').value;
-  const result = document.getElementById('wo-result').value.trim();
-  if (!name) return;
-  go('coach', document.querySelector('[data-pg="coach"]'));
-  addMsg(`Разбери тренировку: ${name}. Самочувствие ${feel||'?'}/10. Результат: ${result||'не указан'}.`, 'user');
-  const f = parseInt(feel) || 7;
-  let ans = `Тренировка: ${name}.\n\n`;
-  if (f >= 8) ans += `Самочувствие ${f}/10 — отличное. `;
-  else if (f >= 6) ans += `Самочувствие ${f}/10 — нормальное. `;
-  else ans += `Самочувствие ${f}/10 — тяжело. Возможно перегруз или недовосстановление. `;
-  if (result) {
-    ans += `Результат ${result}. `;
-    if (result.includes('4:0') || result.includes('3:5')) ans += '\n\nТемп близко к цели — хорошая работа. Продолжай протокол.';
-    else if (result.includes('4:1') || result.includes('4:2')) ans += '\n\nТемп чуть выше цели. Это нормально — прогресс нелинеен.';
-  }
-  ans += `\n\nСледующий шаг: внеси результат в раздел Прогресс → Бег (или FTP) чтобы видеть динамику на графике.`;
-  setTimeout(() => addMsg(ans, 'bot'), 200);
-}
-
 // ── METRICS ──
 const MDEFS = {
   ftp:  { start:264, target:280, hib:true,  c:'var(--bike)' },
@@ -2023,6 +1948,174 @@ if (le) ['sport','career','mental','family'].forEach(k => {
   const el = document.getElementById('h-'+k); const bar = document.getElementById('hb-'+k);
   if (el) el.textContent = le[k]; if (bar) bar.style.width = (le[k]*10) + '%';
 });
+
+// ════════════════════════════════════
+// CLAUDE API COACH
+// ════════════════════════════════════
+
+const CLAUDE_SYSTEM = `Ты — персональный коуч Артёма Денисова.
+
+КОНТЕКСТ:
+- 38 лет, Директор B2C Билайн, макрорегион Запад, 1500+ чел, 17 филиалов
+- Цель: VP Sales/Product, переезд в Москву (после гонки)
+- Триатлон: ПЕРВЫЙ олимпийский старт 21 июня 2026
+- FTP 264Вт → цель 280Вт
+- Плавание 1:35/100м → цель 1:30 (слабый прогресс)
+- Бег 4:10/км → цель 4:00/км (хороший апсайд)
+- ЧСС макс ~187 уд/мин
+- 6 тренировок/нед: 2.5 вело + 2 бег + 1.5 плавание + кирпичи по ВС
+- Также кайтсёрфинг, вейкбординг
+- Ментальное: F41.2, Цепралекс 10мг ~2.5г, нужен КПТ-терапевт
+- Семья: жена 39, сын Ким 6 лет, честный разговор → июль
+- Читает: Франкл, Хокинг, Шантарам, Талеб
+- Не любит размытый self-help без данных
+
+СТИЛЬ: конкретно, с цифрами, без воды, макс 250 слов. Требовательный но заботливый коуч.`;
+
+let claudeHistory = [];
+let claudeReady = false;
+
+function getClaudeKey() { return localStorage.getItem('_claude_key') || ''; }
+
+function setupClaudeKey() {
+  document.getElementById('claude-key-modal')?.remove();
+  const existing = getClaudeKey();
+  const m = document.createElement('div');
+  m.id = 'claude-key-modal';
+  m.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:9999;display:flex;align-items:center;justify-content:center;padding:20px';
+  m.innerHTML = '<div style="background:#1c2a3c;border:1px solid rgba(255,255,255,.15);border-radius:14px;padding:24px;max-width:460px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,.6)">' +
+    '<div style="font-family:Bebas Neue,sans-serif;font-size:24px;color:#7c3aed;margin-bottom:4px;letter-spacing:2px">ANTHROPIC API-КЛЮЧ</div>' +
+    '<div style="font-size:12px;color:#b8cfe4;line-height:1.8;margin-bottom:16px">Ключ хранится только в твоём браузере. Никуда кроме api.anthropic.com не отправляется.<br>' +
+    '<a href="https://console.anthropic.com/settings/keys" target="_blank" style="color:#00d4aa">→ console.anthropic.com/settings/keys</a></div>' +
+    (existing ? '<div style="font-family:JetBrains Mono,monospace;font-size:9px;color:#4ade80;margin-bottom:8px">Ключ сохранён</div>' : '') +
+    '<input id="claude-key-inp" placeholder="sk-ant-xxxxxxxxxxxx" value="' + existing + '" ' +
+    'style="width:100%;background:#111e2d;border:1px solid rgba(255,255,255,.15);border-radius:8px;color:#f0f5fb;font-family:JetBrains Mono,monospace;font-size:11px;padding:12px 14px;outline:none;margin-bottom:14px" ' +
+    'onkeydown="if(event.key===\'Enter\')saveClaudeKey()">' +
+    '<div style="display:flex;gap:8px">' +
+    '<button onclick="document.getElementById(\'claude-key-modal\').remove()" style="flex:1;background:#263347;color:#7a94b0;border:1px solid rgba(255,255,255,.1);border-radius:8px;font-family:Bebas Neue,sans-serif;font-size:15px;padding:11px;cursor:pointer">ОТМЕНА</button>' +
+    '<button onclick="saveClaudeKey()" style="flex:2;background:linear-gradient(135deg,#7c3aed,#4f46e5);color:white;border:none;border-radius:8px;font-family:Bebas Neue,sans-serif;font-size:15px;padding:11px;cursor:pointer;letter-spacing:1px">СОХРАНИТЬ</button>' +
+    '</div></div>';
+  document.body.appendChild(m);
+  setTimeout(() => { const i = document.getElementById('claude-key-inp'); if(i){i.focus();i.select();} }, 100);
+}
+
+function saveClaudeKey() {
+  const inp = document.getElementById('claude-key-inp');
+  const k = inp?.value?.trim();
+  if (!k || !k.startsWith('sk-ant-')) {
+    if (inp) inp.style.borderColor = '#f87171';
+    return;
+  }
+  localStorage.setItem('_claude_key', k);
+  document.getElementById('claude-key-modal')?.remove();
+  initCoach();
+  setTimeout(() => claudeAsk('Привет! Ключ подключён. Кратко скажи — что самое важное мне сделать на этой неделе с учётом моего контекста?'), 400);
+}
+
+function initCoach() {
+  const key = getClaudeKey();
+  const st = document.getElementById('coach-status');
+  const bn = document.getElementById('coach-setup-banner');
+  if (key) {
+    claudeReady = true;
+    if (st) { st.textContent = 'Claude подключён ✓'; st.style.color = 'var(--accent)'; }
+    if (bn) bn.style.display = 'none';
+  } else {
+    claudeReady = false;
+    if (st) { st.textContent = 'Нужен API-ключ → нажми 🔑 КЛЮЧ'; st.style.color = 'var(--gold)'; }
+    if (bn) bn.style.display = 'flex';
+  }
+}
+
+async function claudeSend() {
+  const inp = document.getElementById('ai-in');
+  const msg = inp?.value?.trim();
+  if (!msg) return;
+  inp.value = '';
+  await claudeAsk(msg);
+}
+
+async function claudeAsk(userMsg) {
+  if (!claudeReady) { setupClaudeKey(); return; }
+
+  addChatMsg(userMsg, 'user');
+  claudeHistory.push({ role: 'user', content: userMsg });
+
+  const thinkId = 'th' + Date.now();
+  addChatMsg('Думаю...', 'bot thinking', thinkId);
+  const btn = document.getElementById('ai-send-btn');
+  if (btn) btn.disabled = true;
+
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': getClaudeKey(),
+        'anthropic-version': '2023-06-01',
+        'anthropic-dangerous-direct-browser-access': 'true'
+      },
+      body: JSON.stringify({
+        model: 'claude-haiku-4-5-20251001',
+        max_tokens: 600,
+        system: CLAUDE_SYSTEM,
+        messages: claudeHistory.slice(-20)
+      })
+    });
+
+    document.getElementById(thinkId)?.remove();
+
+    if (res.status === 401) {
+      addChatMsg('Неверный API-ключ. Нажми 🔑 КЛЮЧ и проверь.', 'bot');
+      localStorage.removeItem('_claude_key'); initCoach();
+    } else if (res.status === 429) {
+      addChatMsg('Слишком много запросов. Подожди минуту.', 'bot');
+    } else if (!res.ok) {
+      addChatMsg('Ошибка API: ' + res.status + '. Попробуй ещё раз.', 'bot');
+    } else {
+      const data = await res.json();
+      const reply = data.content?.[0]?.text || 'Нет ответа';
+      addChatMsg(reply, 'bot');
+      claudeHistory.push({ role: 'assistant', content: reply });
+      if (claudeHistory.length > 40) claudeHistory = claudeHistory.slice(-40);
+    }
+  } catch(e) {
+    document.getElementById(thinkId)?.remove();
+    addChatMsg('Нет доступа к api.anthropic.com. Проверь интернет.', 'bot');
+  }
+
+  if (btn) btn.disabled = false;
+}
+
+function addChatMsg(text, cls, id) {
+  const c = document.getElementById('ai-msgs');
+  if (!c) return;
+  const d = document.createElement('div');
+  d.className = 'ai-msg ' + cls;
+  if (id) d.id = id;
+  d.innerHTML = text
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+    .replace(/\n/g,'<br>')
+    .replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>');
+  c.appendChild(d);
+  c.scrollTop = c.scrollHeight;
+}
+
+function claudeWorkout() {
+  const name = document.getElementById('wo-name')?.value?.trim();
+  const feel = document.getElementById('wo-feel')?.value;
+  const result = document.getElementById('wo-result')?.value?.trim();
+  if (!name) {
+    const el = document.getElementById('wo-name');
+    if(el){el.style.borderColor='var(--red)';setTimeout(()=>el.style.borderColor='',1000);}
+    return;
+  }
+  claudeAsk('Разбери тренировку:\n- Что делал: ' + name + '\n- Самочувствие: ' + (feel||'?') + '/10\n- Результат: ' + (result||'не замерял') + '\n\nЧто хорошо? Что улучшить? Как влияет на подготовку к 21 июня?');
+}
+
+document.head.insertAdjacentHTML('beforeend','<style>@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}.ai-msg.thinking{color:var(--dim);font-style:italic;animation:blink 1.2s infinite}</style>');
+
+initCoach();
 
 // Start GitHub sync (non-blocking)
 setTimeout(startPolling, 600);
