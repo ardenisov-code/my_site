@@ -1,5 +1,5 @@
 {
-  "_ts": 1776013111746,
+  "_ts": 1776631358260,
   "weekly": {
     "2026-04-05": {
       "sport": 8,
@@ -263,7 +263,7 @@
       "cat": "career",
       "title": "The First 90 Days — Уоткинс",
       "desc": "Читай ДО оффера.",
-      "status": "priority"
+      "status": "done"
     },
     {
       "id": "b2",
