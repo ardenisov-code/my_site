@@ -1,5 +1,5 @@
 {
-  "_ts": 1779477664286,
+  "_ts": 1779477677802,
   "gv3": [
     {
       "id": "s-sport",
@@ -219,7 +219,7 @@
       "cat": "career",
       "title": "Играй на повышение — Ибарра",
       "desc": "Working Identity. Точно в твою ситуацию.",
-      "status": "done"
+      "status": "priority"
     },
     {
       "id": "b3",
