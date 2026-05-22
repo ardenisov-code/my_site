@@ -1,5 +1,5 @@
 {
-  "_ts": 1779477645931,
+  "_ts": 1779477660314,
   "gv3": [
     {
       "id": "s-sport",
@@ -212,7 +212,7 @@
       "cat": "career",
       "title": "The First 90 Days — Уоткинс",
       "desc": "Читай ДО оффера.",
-      "status": "priority"
+      "status": "done"
     },
     {
       "id": "b2",
